@@ -1,6 +1,6 @@
 const frame = new Frame({
     scaling:"fit",
-    width:1024,
+    width:1924,
     height:768,
     color:light,
     outerColor: dark
@@ -13,28 +13,40 @@ frame.on("ready", () => {
     frame.outerColor = "#444";
     frame.color = "#ddd";
     
+    var board = new Board(
+      {
+      num:25,
+      size:20,
+      arrows: true,
+}
+).center();
+
+    var tile = board.getTile(19,9);
+    board.setColor(tile,red);
 
 
-  var holder = new Container();
 
-  var tiles = new Tile(
-    new Rectangle(20, 20, frame.light, frame.dark).centerReg({ add: false }), 25, 25 )
-    .rot(45)
-    .addTo(holder);
 
-    holder.sca(2, 1).center();
+  // var holder = new Container();
 
-  //on mouse over changes tile to pink
-  tiles.on("mouseover", function (e) {
-    e.target.color = frame.pink;
-    stage.update();
-  });
+  // var tiles = new Tile(
+  //   new Rectangle(20, 20, frame.light, frame.dark).centerReg({ add: false }), 25, 25 )
+  //   .rot(45)
+  //   .addTo(holder);
 
-  //on mouse out goes back to oringal tile color or light color
-  tiles.on("mouseout", function (e) {
-    e.target.color = frame.light;
-    stage.update();
-  });
+  //   holder.sca(2, 1).center();
+
+  // //on mouse over changes tile to pink
+  // tiles.on("mouseover", function (e) {
+  //   e.target.color = frame.pink;
+  //   stage.update();
+  // });
+
+  // //on mouse out goes back to oringal tile color or light color
+  // tiles.on("mouseout", function (e) {
+  //   e.target.color = frame.light;
+  //   stage.update();
+  // });
 
   //creates ball with shadow
   var ball = new Circle(15, frame.blue, frame.dark).center().sha();
