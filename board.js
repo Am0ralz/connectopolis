@@ -14,6 +14,16 @@ frame.on("ready", () => {
   frame.outerColor = "#ddd";
   frame.color = "#ddd";
 
+
+  // frame.loadAssets("building.png");
+
+  // frame.on("complete", function(){
+  //   var pic = frame.asset("building.png");
+  //   pic.center(stage).rot(-3)
+  //   stage.update();
+  // })
+ 
+
   var board = new Board({
     num: 20,
     size: 25,
