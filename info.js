@@ -1,6 +1,6 @@
-export var data = {
+export var data = { //since board is isometric the rows begin from the back
   obj: [
-    [
+    [ //row1
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -9,7 +9,7 @@ export var data = {
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -21,32 +21,13 @@ export var data = {
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
+
+
+      
     ],
-    [
+    [//row2
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "o", color: "#40E0D0", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-    ],
-    [
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -66,11 +47,55 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row3
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "o", color: "#40E0D0", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+    ],
+    [//row4
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "o", color: "#40E0D0", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+    ],
+    [//row5
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -88,29 +113,7 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "o", color: "#40E0D0", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-    ],
-    [
+    [//row6
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -132,7 +135,7 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row7
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -154,7 +157,7 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row8
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -176,7 +179,7 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row9
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -198,7 +201,7 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row10
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -220,7 +223,7 @@ export var data = {
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row11
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -242,9 +245,9 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row12
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -264,13 +267,35 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row13
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "o", color: "#40E0D0", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "r", color: "#fb4758", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+    ],
+    [//row14
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -286,29 +311,7 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "o", color: "#40E0D0", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "r", color: "#fb4758", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
-    ],
-    [
+    [//row15
       { data: "r", color: "#fb4758", icon: null, items: [] },
       { data: "r", color: "#fb4758", icon: null, items: [] },
       { data: "r", color: "#fb4758", icon: null, items: [] },
@@ -330,7 +333,7 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row16
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -352,7 +355,7 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row17
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -374,9 +377,9 @@ export var data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row18
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -396,7 +399,7 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row19
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -418,7 +421,7 @@ export var data = {
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
     ],
-    [
+    [//row20
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
