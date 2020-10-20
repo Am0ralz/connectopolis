@@ -1,25 +1,41 @@
 import { data } from "./info.js";
 
+ZIMONON = true;
 const frame = new Frame({
   scaling: "fit",
   width: 1924,
-  height: 768,
+  height: 968,
   color: "#ddd",
   outerColor: "#ddd",
 });
+
+TIME = "milliseconds";
 
 frame.on("ready", () => {
   const stage = frame.stage;
   const stageW = frame.width;
   const stageH = frame.height;
 
-  //   // frame.loadAssets("build.png");
 
-  //   // frame.on("complete", function(){
-  //   //   var pic = frame.asset("build.png");
-  //   //   pic.center(stage).rot(-3)
-  //   //   stage.update();
-  //   // })
+//creates class for traffic light object
+var TrafficLight = function(){
+
+    this.super_constructor();
+    this.type = "TrafficLight";
+    this.arguments = Array.prototype.slice.call(arguments);
+
+   
+    const post = new Rectangle(10, 80, black).centerReg().loc(-5, -40,this); //post for traffic light
+    new Circle(10 / 2, black).sca(1, 0.3).centerReg(post).mov(0, 40); //small disk under post to give illusion of 3d post
+    new Rectangle(35, 80, black).centerReg().loc(-5, -80,this); //traffic  light
+    new Circle(35 / 3, black).sca(1, 0.3).loc(-5, -40,this); //small disk under traffic light
+    
+    new Circle(8, red).loc(-5, -100,this); //red traffic light
+    new Circle(8, yellow).loc(-5, -80,this); //yellow traffic light
+    new Circle(8, green).loc(-5, -60,this); //green traffic light
+    
+  }
+  extend(TrafficLight, Container);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
@@ -28,11 +44,11 @@ frame.on("ready", () => {
   const board = new Board({
     num: 20,
     size: 25,
+    // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
-    borderWidth: 1,
-    // indicatorType: "square",
-    // indicatorSize: 5,
-    // indicatorColor: "pink",
+    borderWidth: 0.2,
+    borderColor: "#555555",
+    arrows: false,
     indicatorBorderColor: "white",
     indicatorBorderWidth: 1,
   }).center();
@@ -54,6 +70,12 @@ frame.on("ready", () => {
   const player = new Person();
   board.add(player, 6, 6);
 
+
+// add a traffic light
+  const trafficLight = new TrafficLight();
+  board.add(trafficLight, 8,8);
+
+  
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,7 +120,6 @@ frame.on("ready", () => {
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
-        console.log(path);
         path = thePath;
         Ticker.remove(ticker);
         board.showPath(path);
