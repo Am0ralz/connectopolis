@@ -42,7 +42,9 @@ var TrafficLight = function(){
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   const board = new Board({
-    num: 20,
+    // num: 20,
+    rows: 20,
+    cols: 20,
     size: 25,
     // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
