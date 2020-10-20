@@ -441,9 +441,10 @@ export var data = { //since board is isometric the rows begin from the back
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: []},
     ],
 
+    
     
   ],
   zimon: 1,
