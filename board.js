@@ -17,32 +17,23 @@ frame.on("ready", () => {
   const stageW = frame.width;
   const stageH = frame.height;
 
-
-//creates class for traffic light object
-var TrafficLight = function(){
-
+  //creates class for traffic light object
+  var TrafficLight = function () {
     this.super_constructor();
     this.type = "TrafficLight";
     this.arguments = arguments;
 
-   
-    const post = new Rectangle(10, 80, black).centerReg().loc(-5, -40,this); //post for traffic light
+    const post = new Rectangle(10, 80, black).centerReg().loc(-5, -40, this); //post for traffic light
     new Circle(10 / 2, black).sca(1, 0.3).centerReg(post).mov(0, 40); //small disk under post to give illusion of 3d post
-    new Rectangle(30, 50, black).centerReg().loc(-5, -65,this); //traffic  light
-    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -90,this); //small disk above traffic light
-    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -39,this); //small disk under traffic light
+    new Rectangle(30, 50, black).centerReg().loc(-5, -65, this); //traffic  light
+    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -90, this); //small disk above traffic light
+    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -39, this); //small disk under traffic light
 
-    
-    new Circle(6, red).loc(-5, -80,this); //red traffic light
-    new Circle(6, yellow).loc(-5, -64,this); //yellow traffic light
-    new Circle(6, green).loc(-5, -48,this); //green traffic light
-    
-  }
+    new Circle(6, red).loc(-5, -80, this); //red traffic light
+    new Circle(6, yellow).loc(-5, -64, this); //yellow traffic light
+    new Circle(6, green).loc(-5, -48, this); //green traffic light
+  };
   extend(TrafficLight, Container);
-
-
-
-
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
@@ -79,18 +70,15 @@ var TrafficLight = function(){
   const player = new Person();
   board.add(player, 8, 7).top();
 
-
-// add a traffic light
+  // add a traffic light
   var trafficLight = new TrafficLight();
-  board.add(trafficLight, 19,0);
-
-
+  board.add(trafficLight, 19, 0);
 
   var items = board.getAllItems();
-  zim.loop(items, function (item){
-    if(item.type == "TrafficLight") trafficLight = item;
+  zim.loop(items, function (item) {
+    if (item.type == "TrafficLight") trafficLight = item;
   });
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,6 +138,22 @@ var TrafficLight = function(){
       AI.calculate();
     });
   }
+
+  function test() {
+    alert("hello this is a traffic light");
+   
+  }
+
+  //when player hits traffic light shows alert
+  player.moveEvent = player.on("moving", () => {
+    timeout(5, () => {
+      if (player.boardTile == trafficLight.boardTile) {
+        player.off("moving", player.moveEvent);
+   
+        test();
+      }
+    });
+  });
 
   stage.update(); // this is needed to show any changes
 }); // end ready
