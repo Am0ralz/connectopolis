@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+
+body{
+    margin: 0;
+    font-family: 'Alata', sans-serif;
+}
+
+/* dark tint in background that holds card */
+.enter-screen{
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.329);
+    position: absolute;
+    z-index: 1;
+}
+
+/* location and budget card */
+.lab-card{
+    width: 450px;
+    height: 270px;
+    background: white;
+    border-radius: 10px;
+    position: absolute;
+    margin: auto;
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0;
+    text-align: center;
+}
+
+
+.close-icon{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.close-icon:hover{
+    cursor: pointer;
+}
