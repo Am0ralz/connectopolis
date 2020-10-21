@@ -1,6 +1,7 @@
 import { data } from "./info.js";
 
 ZIMONON = true;
+
 const frame = new Frame({
   scaling: "fit",
   width: 1924,
@@ -52,7 +53,7 @@ var TrafficLight = function(){
     rows: 20,
     cols: 20,
     size: 25,
-    isometric: false,
+    // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
     borderWidth: 0.2,
     borderColor: "#555555",
@@ -80,9 +81,15 @@ var TrafficLight = function(){
 
 
 // add a traffic light
-  const trafficLight = new TrafficLight();
+  var trafficLight = new TrafficLight();
   board.add(trafficLight, 19,0);
 
+
+
+  var items = board.getAllItems();
+  zim.loop(items, function (item){
+    if(item.type == "TrafficLight") trafficLight = item;
+  });
   
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
