@@ -2,14 +2,24 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
     <title>Connectopolis</title>
   </head>
-  <body>
+  <body onload="onStart()">
+   
+    <div class="enter-screen" id="screen">
+      <div class="lab-card">
+        <p id="text"></p>
+        <span class="material-icons close-icon"
+        onClick="document.getElementById('screen').style.display = 'none ';"> close </span>
+      </div>
+    </div>
 
-    <!-- <script src="https://zimjs.org/cdn/1.3.0/createjs_doc.js"></script> -->
-    <!-- <script src="https://zimjs.org/cdn/zim_10.4.0.js"></script> -->
-    <!-- <script src="https://zimjs.org/cdn/createjs_1.1_min.js"></script> -->
-    <!-- <script src="https://zimjs.org/cdn/game_2.0.js"></script> -->
 
     <script src="https://zimjs.org/cdn/1.3.2/createjs.js"></script>
     <script src="https://zimjs.org/cdn/cat/01/zim.js"></script>
@@ -17,7 +27,6 @@
     <script src="https://zimjs.org/cdn/easystar-0.4.3.min.js"></script>
     <script src="https://zimjs.com/live/game_2.1.js"></script>
     <script src="./board.js" type="module"></script>
- 
-  
+    <script src="./onStart.js"></script>
   </body>
 </html>
