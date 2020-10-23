@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+
+body{
+    margin: 0;
+    font-family: 'Alata', sans-serif;
+}
+
+/* dark tint in background that holds card */
+.enter-screen{
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.329);
+    position: absolute;
+    z-index: 1;
+}
+
+/* location and budget card */
+.lab-card{
+    width: 300px;
+    height: 200px;
+    background: white;
+    border-radius: 10px;
+    position: absolute;
+    margin: auto;
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0;
+    text-align: center;
+    /* box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); */
+}
+
+
+#text{
+    padding: 30px;
+    padding-bottom: 10px;
+    font-size: 18px;
+}
+
+/*got it button, on location and budget card*/
+.close-btn{
+    color:white;
+    background: #2C57A0;
+    font-family: 'Alata', sans-serif;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    width: 40%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 3px 4px;
+    /* box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); */
+
+}
+
+.close-btn:hover{
+    cursor: pointer;
+    background: #244682;
+}
