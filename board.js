@@ -65,11 +65,24 @@ frame.on("ready", () => {
     }
     stage.update();
   });
+///////////////////ScoreCard////////////////////////////////////
+  function scoreCard(startPostion, budget) {
+    let scores = [{
+      Destination: startPostion,
+      TransitMode:"",
+      CurveBall:"",
+      Budget:budget,
+      Cost:0,
+      CO2:0,
+      Calories:0,}];
+  }
 
+  let player1Scorecard = new scoreCard();
   // add a player
   const player = new Person();
+  console.log(typeof player)
   board.add(player, 8, 7).top();
-
+  
   // add a traffic light
   var trafficLight = new TrafficLight();
   board.add(trafficLight, 19, 0);
@@ -94,6 +107,7 @@ frame.on("ready", () => {
   let pathID;
   let ticker;
   let path;
+  let player1Scorecard
   let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
   //Different modes and their properties//
   let modes =
@@ -158,7 +172,7 @@ frame.on("ready", () => {
       function (thePath) {
         // the callback function when path is found
         if(thePath){
-          console.log(modes[mode].spaces)
+////// This where we set the path according to the Mode/////
           path = thePath.slice(0,modes[mode].spaces+1);
           Ticker.remove(ticker);
           board.showPath(path);
