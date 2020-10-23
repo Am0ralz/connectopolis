@@ -1,6 +1,4 @@
-
-import { data } from './info.js';
-
+import { data } from "./info.js";
 
 ZIMONON = true;
 
@@ -36,8 +34,6 @@ frame.on("ready", () => {
     new Circle(6, green).loc(-5, -48, this); //green traffic light
   };
   extend(TrafficLight, Container);
- 
-
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
@@ -78,15 +74,11 @@ frame.on("ready", () => {
   var trafficLight = new TrafficLight();
   board.add(trafficLight, 19, 0);
 
-
-
-
-
-// let grass = frame.asset("grass.jpg").sca(.02);
-// board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
+  // let grass = frame.asset("grass.jpg").sca(.02);
+  // board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
 
   // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new TrafficLight()]};
-  // board.update();
+  // board.update()
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -103,40 +95,35 @@ frame.on("ready", () => {
   let pathID;
   let ticker;
   let path;
-  let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+  let mode = "Walk"; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
   //Different modes and their properties//
-  let modes =
-  {
-    Walk:
-    {cost:0,
-    spaces:1,
-    cImpact:0,
-    calories:21
-  },
-  Bike:{
-    cost:1,
-    spaces:2,
-    cImpact:0,
-    calories:27
-  },
-  Bus:{
-    cost:4,
-    spaces:4,
-    cImpact:6,
-    calories:1.6
-  },
-  Scooter:{
-    cost:3,
-    spaces:3,
-    cImpact:0,
-    calories:1.8
-  },
-  Car:{
-    cost:8,
-    spaces:5,
-    cImpact:10,
-    calories:3
-  }}
+  let modes = {
+    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+    Bike: {
+      cost: 1,
+      spaces: 2,
+      cImpact: 0,
+      calories: 27,
+    },
+    Bus: {
+      cost: 4,
+      spaces: 4,
+      cImpact: 6,
+      calories: 1.6,
+    },
+    Scooter: {
+      cost: 3,
+      spaces: 3,
+      cImpact: 0,
+      calories: 1.8,
+    },
+    Car: {
+      cost: 8,
+      spaces: 5,
+      cImpact: 10,
+      calories: 3,
+    },
+  };
 
   board.on("change", () => {
     // change triggers when rolled over square changes
@@ -166,17 +153,17 @@ frame.on("ready", () => {
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
-        if(thePath){
-          console.log(modes[mode].spaces)
-          path = thePath.slice(0,modes[mode].spaces+1);
+        if (thePath) {
+          console.log(modes[mode].spaces);
+          path = thePath.slice(0, modes[mode].spaces + 1);
           Ticker.remove(ticker);
           board.showPath(path);
-        if (go) {
-          // from a press on the tile
-          board.followPath(player, path, null, null, 2); // nudge camera 2
-          path = null;
+          if (go) {
+            // from a press on the tile
+            board.followPath(player, path, null, null, 2); // nudge camera 2
+            path = null;
+          }
         }
-      }
       }
     );
     // must calculate the path in a Ticker
@@ -231,4 +218,3 @@ frame.on("ready", () => {
 
   stage.update(); // this is needed to show any changes
 }); // end ready
-
