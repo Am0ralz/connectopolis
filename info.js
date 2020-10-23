@@ -10,7 +10,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#a832a8", icon: null, items: [] }, // 1 rural
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -155,7 +155,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#a832a8", icon: null, items: [] }, //2 suburban
     ],
     [//row8
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -253,7 +253,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#a832a8", icon: null, items: [] }, // downtown 4
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -359,7 +359,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#a832a8", icon: null, items: [] }, //3 urban
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
