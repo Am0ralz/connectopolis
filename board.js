@@ -99,6 +99,40 @@ var TrafficLight = function(){
   let pathID;
   let ticker;
   let path;
+  let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+  //Different modes and their properties//
+  let modes =
+  {
+    Walk:
+    {cost:0,
+    spaces:1,
+    cImpact:0,
+    calories:21
+  },
+  Bike:{
+    cost:1,
+    spaces:2,
+    cImpact:0,
+    calories:27
+  },
+  Bus:{
+    cost:4,
+    spaces:4,
+    cImpact:6,
+    calories:1.6
+  },
+  Scooter:{
+    cost:3,
+    spaces:3,
+    cImpact:0,
+    calories:1.8
+  },
+  Car:{
+    cost:8,
+    spaces:5,
+    cImpact:10,
+    calories:3
+  }}
 
   board.on("change", () => {
     // change triggers when rolled over square changes
@@ -128,14 +162,17 @@ var TrafficLight = function(){
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
-        path = thePath;
-        Ticker.remove(ticker);
-        board.showPath(path);
+        if(thePath){
+          console.log(modes[mode].spaces)
+          path = thePath.slice(0,modes[mode].spaces+1);
+          Ticker.remove(ticker);
+          board.showPath(path);
         if (go) {
           // from a press on the tile
           board.followPath(player, path, null, null, 2); // nudge camera 2
           path = null;
         }
+      }
       }
     );
     // must calculate the path in a Ticker
