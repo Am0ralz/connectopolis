@@ -1,4 +1,6 @@
-import { data } from "./info.js";
+
+import { data } from './info.js';
+
 
 ZIMONON = true;
 
@@ -17,7 +19,7 @@ frame.on("ready", () => {
   const stageW = frame.width;
   const stageH = frame.height;
 
-  //creates class for traffic light object
+  // creates class for traffic light object
   var TrafficLight = function () {
     this.super_constructor();
     this.type = "TrafficLight";
@@ -34,6 +36,8 @@ frame.on("ready", () => {
     new Circle(6, green).loc(-5, -48, this); //green traffic light
   };
   extend(TrafficLight, Container);
+ 
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
@@ -87,10 +91,15 @@ frame.on("ready", () => {
   var trafficLight = new TrafficLight();
   board.add(trafficLight, 19, 0);
 
-  var items = board.getAllItems();
-  zim.loop(items, function (item) {
-    if (item.type == "TrafficLight") trafficLight = item;
-  });
+
+
+
+
+// let grass = frame.asset("grass.jpg").sca(.02);
+// board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
+
+  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new TrafficLight()]};
+  // board.update();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -190,21 +199,50 @@ frame.on("ready", () => {
     });
   }
 
-  function test() {
-    alert("hello this is a traffic light");
-   
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // CURVE BALL
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let tileCol = trafficLight.boardTile.tileCol;
+  let tileRow = trafficLight.boardTile.tileRow;
+
+  //curve ball condition statement
+  function curveBall() {
+    let chance = "";
+    switch (tileCol && tileRow) {
+      case 19 && 0:
+        chance = "go back 5 steps";
+        break;
+      case 3 && 3:
+        chance = "go 3 steps ahead";
+        break;
+      case 19 && 19:
+        chance = "go 2 steps left";
+        break;
+    }
+
+    document.getElementById("text").innerHTML = chance;
   }
 
-  //when player hits traffic light shows alert
-  player.moveEvent = player.on("moving", () => {
-    timeout(5, () => {
+  //displays curveBall card
+  function displayCard() {
+    curveBall();
+    document.getElementById("screen").style.display = "block";
+  }
+
+  //when player hits traffic light shows curveball card
+  player.moveEvent = player.on("moving", () =>
+    // {timeout(50, () =>
+    {
       if (player.boardTile == trafficLight.boardTile) {
         player.off("moving", player.moveEvent);
-   
-        test();
+
+        displayCard();
       }
-    });
-  });
+      // });
+    }
+  );
 
   stage.update(); // this is needed to show any changes
 }); // end ready
+

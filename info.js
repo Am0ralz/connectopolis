@@ -1,4 +1,4 @@
-export var data = { //since board is isometric the rows begin from the back
+export const data = { //since board is isometric the rows begin from the back
   obj: [
     [ //row1
       { data: "x", color: "#555555", icon: null, items: [] },

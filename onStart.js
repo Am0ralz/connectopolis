@@ -9,3 +9,7 @@ function onStart() {
 
   document.getElementById("text").innerHTML = sentence;
 }
+
+function closeWindow(){
+  document.getElementById("screen").style.display = "none";
+}
