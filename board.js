@@ -108,7 +108,6 @@ frame.on("ready", () => {
   let pathID;
   let ticker;
   let path;
-  let player1Scorecard
   let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
   //Different modes and their properties//
   let modes = {
