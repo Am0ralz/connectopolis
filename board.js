@@ -36,6 +36,23 @@ frame.on("ready", () => {
   };
   extend(TrafficLight, Container);
 
+// creates class for different tree object
+var DiffTree = function(){
+  this.super_constructor();
+  this.type = "DiffTree";
+  this.arguments = arguments;
+
+  new Circle(10,"#764A23").sca(1,.5).addTo(this);
+  this.centerReg(null,null,false);
+  new Rectangle(20,50, "#764A23").loc(-10,-50,this);
+  new Circle(rand(35,45),"#81B721").sca(1,.65).loc(0,-50,this);
+  new Circle(rand(20,30), "#81B721").sca(1,1).loc(-5,-70,this);
+  new Circle(rand(15,20), "#81B721").sca(1,1).loc(12,-72,this);
+}
+
+extend(DiffTree, Container);
+
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,19 +142,22 @@ frame.on("ready", () => {
 
   let player1Scorecard = new scoreCard();
   // add a player
-  const player = new Person().sca(0.7).top();
+  const player = new Person().sca(0.6).top();
   console.log(typeof player);
   board.add(player, 8, 7);
 
-  new Tree().sca(0.1);
   // add a traffic light
-  var trafficLight = new TrafficLight().sca(0.7);
+  var trafficLight = new TrafficLight().sca(0.65);
   board.add(trafficLight, 19, 0);
+
+
+  // var diffTree = new DiffTree();
+  // board.add(diffTree, 2, 4);
 
   // let grass = frame.asset("grass.jpg").sca(.02);
   // board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
 
-  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new TrafficLight()]};
+  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new DiffTree()]};
   // board.update()
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
