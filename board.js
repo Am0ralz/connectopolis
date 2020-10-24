@@ -8,6 +8,7 @@ const frame = new Frame({
   height: 968,
   color: "#ddd",
   outerColor: "#ddd",
+  assets: { src: "https://fonts.googleapis.com/css2?family=Alata" },
 });
 
 TIME = "milliseconds";
@@ -65,24 +66,61 @@ frame.on("ready", () => {
     }
     stage.update();
   });
-///////////////////ScoreCard////////////////////////////////////
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // UI FOR SCOREBOARD
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
+
+
+  var scoreboardLabel = new Label({
+    text: "View Scoreboard",
+    size: 20,
+    font: "Alata",
+  });
+
+  var scoreboardBtn = new Button({
+    label: scoreboardLabel,
+    width: 230,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: gridIcon,
+    indent: 50,
+    align: "left",
+  });
+
+  scoreboardBtn.pos(50, 80);
+
+
+
+
+
+
+  ///////////////////ScoreCard////////////////////////////////////
   function scoreCard(startPostion, budget) {
-    let scores = [{
-      Destination: startPostion,
-      TransitMode:"",
-      CurveBall:"",
-      Budget:budget,
-      Cost:0,
-      CO2:0,
-      Calories:0,}];
+    let scores = [
+      {
+        Destination: startPostion,
+        TransitMode: "",
+        CurveBall: "",
+        Budget: budget,
+        Cost: 0,
+        CO2: 0,
+        Calories: 0,
+      },
+    ];
   }
 
   let player1Scorecard = new scoreCard();
   // add a player
   const player = new Person();
-  console.log(typeof player)
+  console.log(typeof player);
   board.add(player, 8, 7).top();
-  
+
   // add a traffic light
   var trafficLight = new TrafficLight();
   board.add(trafficLight, 19, 0);
@@ -108,35 +146,133 @@ frame.on("ready", () => {
   let pathID;
   let ticker;
   let path;
-  let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+  let mode = "Walk"; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+
   //Different modes and their properties//
   let modes = {
     Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-    Bike: {
-      cost: 1,
-      spaces: 2,
-      cImpact: 0,
-      calories: 27,
-    },
-    Bus: {
-      cost: 4,
-      spaces: 4,
-      cImpact: 6,
-      calories: 1.6,
-    },
-    Scooter: {
-      cost: 3,
-      spaces: 3,
-      cImpact: 0,
-      calories: 1.8,
-    },
-    Car: {
-      cost: 8,
-      spaces: 5,
-      cImpact: 10,
-      calories: 3,
-    },
+    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
+    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
+    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
   };
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // UI FOR BUTTONS FOR MODE OF TRANSPORT
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  //icons for mode of transport
+  let walkIcon = frame.asset("assets/walk.png").pos(14, 15).sca(0.65);
+  let bikeIcon = frame.asset("assets/bike.png").pos(14, 15).sca(0.65);
+  let carIcon = frame.asset("assets/car.png").pos(14, 15).sca(0.65);
+  let scooterIcon = frame.asset("assets/scooter.png").pos(14, 15).sca(0.65);
+  let busIcon = frame.asset("assets/bus.png").pos(14, 15).sca(0.65);
+
+  //labels for mode of transport
+  var walklabel = new Label({
+    text: "Walk",
+    size: 18,
+    font: "Alata",
+  });
+
+  var bikelabel = new Label({
+    text: "Bike",
+    size: 18,
+    font: "Alata",
+  });
+
+  var carlabel = new Label({
+    text: "Car",
+    size: 18,
+    font: "Alata",
+  });
+
+  var scooterlabel = new Label({
+    text: "e-Scooter",
+    size: 18,
+    font: "Alata",
+  });
+
+  var buslabel = new Label({
+    text: "Bus",
+    size: 18,
+    font: "Alata",
+  });
+
+  //buttons for mode of transport
+  var walkBtn = new Button({
+    // label: walklabel,
+    // width: 100,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: walkIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var bikeBtn = new Button({
+    // label: bikelabel,
+    // width: 100,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: bikeIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var carBtn = new Button({
+    // label: carlabel,
+    // width: 95,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: carIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var scooterBtn = new Button({
+    // label: scooterlabel,
+    // width: 150,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: scooterIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var busBtn = new Button({
+    // label: buslabel,
+    // width: 90,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: busIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  //displays buttons on right side of screen
+  walkBtn.pos({ horizontal: "right", x: 20, y:80 });
+  bikeBtn.pos({ horizontal: "right", x: 20, y:160 }); 
+  carBtn.pos({ horizontal: "right", x: 20, y:400 }); 
+  scooterBtn.pos({ horizontal: "right", x: 20, y:320 }); 
+  busBtn.pos({  horizontal: "right", x: 20, y:240 });
+  
+
 
   board.on("change", () => {
     // change triggers when rolled over square changes
@@ -166,9 +302,9 @@ frame.on("ready", () => {
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
-        if(thePath){
-////// This where we set the path according to the Mode/////
-          path = thePath.slice(0,modes[mode].spaces+1);
+        if (thePath) {
+          ////// This where we set the path according to the Mode/////
+          path = thePath.slice(0, modes[mode].spaces + 1);
           Ticker.remove(ticker);
           board.showPath(path);
           if (go) {
