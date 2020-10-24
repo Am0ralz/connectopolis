@@ -3,9 +3,9 @@ import { data } from "./info.js";
 ZIMONON = true;
 
 const frame = new Frame({
-  scaling: "fit",
-  width: 1924,
-  height: 968,
+  scaling: "full",
+  // width: 1924,
+  // height: 968,
   color: "#ddd",
   outerColor: "#ddd",
   assets: { src: "https://fonts.googleapis.com/css2?family=Alata" },
@@ -44,7 +44,7 @@ frame.on("ready", () => {
     // num: 20,
     rows: 20,
     cols: 20,
-    size: 25,
+    size: 18,
     // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
     borderWidth: 0.2,
@@ -67,23 +67,23 @@ frame.on("ready", () => {
     stage.update();
   });
 
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // UI FOR SCOREBOARD
+  // UI FOR SCORECARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
 
-
-  var scoreboardLabel = new Label({
-    text: "View Scoreboard",
+  //label for scorecard button
+  var scorecardLabel = new Label({
+    text: "View Scorecard",
     size: 20,
     font: "Alata",
   });
 
-  var scoreboardBtn = new Button({
-    label: scoreboardLabel,
-    width: 230,
+  //button for scorecard button
+  var scoreCardBtn = new Button({
+    label: scorecardLabel,
+    width: 210,
     height: 50,
     backgroundColor: "white",
     rollBackgroundColor: "#f5f5f5",
@@ -91,14 +91,22 @@ frame.on("ready", () => {
     icon: gridIcon,
     indent: 50,
     align: "left",
+  }).tap(function () {
+    scoreCardPane.show();
   });
 
-  scoreboardBtn.pos(50, 80);
+  scoreCardBtn.pos(50, 80);
 
-
-
-
-
+  //scorecard pane that will show the players score
+  var scoreCardPane = new Pane({
+    width: 500,
+    height: 600,
+    label: "hello",
+    backgroundColor: "white",
+    backdropClose: false,
+    displayClose: false,
+    close: true,
+  });
 
   ///////////////////ScoreCard////////////////////////////////////
   function scoreCard(startPostion, budget) {
@@ -117,12 +125,13 @@ frame.on("ready", () => {
 
   let player1Scorecard = new scoreCard();
   // add a player
-  const player = new Person();
+  const player = new Person().sca(0.7).top();
   console.log(typeof player);
-  board.add(player, 8, 7).top();
+  board.add(player, 8, 7);
 
+  new Tree().sca(0.1);
   // add a traffic light
-  var trafficLight = new TrafficLight();
+  var trafficLight = new TrafficLight().sca(0.7);
   board.add(trafficLight, 19, 0);
 
   // let grass = frame.asset("grass.jpg").sca(.02);
@@ -265,14 +274,32 @@ frame.on("ready", () => {
     align: "right",
   });
 
-  //displays buttons on right side of screen
-  walkBtn.pos({ horizontal: "right", x: 20, y:80 });
-  bikeBtn.pos({ horizontal: "right", x: 20, y:160 }); 
-  carBtn.pos({ horizontal: "right", x: 20, y:400 }); 
-  scooterBtn.pos({ horizontal: "right", x: 20, y:320 }); 
-  busBtn.pos({  horizontal: "right", x: 20, y:240 });
-  
+  // // busBtn.toggled = true;
+  // console.log(walkBtn.toggled)
 
+  //displays buttons on right side of screen
+  walkBtn.pos({ horizontal: "right", x: 20, y: 80 });
+  bikeBtn.pos({ horizontal: "right", x: 20, y: 160 });
+  carBtn.pos({ horizontal: "right", x: 20, y: 400 });
+  scooterBtn.pos({ horizontal: "right", x: 20, y: 320 });
+  busBtn.pos({ horizontal: "right", x: 20, y: 240 });
+
+  //changes mode of transport on click of button
+  walkBtn.on("click", function () {
+    mode = "Walk";
+  });
+  bikeBtn.on("click", function () {
+    mode = "Bike";
+  });
+  carBtn.on("click", function () {
+    mode = "Car";
+  });
+  scooterBtn.on("click", function () {
+    mode = "Scooter";
+  });
+  busBtn.on("click", function () {
+    mode = "Bus";
+  });
 
   board.on("change", () => {
     // change triggers when rolled over square changes
