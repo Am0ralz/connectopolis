@@ -118,12 +118,28 @@ extend(DiffTree, Container);
   var scoreCardPane = new Pane({
     width: 500,
     height: 600,
-    label: "hello",
     backgroundColor: "white",
-    backdropClose: false,
-    displayClose: false,
-    close: true,
+    // backdropClose: false,
+    // displayClose: false,
+    // close: true,
+    corner: 0,
   });
+
+
+  ///////////////////Labels for scorecard////////////////////////////////////
+  var label1 = new Label({
+    text: "Budget",
+    size: 18,
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(20, 40);
+
+  var label2 = new Label({
+    text: "CO2 Impact",
+    size: 18,
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(90, 40);
 
   ///////////////////ScoreCard////////////////////////////////////
   function scoreCard(startPostion, budget) {
