@@ -3,6 +3,32 @@ import { DiffTree, TrafficLight } from "./objects.js";
 
 ZIMONON = true;
 
+  ///////////////////ScoreCard////////////////////////////////////
+  class scoreCard {
+    constructor(startPostion, budget) {
+      this.scores = [{
+          Destination: startPostion,
+          TransitMode: "",
+          CurveBall: "",
+          Budget: budget,
+          Cost: 0,
+          CO2: 0,
+          Calories: 0,
+        }];
+  }
+}
+//Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
+let mode = "Walk"; 
+
+/////////////////// //Different Modes and their properties////////////////////
+  const modes = {
+    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
+    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
+    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
+  };
+
 const frame = new Frame({
   scaling: "full",
   // width: 1924,
@@ -42,11 +68,29 @@ frame.on("ready", () => {
     indicatorBorderWidth: 1,
   }).center();
 
+
+/////
   board.tiles.tap((e) => {
     if (player.moving) return; // moving pieces given moving property
     if (path) {
       // because rolled over already
+
+      // Where the character moves
       board.followPath(player, path, null, null, 2); // nudge camera 2
+
+      //Where the score card get updated//
+      player1Scorecard.scores.push({
+          Destination: path[path.length-1],
+          TransitMode: mode,
+          CurveBall: "",
+          Budget:player1Scorecard.scores[player1Scorecard.scores.length -1].Budget - modes[mode].cost,
+          Cost: modes[mode].cost,
+          CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
+          Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
+        
+
+      })
+    
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -380,26 +424,13 @@ new Label({
  
 
 
-  ///////////////////ScoreCard////////////////////////////////////
-  function scoreCard(startPostion, budget) {
-    let scores = [
-      {
-        Destination: startPostion,
-        TransitMode: "",
-        CurveBall: "",
-        Budget: budget,
-        Cost: 0,
-        CO2: 0,
-        Calories: 0,
-      },
-    ];
-  }
 
-  let player1Scorecard = new scoreCard();
-  // add a player
+  
+  // add a player and scoreCard
   const player = new Person().sca(0.6).top();
   console.log(typeof player);
   board.add(player, 8, 7);
+  let player1Scorecard = new scoreCard({x:8,y:7},26);
 
   // add a traffic light
   var trafficLight = new TrafficLight().sca(0.65);
@@ -430,19 +461,101 @@ new Label({
   let pathID;
   let ticker;
   let path;
-  let mode = "Walk"; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+  
+  board.on("change", () => {
+    // change triggers when rolled over square changes
+    if (player.moving) return;
+    getPath(); // just get path - don't go to path with the go parameter true
+  });
 
-  //Different modes and their properties//
-  let modes = {
-    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
-    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
-    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
-  };
+  function getPath(go) {
+    // called from change (mouseover) and from tap
+    AI.setGrid(board.data); // a subset of the info array with only data values
+    // cancel any previous path and ticker
+    AI.cancelPath(pathID);
+    if (ticker) Ticker.remove(ticker);
+    // if no currentTile then mouse is outside board
+    if (!board.currentTile) {
+      board.clearPath();
+      path = null;
+      return;
+    }
+
+    // get a path from the player to the currentTile
+    // currentTile is the selected or highlighted tile
+    pathID = AI.findPath(
+      player.boardCol, // any board item has a boardCol prop
+      player.boardRow,
+      board.currentTile.boardCol, // any tile has a boardColo prop
+      board.currentTile.boardRow,
+      function (thePath) {
+        // the callback function when path is found
+        if (thePath) {
+          ////// This where we set the path according to the Mode/////
+          path = thePath.slice(0, modes[mode].spaces + 1);
+          Ticker.remove(ticker);
+          board.showPath(path);
+          // this how to get move character by clicking on the screen might omit later//
+          if (go) {
+            // from a press on the tile
+            board.followPath(player, path, null, null, 2); // nudge camera 2
+            path = null;
+          }
+        }
+      }
+    );
+    // must calculate the path in a Ticker
+    ticker = Ticker.add(() => {
+      AI.calculate();
+    });
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // UI FOR BUTTONS FOR MODE OF TRANSPORT
+  // CURVE BALL
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let tileCol = trafficLight.boardTile.tileCol;
+  let tileRow = trafficLight.boardTile.tileRow;
+
+  //curve ball condition statement
+  function curveBall() {
+    let chance = "";
+    switch (tileCol && tileRow) {
+      case 19 && 0:
+        chance = "go back 5 steps";
+        break;
+      case 3 && 3:
+        chance = "go 3 steps ahead";
+        break;
+      case 19 && 19:
+        chance = "go 2 steps left";
+        break;
+    }
+
+    document.getElementById("text").innerHTML = chance;
+  }
+
+  //displays curveBall card
+  function displayCard() {
+    curveBall();
+    document.getElementById("screen").style.display = "block";
+  }
+
+  //when player hits traffic light shows curveball card
+  player.moveEvent = player.on("moving", () =>
+    // {timeout(50, () =>
+    {
+      if (player.boardTile == trafficLight.boardTile) {
+        player.off("moving", player.moveEvent);
+
+        displayCard();
+      }
+      // });
+    }
+  );
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // UI FOR BUTTONS FOR MODE OF TRANSPORT 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //icons for mode of transport
@@ -576,96 +689,6 @@ new Label({
     mode = "Bus";
   });
 
-  board.on("change", () => {
-    // change triggers when rolled over square changes
-    if (player.moving) return;
-    getPath(); // just get path - don't go to path with the go parameter true
-  });
-
-  function getPath(go) {
-    // called from change (mouseover) and from tap
-    AI.setGrid(board.data); // a subset of the info array with only data values
-    // cancel any previous path and ticker
-    AI.cancelPath(pathID);
-    if (ticker) Ticker.remove(ticker);
-    // if no currentTile then mouse is outside board
-    if (!board.currentTile) {
-      board.clearPath();
-      path = null;
-      return;
-    }
-
-    // get a path from the player to the currentTile
-    // currentTile is the selected or highlighted tile
-    pathID = AI.findPath(
-      player.boardCol, // any board item has a boardCol prop
-      player.boardRow,
-      board.currentTile.boardCol, // any tile has a boardColo prop
-      board.currentTile.boardRow,
-      function (thePath) {
-        // the callback function when path is found
-        if (thePath) {
-          ////// This where we set the path according to the Mode/////
-          path = thePath.slice(0, modes[mode].spaces + 1);
-          Ticker.remove(ticker);
-          board.showPath(path);
-          if (go) {
-            // from a press on the tile
-            board.followPath(player, path, null, null, 2); // nudge camera 2
-            path = null;
-          }
-        }
-      }
-    );
-    // must calculate the path in a Ticker
-    ticker = Ticker.add(() => {
-      AI.calculate();
-    });
-  }
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // CURVE BALL
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  let tileCol = trafficLight.boardTile.tileCol;
-  let tileRow = trafficLight.boardTile.tileRow;
-
-  //curve ball condition statement
-  function curveBall() {
-    let chance = "";
-    switch (tileCol && tileRow) {
-      case 19 && 0:
-        chance = "go back 5 steps";
-        break;
-      case 3 && 3:
-        chance = "go 3 steps ahead";
-        break;
-      case 19 && 19:
-        chance = "go 2 steps left";
-        break;
-    }
-
-    document.getElementById("text").innerHTML = chance;
-  }
-
-  //displays curveBall card
-  function displayCard() {
-    curveBall();
-    document.getElementById("screen").style.display = "block";
-  }
-
-  //when player hits traffic light shows curveball card
-  player.moveEvent = player.on("moving", () =>
-    // {timeout(50, () =>
-    {
-      if (player.boardTile == trafficLight.boardTile) {
-        player.off("moving", player.moveEvent);
-
-        displayCard();
-      }
-      // });
-    }
-  );
 
   stage.update(); // this is needed to show any changes
 }); // end ready
