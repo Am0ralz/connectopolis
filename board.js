@@ -68,6 +68,91 @@ frame.on("ready", () => {
     indicatorBorderWidth: 1,
   }).center();
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Player and Scorecard Created
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const player = new Person().sca(0.6).top();
+console.log(typeof player);
+board.add(player, 8, 7);
+let player1Scorecard = new scoreCard({x:8,y:7},26);
+
+// add a traffic light
+var trafficLight = new TrafficLight().sca(0.65);
+board.add(trafficLight, 19, 0);
+
+
+// var diffTree = new DiffTree();
+// board.add(diffTree, 2, 4);
+
+// let grass = frame.asset("grass.jpg").sca(.02);
+// board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
+
+// board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new DiffTree()]};
+// board.update()
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// PATH FINDING
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+const AI = new EasyStar.js();
+
+AI.setTileCost("x", 0); // nothing
+AI.setTileCost("g", 0); // nothing
+AI.setTileCost("o", 0); // nothing
+AI.setTileCost("r", 0); // nothing
+
+AI.setAcceptableTiles(["x", "g", "o", "r"]); // default lighter grey tile
+let pathID;
+let ticker;
+let path;
+
+board.on("change", () => {
+  // change triggers when rolled over square changes
+  if (player.moving) return;
+  getPath(); // just get path - don't go to path with the go parameter true
+});
+
+function getPath(go) {
+  // called from change (mouseover) and from tap
+  AI.setGrid(board.data); // a subset of the info array with only data values
+  // cancel any previous path and ticker
+  AI.cancelPath(pathID);
+  if (ticker) Ticker.remove(ticker);
+  // if no currentTile then mouse is outside board
+  if (!board.currentTile) {
+    board.clearPath();
+    path = null;
+    return;
+  }
+
+  // get a path from the player to the currentTile
+  // currentTile is the selected or highlighted tile
+  pathID = AI.findPath(
+    player.boardCol, // any board item has a boardCol prop
+    player.boardRow,
+    board.currentTile.boardCol, // any tile has a boardColo prop
+    board.currentTile.boardRow,
+    function (thePath) {
+      // the callback function when path is found
+      if (thePath) {
+        ////// This where we set the path according to the Mode/////
+        path = thePath.slice(0, modes[mode].spaces + 1);
+        Ticker.remove(ticker);
+        board.showPath(path);
+        // this how to get move character by clicking on the screen might omit later//
+        if (go) {
+          // from a press on the tile
+          board.followPath(player, path, null, null, 2); // nudge camera 2
+          path = null;
+        }
+      }
+    }
+  );
+  // must calculate the path in a Ticker
+  ticker = Ticker.add(() => {
+    AI.calculate();
+  });
+}
 
 /////
   board.tiles.tap((e) => {
@@ -426,90 +511,7 @@ new Label({
 
 
   
-  // add a player and scoreCard
-  const player = new Person().sca(0.6).top();
-  console.log(typeof player);
-  board.add(player, 8, 7);
-  let player1Scorecard = new scoreCard({x:8,y:7},26);
-
-  // add a traffic light
-  var trafficLight = new TrafficLight().sca(0.65);
-  board.add(trafficLight, 19, 0);
-
-
-  // var diffTree = new DiffTree();
-  // board.add(diffTree, 2, 4);
-
-  // let grass = frame.asset("grass.jpg").sca(.02);
-  // board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
-
-  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new DiffTree()]};
-  // board.update()
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // PATH FINDING
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  const AI = new EasyStar.js();
-
-  AI.setTileCost("x", 0); // nothing
-  AI.setTileCost("g", 0); // nothing
-  AI.setTileCost("o", 0); // nothing
-  AI.setTileCost("r", 0); // nothing
-
-  AI.setAcceptableTiles(["x", "g", "o", "r"]); // default lighter grey tile
-  let pathID;
-  let ticker;
-  let path;
   
-  board.on("change", () => {
-    // change triggers when rolled over square changes
-    if (player.moving) return;
-    getPath(); // just get path - don't go to path with the go parameter true
-  });
-
-  function getPath(go) {
-    // called from change (mouseover) and from tap
-    AI.setGrid(board.data); // a subset of the info array with only data values
-    // cancel any previous path and ticker
-    AI.cancelPath(pathID);
-    if (ticker) Ticker.remove(ticker);
-    // if no currentTile then mouse is outside board
-    if (!board.currentTile) {
-      board.clearPath();
-      path = null;
-      return;
-    }
-
-    // get a path from the player to the currentTile
-    // currentTile is the selected or highlighted tile
-    pathID = AI.findPath(
-      player.boardCol, // any board item has a boardCol prop
-      player.boardRow,
-      board.currentTile.boardCol, // any tile has a boardColo prop
-      board.currentTile.boardRow,
-      function (thePath) {
-        // the callback function when path is found
-        if (thePath) {
-          ////// This where we set the path according to the Mode/////
-          path = thePath.slice(0, modes[mode].spaces + 1);
-          Ticker.remove(ticker);
-          board.showPath(path);
-          // this how to get move character by clicking on the screen might omit later//
-          if (go) {
-            // from a press on the tile
-            board.followPath(player, path, null, null, 2); // nudge camera 2
-            path = null;
-          }
-        }
-      }
-    );
-    // must calculate the path in a Ticker
-    ticker = Ticker.add(() => {
-      AI.calculate();
-    });
-  }
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
