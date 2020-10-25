@@ -156,8 +156,7 @@ function getPath(go) {
 
 /////
   board.tiles.tap((e) => {
-    if (player.moving) return;
-    if (player.m) // moving pieces given moving property
+    if (player.moving) return; // moving pieces given moving property
     if (path) {
       // because rolled over already
 
