@@ -127,19 +127,287 @@ extend(DiffTree, Container);
 
 
   ///////////////////Labels for scorecard////////////////////////////////////
-  var label1 = new Label({
-    text: "Budget",
-    size: 18,
+  
+  //title of scorecard
+  new Label({
+    text: "SCORECARD",
+    size: 30,
     font: "Alata",
+    align: "center",
+    color: "white",
+    lineHeight: 50,
+    backing:new Rectangle(500, 80, "#2C57A0"),
   }).center(scoreCardPane)
-  .pos(20, 40);
+  .pos(null, 0);
+  
 
-  var label2 = new Label({
-    text: "CO2 Impact",
-    size: 18,
+  ///////////labels for destination
+  new Label({
+    text: "Destination",
+    size: 14,
+    color: "white",
+    backing:new Rectangle(100, 40, "#383838"),
     font: "Alata",
   }).center(scoreCardPane)
-  .pos(90, 40);
+  .pos(20, 100);
+
+
+ new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(130, 100);
+
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(240, 100);
+  
+  
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(350, 100);
+
+///////////////labels for transit
+  new Label({
+    text: "Transit Mode",
+    size: 14,
+    color: "white",
+    backing:new Rectangle(100, 40, "#383838"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(20, 150);
+
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(130, 150);
+
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(240, 150);
+  
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(350, 150);
+  
+
+
+
+  ///////////////labels for curve ball
+  new Label({
+    text: "Curve Ball",
+    size: 14,
+    color: "white",
+    backing:new Rectangle(100, 40, "#383838"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(20, 200);
+
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(130, 200);
+
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(240, 200);
+  
+  new Label({
+    text: " ",
+    size: 18,
+    backing:new Rectangle(100, 40, "#f0f0f0"),
+    font: "Alata",
+  }).center(scoreCardPane)
+  .pos(350, 200);
+
+
+
+ 
+ /////labels for cost
+ 
+ new Label({
+  text: "Cost",
+  size: 14,
+  color: "white",
+  backing:new Rectangle(100, 40, "#383838"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(20, 250);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(130, 250);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(240, 250);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(350, 250);
+
+
+/////labels for CO2 Impact
+
+new Label({
+  text: "CO2 Impact",
+  size: 14,
+  color: "white",
+  backing:new Rectangle(100, 40, "#383838"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(20, 300);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(130, 300);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(240, 300);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(350, 300);
+
+
+//////labels for calories
+
+new Label({
+  text: "Calories",
+  size: 14,
+  color: "white",
+  backing:new Rectangle(100, 40, "#383838"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(20, 350);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(130, 350);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(240, 350);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(350, 350);
+
+
+//////labels for budget
+
+new Label({
+  text: "Budget",
+  size: 14,
+  color: "white",
+  backing:new Rectangle(100, 40, "#383838"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(20, 400);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(130, 400);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(240, 400);
+
+new Label({
+  text: " ",
+  size: 18,
+  backing:new Rectangle(100, 40, "#f0f0f0"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(350, 400);
+ 
+
+
+//////label indicating which is the current
+
+new Label({
+  text: "Current",
+  size: 18,
+  color: "white",
+  backing:new Rectangle(100, 40, "#383838"),
+  font: "Alata",
+}).center(scoreCardPane)
+.pos(350, 450);
+ 
+
 
   ///////////////////ScoreCard////////////////////////////////////
   function scoreCard(startPostion, budget) {
