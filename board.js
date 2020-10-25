@@ -681,9 +681,6 @@ new Label({
     align: "right",
   });
 
-  // // busBtn.toggled = true;
-  // console.log(walkBtn.toggled)
-
   //displays buttons on right side of screen
   walkBtn.pos({ horizontal: "right", x: 20, y: 80 });
   bikeBtn.pos({ horizontal: "right", x: 20, y: 160 });
@@ -694,20 +691,57 @@ new Label({
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
     mode = "Walk";
+    
+    //changes the background color for the chosen mode transport 
+    walkBtn.backgroundColor = "#ccc"
+    bikeBtn.backgroundColor = "white" 
+    busBtn.backgroundColor = "white"
+    scooterBtn.backgroundColor = "white"
+    carBtn.backgroundColor = "white"
   });
   bikeBtn.on("click", function () {
     mode = "Bike";
+
+    //changes the background color for the chosen mode transport 
+    walkBtn.backgroundColor = "white"
+    bikeBtn.backgroundColor = "#ccc" 
+    busBtn.backgroundColor = "white"
+    scooterBtn.backgroundColor = "white"
+    carBtn.backgroundColor = "white"
+
   });
-  carBtn.on("click", function () {
+  busBtn.on("click", function () {
     mode = "Car";
+
+    //changes the background color for the chosen mode transport 
+    walkBtn.backgroundColor = "white"
+    bikeBtn.backgroundColor = "white" 
+    busBtn.backgroundColor = "#ccc"
+    scooterBtn.backgroundColor = "white"
+    carBtn.backgroundColor = "white"
+
   });
   scooterBtn.on("click", function () {
     mode = "Scooter";
-  });
-  busBtn.on("click", function () {
-    mode = "Bus";
-  });
+   
+    //changes the background color for the chosen mode transport 
+    walkBtn.backgroundColor = "white"
+    bikeBtn.backgroundColor = "white" 
+    busBtn.backgroundColor = "white"
+    scooterBtn.backgroundColor = "#ccc"
+    carBtn.backgroundColor = "white"
 
+  });
+  carBtn.on("click", function () {
+    mode = "Bus";
+    
+    //changes the background color for the chosen mode transport 
+    walkBtn.backgroundColor = "white"
+    bikeBtn.backgroundColor = "white" 
+    busBtn.backgroundColor = "white"
+    scooterBtn.backgroundColor = "white"
+    carBtn.backgroundColor = "#ccc"
+  });
 
   stage.update(); // this is needed to show any changes
 }); // end ready
