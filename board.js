@@ -1,5 +1,6 @@
 
 import { data } from './info.js';
+//import { randomLocation, } from './onStart.js';
 
 
 ZIMONON = true;
@@ -61,7 +62,19 @@ frame.on("ready", () => {
     if (player.moving) return; // moving pieces given moving property
     if (path) {
       // because rolled over already
+
       board.followPath(player, path, null, null, 2); // nudge camera 2
+      //Records information from the game into the scoreCSard// 
+      player1Scorecard.scores.push({
+        Destination:path[path.length - 1] ,
+        TransitMode:mode,
+        CurveBall: "",
+        Budget: player1Scorecard.scores[player1Scorecard.scores.length - 1].Budget - modes[mode].cost,
+        Cost: modes[mode].cost,
+        CO2: modes[mode].cImpact,
+        Calories: modes[mode].calories});
+        console.log(player1Scorecard.scores)
+  
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -70,18 +83,22 @@ frame.on("ready", () => {
     stage.update();
   });
 ///////////////////ScoreCard////////////////////////////////////
-  function scoreCard(startPostion, budget) {
-    let scores = [{
-      Destination: startPostion,
-      TransitMode:"",
-      CurveBall:"",
-      Budget:budget,
-      Cost:0,
-      CO2:0,
-      Calories:0,}];
+  class scoreCard {
+    constructor(startPostion, budget) {
+      this.scores = [{
+        Destination: startPostion,
+        TransitMode: "",
+        CurveBall: "",
+        Budget: budget,
+        Cost: 0,
+        CO2: 0,
+        Calories: 0
+      }];
+    }
   }
 
-  let player1Scorecard = new scoreCard();
+   let player1Scorecard = new scoreCard({x:8,y:9}, 25.00);
+
   // add a player
   const player = new Person();
   console.log(typeof player)
@@ -116,7 +133,7 @@ frame.on("ready", () => {
   let pathID;
   let ticker;
   let path;
-  let player1Scorecard
+  
   let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
   //Different modes and their properties//
   let modes =
@@ -152,6 +169,8 @@ frame.on("ready", () => {
     calories:3
   }}
 
+
+
   board.on("change", () => {
     // change triggers when rolled over square changes
     if (player.moving) return;
@@ -186,8 +205,8 @@ frame.on("ready", () => {
           Ticker.remove(ticker);
           board.showPath(path);
         if (go) {
-          // from a press on the tile
-          board.followPath(player, path, null, null, 2); // nudge camera 2
+
+           board.followPath(player, path, null, null, 2); // nudge camera 2
           path = null;
         }
       }
@@ -198,50 +217,50 @@ frame.on("ready", () => {
       AI.calculate();
     });
   }
-
+//  console.log(player1Scorecard.scores[path.length - 1].Budget)
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let tileCol = trafficLight.boardTile.tileCol;
-  let tileRow = trafficLight.boardTile.tileRow;
+  // let tileCol = trafficLight.boardTile.tileCol;
+  // let tileRow = trafficLight.boardTile.tileRow;
 
-  //curve ball condition statement
-  function curveBall() {
-    let chance = "";
-    switch (tileCol && tileRow) {
-      case 19 && 0:
-        chance = "go back 5 steps";
-        break;
-      case 3 && 3:
-        chance = "go 3 steps ahead";
-        break;
-      case 19 && 19:
-        chance = "go 2 steps left";
-        break;
-    }
+  // //curve ball condition statement
+  // function curveBall() {
+  //   let chance = "";
+  //   switch (tileCol && tileRow) {
+  //     case 19 && 0:
+  //       chance = "go back 5 steps";
+  //       break;
+  //     case 3 && 3:
+  //       chance = "go 3 steps ahead";
+  //       break;
+  //     case 19 && 19:
+  //       chance = "go 2 steps left";
+  //       break;
+  //   }
 
-    document.getElementById("text").innerHTML = chance;
-  }
+  //   document.getElementById("text").innerHTML = chance;
+  // }
 
-  //displays curveBall card
-  function displayCard() {
-    curveBall();
-    document.getElementById("screen").style.display = "block";
-  }
+  // //displays curveBall card
+  // function displayCard() {
+  //   curveBall();
+  //   document.getElementById("screen").style.display = "block";
+  // }
 
-  //when player hits traffic light shows curveball card
-  player.moveEvent = player.on("moving", () =>
-    // {timeout(50, () =>
-    {
-      if (player.boardTile == trafficLight.boardTile) {
-        player.off("moving", player.moveEvent);
+  // //when player hits traffic light shows curveball card
+  // player.moveEvent = player.on("moving", () =>
+  //   // {timeout(50, () =>
+  //   {
+  //     if (player.boardTile == trafficLight.boardTile) {
+  //       player.off("moving", player.moveEvent);
 
-        displayCard();
-      }
-      // });
-    }
-  );
+  //       displayCard();
+  //     }
+  //     // });
+  //   }
+  // );
 
   stage.update(); // this is needed to show any changes
 }); // end ready
