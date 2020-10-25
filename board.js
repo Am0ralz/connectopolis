@@ -17,6 +17,8 @@ ZIMONON = true;
         }];
   }
 }
+
+let landmarks = [false, false];
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
 let mode = "Walk"; 
 
@@ -159,7 +161,7 @@ function getPath(go) {
       // because rolled over already
 
       // Where the character moves
-      board.followPath(player, path, null, null, 2); // nudge camera 2
+      board.followPath(player, path, null, null, ); // nudge camera 2
 
       //Where the score card get updated//
       player1Scorecard.scores.push({
@@ -181,6 +183,23 @@ function getPath(go) {
     }
     stage.update();
   });
+
+  player.on("moved", function () {
+    //could be used later after jas finishes landmarks
+      // console.log(player.boardTile.lastColor);
+      console.log(player.square);
+      if(player.square == "16-10"){
+        landmarks[0]= true;
+      }
+      if(player.square == "8-1" && landmarks[0]){
+          landmarks[1]=true
+        }
+      if(player.square == "7-9" && landmarks.every(Boolean)){
+        //Player has won the game
+          console.log("Winnnerrrr")
+      }
+        
+    });
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR SCORECARD
