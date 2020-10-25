@@ -1,6 +1,7 @@
 import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
+
 ZIMONON = true;
 
 const frame = new Frame({
@@ -46,7 +47,19 @@ frame.on("ready", () => {
     if (player.moving) return; // moving pieces given moving property
     if (path) {
       // because rolled over already
+
       board.followPath(player, path, null, null, 2); // nudge camera 2
+      //Records information from the game into the scoreCSard// 
+      player1Scorecard.scores.push({
+        Destination:path[path.length - 1] ,
+        TransitMode:mode,
+        CurveBall: "",
+        Budget: player1Scorecard.scores[player1Scorecard.scores.length - 1].Budget - modes[mode].cost,
+        Cost: modes[mode].cost,
+        CO2: modes[mode].cImpact,
+        Calories: modes[mode].calories});
+        
+  
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -54,348 +67,23 @@ frame.on("ready", () => {
     }
     stage.update();
   });
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // UI FOR SCORECARD
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
-
-  //label for scorecard button
-  var scorecardLabel = new Label({
-    text: "View Scorecard",
-    size: 20,
-    font: "Alata",
-  });
-
-  //button for scorecard button
-  var scoreCardBtn = new Button({
-    label: scorecardLabel,
-    width: 210,
-    height: 50,
-    backgroundColor: "white",
-    rollBackgroundColor: "#f5f5f5",
-    corner: 10,
-    icon: gridIcon,
-    indent: 50,
-    align: "left",
-  }).tap(function () {
-    scoreCardPane.show();
-  });
-
-  scoreCardBtn.pos(50, 80);
-
-  //scorecard pane that will show the players score
-  var scoreCardPane = new Pane({
-    width: 500,
-    height: 600,
-    backgroundColor: "white",
-    // backdropClose: false,
-    // displayClose: false,
-    // close: true,
-    corner: 0,
-  });
-
-
-  ///////////////////Labels for scorecard////////////////////////////////////
-  
-  //title of scorecard
-  new Label({
-    text: "SCORECARD",
-    size: 30,
-    font: "Alata",
-    align: "center",
-    color: "white",
-    lineHeight: 50,
-    backing:new Rectangle(500, 80, "#2C57A0"),
-  }).center(scoreCardPane)
-  .pos(null, 0);
-  
-
-  ///////////labels for destination
-  new Label({
-    text: "Destination",
-    size: 14,
-    color: "white",
-    backing:new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(20, 100);
-
-
- new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(130, 100);
-
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(240, 100);
-  
-  
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(350, 100);
-
-///////////////labels for transit
-  new Label({
-    text: "Transit Mode",
-    size: 14,
-    color: "white",
-    backing:new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(20, 150);
-
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(130, 150);
-
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(240, 150);
-  
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(350, 150);
-  
-
-
-
-  ///////////////labels for curve ball
-  new Label({
-    text: "Curve Ball",
-    size: 14,
-    color: "white",
-    backing:new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(20, 200);
-
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(130, 200);
-
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(240, 200);
-  
-  new Label({
-    text: " ",
-    size: 18,
-    backing:new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-  }).center(scoreCardPane)
-  .pos(350, 200);
-
-
-
- 
- /////labels for cost
- 
- new Label({
-  text: "Cost",
-  size: 14,
-  color: "white",
-  backing:new Rectangle(100, 40, "#383838"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(20, 250);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(130, 250);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(240, 250);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(350, 250);
-
-
-/////labels for CO2 Impact
-
-new Label({
-  text: "CO2 Impact",
-  size: 14,
-  color: "white",
-  backing:new Rectangle(100, 40, "#383838"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(20, 300);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(130, 300);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(240, 300);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(350, 300);
-
-
-//////labels for calories
-
-new Label({
-  text: "Calories",
-  size: 14,
-  color: "white",
-  backing:new Rectangle(100, 40, "#383838"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(20, 350);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(130, 350);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(240, 350);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(350, 350);
-
-
-//////labels for budget
-
-new Label({
-  text: "Budget",
-  size: 14,
-  color: "white",
-  backing:new Rectangle(100, 40, "#383838"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(20, 400);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(130, 400);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(240, 400);
-
-new Label({
-  text: " ",
-  size: 18,
-  backing:new Rectangle(100, 40, "#f0f0f0"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(350, 400);
- 
-
-
-//////label indicating which is the current
-
-new Label({
-  text: "Current",
-  size: 18,
-  color: "white",
-  backing:new Rectangle(100, 40, "#383838"),
-  font: "Alata",
-}).center(scoreCardPane)
-.pos(350, 450);
- 
-
-
-  ///////////////////ScoreCard////////////////////////////////////
-  function scoreCard(startPostion, budget) {
-    let scores = [
-      {
+///////////////////ScoreCard////////////////////////////////////
+  class scoreCard {
+    constructor(startPostion, budget) {
+      this.scores = [{
         Destination: startPostion,
         TransitMode: "",
         CurveBall: "",
         Budget: budget,
         Cost: 0,
         CO2: 0,
-        Calories: 0,
-      },
-    ];
+        Calories: 0
+      }];
+    }
   }
 
-  let player1Scorecard = new scoreCard();
+   let player1Scorecard = new scoreCard({x:8,y:9}, 25.00);
+
   // add a player
   const player = new Person().sca(0.6).top();
   console.log(typeof player);
@@ -430,7 +118,9 @@ new Label({
   let pathID;
   let ticker;
   let path;
-  let mode = "Walk"; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+  
+  let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+
 
   //Different modes and their properties//
   let modes = {
@@ -576,6 +266,8 @@ new Label({
     mode = "Bus";
   });
 
+
+
   board.on("change", () => {
     // change triggers when rolled over square changes
     if (player.moving) return;
@@ -609,11 +301,11 @@ new Label({
           path = thePath.slice(0, modes[mode].spaces + 1);
           Ticker.remove(ticker);
           board.showPath(path);
-          if (go) {
-            // from a press on the tile
-            board.followPath(player, path, null, null, 2); // nudge camera 2
-            path = null;
-          }
+        if (go) {
+
+           board.followPath(player, path, null, null, 2); // nudge camera 2
+          path = null;
+        }
         }
       }
     );
@@ -622,50 +314,50 @@ new Label({
       AI.calculate();
     });
   }
-
+//  console.log(player1Scorecard.scores[path.length - 1].Budget)
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let tileCol = trafficLight.boardTile.tileCol;
-  let tileRow = trafficLight.boardTile.tileRow;
+  // let tileCol = trafficLight.boardTile.tileCol;
+  // let tileRow = trafficLight.boardTile.tileRow;
 
-  //curve ball condition statement
-  function curveBall() {
-    let chance = "";
-    switch (tileCol && tileRow) {
-      case 19 && 0:
-        chance = "go back 5 steps";
-        break;
-      case 3 && 3:
-        chance = "go 3 steps ahead";
-        break;
-      case 19 && 19:
-        chance = "go 2 steps left";
-        break;
-    }
+  // //curve ball condition statement
+  // function curveBall() {
+  //   let chance = "";
+  //   switch (tileCol && tileRow) {
+  //     case 19 && 0:
+  //       chance = "go back 5 steps";
+  //       break;
+  //     case 3 && 3:
+  //       chance = "go 3 steps ahead";
+  //       break;
+  //     case 19 && 19:
+  //       chance = "go 2 steps left";
+  //       break;
+  //   }
 
-    document.getElementById("text").innerHTML = chance;
-  }
+  //   document.getElementById("text").innerHTML = chance;
+  // }
 
-  //displays curveBall card
-  function displayCard() {
-    curveBall();
-    document.getElementById("screen").style.display = "block";
-  }
+  // //displays curveBall card
+  // function displayCard() {
+  //   curveBall();
+  //   document.getElementById("screen").style.display = "block";
+  // }
 
-  //when player hits traffic light shows curveball card
-  player.moveEvent = player.on("moving", () =>
-    // {timeout(50, () =>
-    {
-      if (player.boardTile == trafficLight.boardTile) {
-        player.off("moving", player.moveEvent);
+  // //when player hits traffic light shows curveball card
+  // player.moveEvent = player.on("moving", () =>
+  //   // {timeout(50, () =>
+  //   {
+  //     if (player.boardTile == trafficLight.boardTile) {
+  //       player.off("moving", player.moveEvent);
 
-        displayCard();
-      }
-      // });
-    }
-  );
+  //       displayCard();
+  //     }
+  //     // });
+  //   }
+  // );
 
   stage.update(); // this is needed to show any changes
 }); // end ready
