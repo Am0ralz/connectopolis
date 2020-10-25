@@ -167,7 +167,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "x", color: "#ffc0cb", icon: null, items: [] }, //landmark for library
+      { data: "x", color: "#ffc0cb", icon: null, items: [] }, // 3rd landmark for library
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -181,7 +181,7 @@ export const data = { //since board is isometric the rows begin from the back
     ],
     [//row9
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "g", color: "#ffc0cb", icon: null, items: [] },//landmark for park
+      { data: "g", color: "#ffc0cb", icon: null, items: [] },//2nd landmark for park
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -366,7 +366,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
-      { data: "x", color: "#ffc0cb", icon: null, items: [] }, //landmark for school
+      { data: "x", color: "#ffc0cb", icon: null, items: [] }, // 1st landmark for school
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "r", color: "#fb4758", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
