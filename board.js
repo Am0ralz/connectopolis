@@ -156,7 +156,8 @@ function getPath(go) {
 
 /////
   board.tiles.tap((e) => {
-    if (player.moving) return; // moving pieces given moving property
+    if (player.moving) return;
+    if (player.m) // moving pieces given moving property
     if (path) {
       // because rolled over already
 
@@ -200,6 +201,8 @@ function getPath(go) {
       }
         
     });
+
+    
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR SCORECARD
@@ -542,12 +545,15 @@ new Label({
     switch (tileCol && tileRow) {
       case 19 && 0:
         chance = "go back 5 steps";
+        console.log(chance)
         break;
       case 3 && 3:
         chance = "go 3 steps ahead";
+        console.log(chance)
         break;
       case 19 && 19:
         chance = "go 2 steps left";
+        console.log(chance)
         break;
     }
 
