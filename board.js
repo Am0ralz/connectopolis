@@ -1,16 +1,15 @@
-
-import { data } from './info.js';
-//import { randomLocation, } from './onStart.js';
+import { data } from "./info.js";
 
 
 ZIMONON = true;
 
 const frame = new Frame({
-  scaling: "fit",
-  width: 1924,
-  height: 968,
+  scaling: "full",
+  // width: 1924,
+  // height: 968,
   color: "#ddd",
   outerColor: "#ddd",
+  assets: { src: "https://fonts.googleapis.com/css2?family=Alata" },
 });
 
 TIME = "milliseconds";
@@ -37,7 +36,22 @@ frame.on("ready", () => {
     new Circle(6, green).loc(-5, -48, this); //green traffic light
   };
   extend(TrafficLight, Container);
- 
+
+// creates class for different tree object
+var DiffTree = function(){
+  this.super_constructor();
+  this.type = "DiffTree";
+  this.arguments = arguments;
+
+  new Circle(10,"#764A23").sca(1,.5).addTo(this);
+  this.centerReg(null,null,false);
+  new Rectangle(20,50, "#764A23").loc(-10,-50,this);
+  new Circle(rand(35,45),"#81B721").sca(1,.65).loc(0,-50,this);
+  new Circle(rand(20,30), "#81B721").sca(1,1).loc(-5,-70,this);
+  new Circle(rand(15,20), "#81B721").sca(1,1).loc(12,-72,this);
+}
+
+extend(DiffTree, Container);
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +62,7 @@ frame.on("ready", () => {
     // num: 20,
     rows: 20,
     cols: 20,
-    size: 25,
+    size: 18,
     // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
     borderWidth: 0.2,
@@ -73,7 +87,7 @@ frame.on("ready", () => {
         Cost: modes[mode].cost,
         CO2: modes[mode].cImpact,
         Calories: modes[mode].calories});
-        console.log(player1Scorecard.scores)
+        
   
       path = null;
     } else {
@@ -100,23 +114,23 @@ frame.on("ready", () => {
    let player1Scorecard = new scoreCard({x:8,y:9}, 25.00);
 
   // add a player
-  const player = new Person();
-  console.log(typeof player)
-  board.add(player, 8, 7).top();
-  
+  const player = new Person().sca(0.6).top();
+  console.log(typeof player);
+  board.add(player, 8, 7);
+
   // add a traffic light
-  var trafficLight = new TrafficLight();
+  var trafficLight = new TrafficLight().sca(0.65);
   board.add(trafficLight, 19, 0);
 
 
+  // var diffTree = new DiffTree();
+  // board.add(diffTree, 2, 4);
 
+  // let grass = frame.asset("grass.jpg").sca(.02);
+  // board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
 
-
-// let grass = frame.asset("grass.jpg").sca(.02);
-// board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
-
-  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new TrafficLight()]};
-  // board.update();
+  // board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new DiffTree()]};
+  // board.update()
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -135,39 +149,151 @@ frame.on("ready", () => {
   let path;
   
   let mode = "Walk" ; //Mode selecters. Option are  Walk, Bike Bus Scooter or Car
+
+
   //Different modes and their properties//
-  let modes =
-  {
-    Walk:
-    {cost:0,
-    spaces:1,
-    cImpact:0,
-    calories:21
-  },
-  Bike:{
-    cost:1,
-    spaces:2,
-    cImpact:0,
-    calories:27
-  },
-  Bus:{
-    cost:4,
-    spaces:4,
-    cImpact:6,
-    calories:1.6
-  },
-  Scooter:{
-    cost:3,
-    spaces:3,
-    cImpact:0,
-    calories:1.8
-  },
-  Car:{
-    cost:8,
-    spaces:5,
-    cImpact:10,
-    calories:3
-  }}
+  let modes = {
+    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
+    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
+    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
+  };
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // UI FOR BUTTONS FOR MODE OF TRANSPORT
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  //icons for mode of transport
+  let walkIcon = frame.asset("assets/walk.png").pos(14, 15).sca(0.65);
+  let bikeIcon = frame.asset("assets/bike.png").pos(14, 15).sca(0.65);
+  let carIcon = frame.asset("assets/car.png").pos(14, 15).sca(0.65);
+  let scooterIcon = frame.asset("assets/scooter.png").pos(14, 15).sca(0.65);
+  let busIcon = frame.asset("assets/bus.png").pos(14, 15).sca(0.65);
+
+  //labels for mode of transport
+  var walklabel = new Label({
+    text: "Walk",
+    size: 18,
+    font: "Alata",
+  });
+
+  var bikelabel = new Label({
+    text: "Bike",
+    size: 18,
+    font: "Alata",
+  });
+
+  var carlabel = new Label({
+    text: "Car",
+    size: 18,
+    font: "Alata",
+  });
+
+  var scooterlabel = new Label({
+    text: "e-Scooter",
+    size: 18,
+    font: "Alata",
+  });
+
+  var buslabel = new Label({
+    text: "Bus",
+    size: 18,
+    font: "Alata",
+  });
+
+  //buttons for mode of transport
+  var walkBtn = new Button({
+    // label: walklabel,
+    // width: 100,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: walkIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var bikeBtn = new Button({
+    // label: bikelabel,
+    // width: 100,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: bikeIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var carBtn = new Button({
+    // label: carlabel,
+    // width: 95,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: carIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var scooterBtn = new Button({
+    // label: scooterlabel,
+    // width: 150,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: scooterIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  var busBtn = new Button({
+    // label: buslabel,
+    // width: 90,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: busIcon,
+    indent: 20,
+    align: "right",
+  });
+
+  // // busBtn.toggled = true;
+  // console.log(walkBtn.toggled)
+
+  //displays buttons on right side of screen
+  walkBtn.pos({ horizontal: "right", x: 20, y: 80 });
+  bikeBtn.pos({ horizontal: "right", x: 20, y: 160 });
+  carBtn.pos({ horizontal: "right", x: 20, y: 400 });
+  scooterBtn.pos({ horizontal: "right", x: 20, y: 320 });
+  busBtn.pos({ horizontal: "right", x: 20, y: 240 });
+
+  //changes mode of transport on click of button
+  walkBtn.on("click", function () {
+    mode = "Walk";
+  });
+  bikeBtn.on("click", function () {
+    mode = "Bike";
+  });
+  carBtn.on("click", function () {
+    mode = "Car";
+  });
+  scooterBtn.on("click", function () {
+    mode = "Scooter";
+  });
+  busBtn.on("click", function () {
+    mode = "Bus";
+  });
 
 
 
@@ -199,9 +325,9 @@ frame.on("ready", () => {
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
-        if(thePath){
-////// This where we set the path according to the Mode/////
-          path = thePath.slice(0,modes[mode].spaces+1);
+        if (thePath) {
+          ////// This where we set the path according to the Mode/////
+          path = thePath.slice(0, modes[mode].spaces + 1);
           Ticker.remove(ticker);
           board.showPath(path);
         if (go) {
@@ -209,7 +335,7 @@ frame.on("ready", () => {
            board.followPath(player, path, null, null, 2); // nudge camera 2
           path = null;
         }
-      }
+        }
       }
     );
     // must calculate the path in a Ticker
@@ -264,4 +390,3 @@ frame.on("ready", () => {
 
   stage.update(); // this is needed to show any changes
 }); // end ready
-
