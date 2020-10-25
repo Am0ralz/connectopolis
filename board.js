@@ -19,10 +19,8 @@ frame.on("ready", () => {
   const stageW = frame.width;
   const stageH = frame.height;
 
-
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
-
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
