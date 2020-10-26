@@ -40,6 +40,7 @@ const frame = new Frame({
   assets: { src: "https://fonts.googleapis.com/css2?family=Alata" },
 });
 
+
 TIME = "milliseconds";
 
 frame.on("ready", () => {
@@ -49,6 +50,63 @@ frame.on("ready", () => {
 
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
+
+
+let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let budget = ["$5", "$15", "$25", "$50"];
+
+var randomLocation = loc[Math.floor(Math.random() * loc.length)];
+var randomBudget = budget[Math.floor(Math.random() * budget.length)];
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// LOCATION AND BUDGET STARTUP CARD
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  var lablabel = new Label({
+    text: `Your location is ${randomLocation} and budget is ${randomBudget}`,
+    size: 20,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center"
+  })
+
+  var onstart = new Pane({
+    label: lablabel,
+    width: 300,
+    height: 200, 
+    backdropClose: false,
+    displayClose: false,
+    corner: 15
+  });
+
+  // onstart.show().pos({
+  //   index: 1000,
+  // })
+ 
+  var btnlabel = new Label({
+    text: "GOT IT",
+    size: 20,
+    font: "Alata",
+    color: "white"
+  })
+
+  var closebtn = new Button({
+    label:  btnlabel,
+    font: "Alata",
+    width: 100,
+    height: 50,
+    backgroundColor: "#2C57A0",
+    rollBackgroundColor: "#244682",
+    corner: 10,
+  }).tap(function () {
+    onstart.hide();
+  });
+
+
+  closebtn.center(onstart).pos(null, 120);
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
@@ -66,7 +124,9 @@ frame.on("ready", () => {
     arrows: false,
     indicatorBorderColor: "white",
     indicatorBorderWidth: 1,
-  }).center();
+  }).center().pos({
+    index: 0,
+  });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Player and Scorecard Created
@@ -231,7 +291,7 @@ function getPath(go) {
     scoreCardPane.show();
   });
 
-  scoreCardBtn.pos(50, 80);
+  scoreCardBtn.pos({x: 50, y: 80, index: 0});
 
   //scorecard pane that will show the players score
   var scoreCardPane = new Pane({
@@ -687,11 +747,11 @@ new Label({
   });
 
   //displays buttons on right side of screen
-  walkBtn.pos({ horizontal: "right", x: 20, y: 80 });
-  bikeBtn.pos({ horizontal: "right", x: 20, y: 160 });
-  carBtn.pos({ horizontal: "right", x: 20, y: 400 });
-  scooterBtn.pos({ horizontal: "right", x: 20, y: 320 });
-  busBtn.pos({ horizontal: "right", x: 20, y: 240 });
+  walkBtn.pos({ horizontal: "right", x: 20, y: 80, index: 0 });
+  bikeBtn.pos({ horizontal: "right", x: 20, y: 160, index: 0 });
+  carBtn.pos({ horizontal: "right", x: 20, y: 400, index: 0 });
+  scooterBtn.pos({ horizontal: "right", x: 20, y: 320, index: 0 });
+  busBtn.pos({ horizontal: "right", x: 20, y: 240, index: 0 });
 
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
