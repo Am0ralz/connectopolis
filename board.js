@@ -776,7 +776,7 @@ new Label({
 
   });
   busBtn.on("click", function () {
-    mode = "Car";
+    mode = "Bus";
 
     //changes the background color for the chosen mode transport 
     walkBtn.backgroundColor = "white"
@@ -798,7 +798,7 @@ new Label({
 
   });
   carBtn.on("click", function () {
-    mode = "Bus";
+    mode = "Car";
     
     //changes the background color for the chosen mode transport 
     walkBtn.backgroundColor = "white"
