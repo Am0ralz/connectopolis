@@ -9,10 +9,10 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
-      { data: "x", color: "#a832a8", icon: null, items: [] }, // 1 rural
       { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "x", color: "#555555", icon: null, items: [] },
+      { data: "x", color: "#555555", icon: null, items: [] }, 
+      { data: "x", color: "#555555", icon: null, items: [] },// 1 rural
+      { data: "x", color: "#a832a8", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -27,7 +27,7 @@ export const data = { //since board is isometric the rows begin from the back
     ],
     [//row2
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -78,7 +78,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -93,7 +93,7 @@ export const data = { //since board is isometric the rows begin from the back
     ],
     [//row5
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
@@ -247,7 +247,7 @@ export const data = { //since board is isometric the rows begin from the back
     ],
     [//row12
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
       { data: "g", color: "#acd241", icon: null, items: [] },
@@ -282,7 +282,7 @@ export const data = { //since board is isometric the rows begin from the back
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "r", color: "#fb4758", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
@@ -379,7 +379,7 @@ export const data = { //since board is isometric the rows begin from the back
     ],
     [//row18
       { data: "x", color: "#555555", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [{ zimon: "Tree" }] },
+      { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#555555", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
