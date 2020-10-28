@@ -21,13 +21,13 @@ export var DiffTree = function(){
     this.type = "TrafficLight";
     this.arguments = arguments;
 
-    const post = new Rectangle(10, 80, black).centerReg().loc(-5, -40, this); //post for traffic light
+    const post = new Rectangle(10, 80, black).centerReg().loc(0, -40, this); //post for traffic light
     new Circle(10 / 2, black).sca(1, 0.3).centerReg(post).mov(0, 40); //small disk under post to give illusion of 3d post
-    new Rectangle(30, 50, black).centerReg().loc(-5, -65, this); //traffic  light
-    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -90, this); //small disk above traffic light
-    new Circle(30 / 2.5, black).sca(1, 0.3).loc(-5, -39, this); //small disk under traffic light
+    new Rectangle(30, 50, black).centerReg().loc(0, -65, this); //traffic  light
+    new Circle(30 / 2.5, black).sca(1, 0.3).loc(0, -90, this); //small disk above traffic light
+    new Circle(30 / 2.5, black).sca(1, 0.3).loc(0, -39, this); //small disk under traffic light
 
-    new Circle(6, red).loc(-5, -80, this); //red traffic light
-    new Circle(6, yellow).loc(-5, -64, this); //yellow traffic light
-    new Circle(6, green).loc(-5, -48, this); //green traffic light
+    new Circle(6, red).loc(0, -80, this); //red traffic light
+    new Circle(6, yellow).loc(0, -64, this); //yellow traffic light
+    new Circle(6, green).loc(0, -48, this); //green traffic light
   };
