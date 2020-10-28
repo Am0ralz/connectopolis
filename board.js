@@ -47,10 +47,9 @@ frame.on("ready", () => {
   const stage = frame.stage;
   const stageW = frame.width;
   const stageH = frame.height;
-
+  
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
-
 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = ["$5", "$15", "$25", "$50"];
@@ -94,7 +93,6 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
 
   var closebtn = new Button({
     label:  btnlabel,
-    font: "Alata",
     width: 100,
     height: 50,
     backgroundColor: "#2C57A0",
@@ -128,27 +126,57 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
     index: 0,
   });
 
+  
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Player and Scorecard Created
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const player = new Person().sca(0.6).top();
+const player = new Person().sca(0.48).top();
 console.log(typeof player);
-board.add(player, 8, 7);
+board.add(player, 19, 6);
 let player1Scorecard = new scoreCard({x:8,y:7},26);
 
 // add a traffic light
-var trafficLight = new TrafficLight().sca(0.65);
-board.add(trafficLight, 19, 0);
+// var trafficLight = new TrafficLight();
+// board.add(trafficLight, 19, 0);
 
 
-// var diffTree = new DiffTree();
-// board.add(diffTree, 2, 4);
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// BOARD ITEMS
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// let grass = frame.asset("grass.jpg").sca(.02);
-// board.info[0][19] = {data:"-", color:"#acd241", icon:grass, items:[]};
+//adds landmarks to board
+let school = frame.asset("assets/school.png").rot(270).sca(.4);
+let park = frame.asset("assets/park.png").rot(270).sca(.4);
+let library = frame.asset("assets/library.png").rot(270).sca(.4);
 
-// board.info[19][0] = {data:"-", color:"#555555", icon:null, items:[new DiffTree()]};
-// board.update()
+board.info[16][10] = {data:"x", color:"#555", icon:school, items:[]};
+board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
+board.info[7][9] = {data:"x", color:"#555", icon:library, items:[]};
+
+
+//adds trees to board
+board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[4][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[9][1] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[17][18] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[2][13] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[5][12] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+
+
+//adds all traffic lights on board
+board.info[2][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[12][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[19][5] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[3][4] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.65)]};
+board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.65)]};
+
+
+board.update()
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // PATH FINDING
@@ -595,48 +623,48 @@ new Label({
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let tileCol = trafficLight.boardTile.tileCol;
-  let tileRow = trafficLight.boardTile.tileRow;
+  // let tileCol = trafficLight.boardTile.tileCol;
+  // let tileRow = trafficLight.boardTile.tileRow;
 
-  //curve ball condition statement
-  function curveBall() {
-    let chance = "";
-    switch (tileCol && tileRow) {
-      case 19 && 0:
-        chance = "go back 5 steps";
-        console.log(chance)
-        break;
-      case 3 && 3:
-        chance = "go 3 steps ahead";
-        console.log(chance)
-        break;
-      case 19 && 19:
-        chance = "go 2 steps left";
-        console.log(chance)
-        break;
-    }
+  // //curve ball condition statement
+  // function curveBall() {
+  //   let chance = "";
+  //   switch (tileCol && tileRow) {
+  //     case 19 && 0:
+  //       chance = "go back 5 steps";
+  //       console.log(chance)
+  //       break;
+  //     case 3 && 3:
+  //       chance = "go 3 steps ahead";
+  //       console.log(chance)
+  //       break;
+  //     case 19 && 19:
+  //       chance = "go 2 steps left";
+  //       console.log(chance)
+  //       break;
+  //   }
 
-    document.getElementById("text").innerHTML = chance;
-  }
+  //   document.getElementById("text").innerHTML = chance;
+  // }
 
-  //displays curveBall card
-  function displayCard() {
-    curveBall();
-    document.getElementById("screen").style.display = "block";
-  }
+  // //displays curveBall card
+  // function displayCard() {
+  //   curveBall();
+  //   document.getElementById("screen").style.display = "block";
+  // }
 
-  //when player hits traffic light shows curveball card
-  player.moveEvent = player.on("moving", () =>
-    // {timeout(50, () =>
-    {
-      if (player.boardTile == trafficLight.boardTile) {
-        player.off("moving", player.moveEvent);
+  // //when player hits traffic light shows curveball card
+  // player.moveEvent = player.on("moving", () =>
+  //   // {timeout(50, () =>
+  //   {
+  //     if (player.boardTile == trafficLight.boardTile) {
+  //       player.off("moving", player.moveEvent);
 
-        displayCard();
-      }
-      // });
-    }
-  );
+  //       displayCard();
+  //     }
+  //     // });
+  //   }
+  // );
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT 
