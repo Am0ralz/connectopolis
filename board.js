@@ -20,19 +20,19 @@ ZIMONON = true;
 
 let landmarks = [false, false];
 let pathHist =[];
-// takes in the new path and the previous path and create a new array with the last 7 steps
+// takes in the new path and the previous path and create a new array with the last 7 steps a bit sloppy
 function Tracker(nw, prev){
 
-  let newspots = nw.length
+  let newspots = nw.length-1
   let leftover = 7 - prev.length
 
   if (prev.length == 7){
-    prev.splice(0,newspots-1)
+    prev.splice(0,newspots)
     prev.push.apply(prev,nw.slice(1))
   }
-  else if (prev.length > 0 && leftover < newspots-1 ){
+  else if (prev.length > 0 && leftover < newspots ){
     
-      prev.splice(0, newspots-1 - leftover)
+      prev.splice(0, newspots - leftover)
       prev.push.apply(prev,nw.slice(1))
     
     } 
@@ -43,6 +43,7 @@ function Tracker(nw, prev){
       prev.push.apply(prev, nw.slice(1))
 
     }
+    console.log(prev)
   return prev
 }
 
