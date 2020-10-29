@@ -19,6 +19,34 @@ ZIMONON = true;
 }
 
 let landmarks = [false, false];
+let pathHist =[];
+// takes in the new path and the previous path and create a new array with the last 7 steps
+function Tracker(nw, prev){
+
+  let newspots = nw.length
+  let leftover = 7 - prev.length
+
+  if (prev.length == 7){
+    prev.splice(0,newspots-1)
+    prev.push.apply(prev,nw.slice(1))
+  }
+  else if (prev.length > 0 && leftover < newspots-1 ){
+    
+      prev.splice(0, newspots-1 - leftover)
+      prev.push.apply(prev,nw.slice(1))
+    
+    } 
+    else if(prev.length == 0){
+      prev.push.apply(prev, nw)
+    }
+  else{
+      prev.push.apply(prev, nw.slice(1))
+
+    }
+  return prev
+}
+
+
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
 let mode = "Walk"; 
 
@@ -225,6 +253,7 @@ function getPath(go) {
       if (thePath) {
         ////// This where we set the path according to the Mode/////
         path = thePath.slice(0, modes[mode].spaces + 1);
+
         Ticker.remove(ticker);
         board.showPath(path);
         // this how to get move character by clicking on the screen might omit later//
@@ -250,6 +279,9 @@ function getPath(go) {
 
       // Where the character moves
       board.followPath(player, path, null, null, ); // nudge camera 2
+      //Record path for Curveballs
+      pathHist = Tracker(path, pathHist)
+      // console.log(pathHist);
 
       //Where the score card get updated//
       player1Scorecard.scores.push({
