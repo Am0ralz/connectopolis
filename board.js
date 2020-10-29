@@ -37,7 +37,8 @@ const frame = new Frame({
   // height: 968,
   color: "#ddd",
   outerColor: "#ddd",
-  assets: { src: "https://fonts.googleapis.com/css2?family=Alata" },
+  assets: [ {src: "https://fonts.googleapis.com/css2?family=Alata" }],
+  path: "assets/"
 });
 
 
@@ -115,7 +116,6 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
     rows: 20,
     cols: 20,
     size: 18,
-    // isometric: false,
     info: JSON.stringify(data), // these are the paths from info.js
     borderWidth: 0.2,
     borderColor: "#555555",
@@ -126,11 +126,34 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
     index: 0,
   });
 
+
+  var cvLabel = new Label({
+    text: "Change View",
+    size: 12,
+    font: "Alata",
+    shiftHorizontal: 15
+  });
+  
+  let eye = frame.asset("assets/eye.png").sca(.7).center().pos(20, null);
+  
+  var changeView= new Button({
+    label:  cvLabel,
+    icon: eye,
+    width: 150,
+    height: 40,
+    backgroundColor: "#2C57A0",
+    rollBackgroundColor: "#244682",
+    corner: 10,
+  }).tap(function () {
+    board.isometric = !board.isometric;
+  });
+
+  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0})
   
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Player and Scorecard Created
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const player = new Person().sca(0.48).top();
+const player = new Person().sca(0.6).top();
 console.log(typeof player);
 board.add(player, 19, 6);
 let player1Scorecard = new scoreCard({x:8,y:7},26);
@@ -144,6 +167,7 @@ let player1Scorecard = new scoreCard({x:8,y:7},26);
 // BOARD ITEMS
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 //adds landmarks to board
 let school = frame.asset("assets/school.png").rot(270).sca(.4);
 let park = frame.asset("assets/park.png").rot(270).sca(.4);
@@ -152,7 +176,6 @@ let library = frame.asset("assets/library.png").rot(270).sca(.4);
 board.info[16][10] = {data:"x", color:"#555", icon:school, items:[]};
 board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
 board.info[7][9] = {data:"x", color:"#555", icon:library, items:[]};
-
 
 //adds trees to board
 board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
@@ -165,16 +188,15 @@ board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca
 
 
 //adds all traffic lights on board
-board.info[2][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[12][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[19][5] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[3][4] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.65)]};
-board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.65)]};
-
+board.info[2][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[12][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[19][5] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[3][4] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
+board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
 
 board.update()
 
