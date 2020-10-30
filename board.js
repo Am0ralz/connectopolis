@@ -66,7 +66,7 @@ const frame = new Frame({
   // height: 968,
   color: "#ddd",
   outerColor: "#ddd",
-  assets: [ {src: "https://fonts.googleapis.com/css2?family=Alata" }, "tile1.png","tile2.png", "tile3.png", "tile4.png","tile5.png"],
+  assets: [ {src: "https://fonts.googleapis.com/css2?family=Alata" },"1.png","2.png","3.png", "tile1.png","tile2.png", "tile3.png", "tile4.png","tile5.png"],
   path: "assets/"
 });
 
@@ -871,31 +871,58 @@ new Label({
   
   
   //adds road to board
-  board.info[8][9] = {data:"x", color:"#555", icon:asset("tile3.png").sca(.4), items:[]};
-  board.info[9][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4), items:[]};
-  board.info[10][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[11][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[12][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[13][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[15][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[16][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[17][9] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).rot(180), items:[]};
-  board.info[17][10] = {data:"x", color:"#555", icon:asset("tile3.png").clone().sca(.4), items:[]};
-  board.info[18][10] = {data:"x", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
-  board.info[19][10] = {data:"x", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
-  board.info[8][8] = {data:"x", color:"#555", icon:asset("tile5.png").sca(.4), items:[]};
-  board.info[8][7] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).rot(180).clone(), items:[]};
-  board.info[7][7] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[6][7] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[5][7] = {data:"x", color:"#555", icon:asset("tile3.png").sca(.4).clone(), items:[]};
-  board.info[5][6] = {data:"x", color:"#555", icon:asset("tile5.png").sca(.4).clone(), items:[]};
-  board.info[5][5] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).clone().rot(180), items:[]};
-  board.info[4][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[3][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[2][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[1][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[0][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[8][9] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4), items:[]};
+  board.info[9][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4), items:[]};
+  board.info[10][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[11][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[12][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[13][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[15][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[16][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[17][9] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180), items:[]};
+  board.info[17][10] = {data:"o", color:"#555", icon:asset("tile3.png").clone().sca(.4), items:[]};
+  board.info[18][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[19][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[8][8] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4), items:[]};
+  board.info[8][7] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180).clone(), items:[]};
+  board.info[7][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[6][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[5][7] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4).clone(), items:[]};
+  board.info[5][6] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4).clone(), items:[]};
+  board.info[5][5] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).clone().rot(180), items:[]};
+  board.info[4][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[3][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[2][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[1][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[0][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
   
+  //adds bus route tile
+  board.info[19][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90), items:[]};
+  board.info[18][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[17][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[16][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[15][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[13][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[12][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[11][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[10][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[9][12] = {data:"r", color:"#555", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[14][0] = {data:"r", color:"#555", icon:asset("3.png").sca(.15), items:[]};
+  board.info[14][1] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][2] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][4] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][5] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][6] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][7] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][8] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][9] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][10] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][11] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][13] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][14] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][15] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][16] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[]};
+
   
   //adds trees to board
   board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
@@ -915,9 +942,11 @@ new Label({
   board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
   board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
   board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[14][3] = {data:"r", color:"#555", icon:asset("3.png").sca(.15).clone(), items:[new TrafficLight().sca(.6)]};
+  board.info[14][12] = {data:"r", color:"#555", icon:asset("1.png").sca(.15), items:[new TrafficLight().sca(.6)]};
   
+  
+
   board.update()
 
 
