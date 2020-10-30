@@ -66,7 +66,7 @@ const frame = new Frame({
   // height: 968,
   color: "#ddd",
   outerColor: "#ddd",
-  assets: [ {src: "https://fonts.googleapis.com/css2?family=Alata" }],
+  assets: [ {src: "https://fonts.googleapis.com/css2?family=Alata" }, "tile1.png","tile2.png", "tile3.png", "tile4.png","tile5.png"],
   path: "assets/"
 });
 
@@ -187,47 +187,9 @@ console.log(typeof player);
 board.add(player, 19, 6);
 let player1Scorecard = new scoreCard({x:8,y:7},26);
 
-// add a traffic light
+// adds a traffic light
 // var trafficLight = new TrafficLight();
-// board.add(trafficLight, 19, 0);
 
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// BOARD ITEMS
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-//adds landmarks to board
-let school = frame.asset("assets/school.png").rot(270).sca(.4);
-let park = frame.asset("assets/park.png").rot(270).sca(.4);
-let library = frame.asset("assets/library.png").rot(270).sca(.4);
-
-board.info[16][10] = {data:"x", color:"#555", icon:school, items:[]};
-board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
-board.info[7][9] = {data:"x", color:"#555", icon:library, items:[]};
-
-//adds trees to board
-board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[4][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[9][1] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[17][18] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[2][13] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[5][12] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-
-
-//adds all traffic lights on board
-board.info[2][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[12][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[19][5] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[3][4] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
-board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
-
-board.update()
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // PATH FINDING
@@ -890,6 +852,74 @@ new Label({
     scooterBtn.backgroundColor = "white"
     carBtn.backgroundColor = "#ccc"
   });
+
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // BOARD ITEMS
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  
+  //adds landmarks to board
+  let school = frame.asset("assets/school.png").rot(270).sca(.4);
+  let park = frame.asset("assets/park.png").rot(270).sca(.4);
+  let library = frame.asset("assets/library.png").rot(270).sca(.4);
+  
+  board.info[16][10] = {data:"x", color:"#555", icon:school, items:[]};
+  board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
+  board.info[7][9] = {data:"x", color:"#555", icon:library, items:[]};
+  
+  
+  //adds road to board
+  board.info[8][9] = {data:"x", color:"#555", icon:asset("tile3.png").sca(.4), items:[]};
+  board.info[9][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4), items:[]};
+  board.info[10][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[11][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[12][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[13][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[15][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[16][9] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[17][9] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).rot(180), items:[]};
+  board.info[17][10] = {data:"x", color:"#555", icon:asset("tile3.png").clone().sca(.4), items:[]};
+  board.info[18][10] = {data:"x", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[19][10] = {data:"x", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[8][8] = {data:"x", color:"#555", icon:asset("tile5.png").sca(.4), items:[]};
+  board.info[8][7] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).rot(180).clone(), items:[]};
+  board.info[7][7] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[6][7] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[5][7] = {data:"x", color:"#555", icon:asset("tile3.png").sca(.4).clone(), items:[]};
+  board.info[5][6] = {data:"x", color:"#555", icon:asset("tile5.png").sca(.4).clone(), items:[]};
+  board.info[5][5] = {data:"x", color:"#555", icon:asset("tile4.png").sca(.4).clone().rot(180), items:[]};
+  board.info[4][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[3][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[2][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[1][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[0][5] = {data:"x", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  
+  
+  //adds trees to board
+  board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[4][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[9][1] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[17][18] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[2][13] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[5][12] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  
+  
+  //adds all traffic lights on board
+  board.info[2][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[12][0] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[19][5] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[3][4] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[4][9] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[9][13] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[11][19] = {data:"x", color:"#555555", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[14][3] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[14][12] = {data:"r", color:"#fb4758", icon:null, items:[new TrafficLight().sca(.6)]};
+  
+  board.update()
+
 
   stage.update(); // this is needed to show any changes
 }); // end ready
