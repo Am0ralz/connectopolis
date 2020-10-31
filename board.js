@@ -24,9 +24,9 @@ let pathHist =[];
 function Tracker(nw, prev){
 
   let newspots = nw.length-1
-  let leftover = 7 - prev.length
+  let leftover = 8 - prev.length
 
-  if (prev.length == 7){
+  if (prev.length == 8){
     prev.splice(0,newspots)
     prev.push.apply(prev,nw.slice(1))
   }
@@ -256,7 +256,8 @@ function getPath(go) {
   });
 }
 
-/////
+/////Player Moves /////////////////////////////////////////////////////////
+
   board.tiles.tap((e) => {
     if (player.moving) return; // moving pieces given moving property
     if (path) {
@@ -267,7 +268,6 @@ function getPath(go) {
       //Record path for Curveballs
       pathHist = Tracker(path, pathHist)
       // console.log(pathHist);
-
       //Where the score card get updated//
       player1Scorecard.scores.push({
           Destination: path[path.length-1],
@@ -280,6 +280,7 @@ function getPath(go) {
         
 
       })
+      pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
     
       path = null;
     } else {
@@ -306,7 +307,148 @@ function getPath(go) {
         
     });
 
-    
+     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // CURVE BALL
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // let tileCol = trafficLight.boardTile.tileCol;
+  // let tileRow = trafficLight.boardTile.tileRow;
+
+  //curve ball condition statement
+
+  function curveBall(card, md, pth) {
+    let tmpPath = []
+    let chance = "";
+    switch (card) {
+      ///Heat/////
+      case 1:
+        if(md == "Walk"){
+          chance = "go back 1 steps";
+          tmpPath = pth.reverse().slice(0,2)
+          board.followPath(player, tmpPath, null, null, );
+          return tmpPath;
+        }
+        if(md == "Bike"){
+          chance = "go back 2 steps";
+          tmpPath = pth.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
+          return tmpPath;
+        }
+        console.log(chance)
+  
+        break;
+      ///Rain///////  
+      case 2:
+        if(md == "Bike" || md == "Scooter"){
+          chance = "go back 2 steps";
+          tmpPath = pth.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
+          }
+        if(md == "Bus"){
+          chance = "go back 1 steps";
+          tmpPath = pth.reverse().slice(0,2)
+          board.followPath(player, tmpPath, null, null, );
+        }
+        if(md == "Car"){
+          chance = "go back 4 steps";
+          tmpPath = pth.reverse().slice(0,5)
+          board.followPath(player, tmpPath, null, null, );
+        }
+        console.log(chance)
+        break;
+       ///High gas///////  
+      case 3:
+        if(md == "Car"){
+          chance = "-$10";
+        }
+        if(md == "Bus"){
+          chance = "-$1";
+        }
+        chance = "go 2 steps left";
+        console.log(chance)
+        break;
+       ///Late Bus/////// 
+       case 4:
+        if(md == "Bus"){
+          chance = "go back 4 steps";
+        }
+        break;
+      ///Snow////////
+      case 5:
+        if(md == "Bus"){
+          chance = "go back 1 steps";
+        }
+        if(md == "Bike"){
+          chance = "go back 2 steps";
+        }
+        if(md == "Scooter"){
+          chance = "go back 2 steps";
+        }
+        console.log(chance)
+        break;
+      /// Traffic /////
+      case 6:
+        if(md == "Walk"){
+          chance = "go forward 1 steps";
+        }
+        if(md == "Bike"){
+          chance = "go forward 1 steps";
+        }
+        if(md == "Bus"){
+          chance = "go back 3 steps";
+        }
+
+        console.log(chance)
+        break;
+      ///Flat Tire ////////
+       case 7:
+        if(md == "Car"){
+          chance = "go back 7 steps";
+        }
+        if(md == "Bus"){
+          chance = "go back 2 steps";
+        }
+        console.log(chance)
+        break;
+      //////Flood /////////
+      case 8:
+        if(true){
+          chance = "go back 2 steps";
+        }
+        console.log(chance)
+        break;
+      /////Free Scooter/////  
+      case 9:
+        if(md == "Scooter"){
+          chance = "Move again with Scooter";
+        }
+
+        console.log(chance)
+        break;
+     
+    }
+
+    // document.getElementById("text").innerHTML = chance;
+  }
+
+  // //displays curveBall card
+  // function displayCard() {
+  //   curveBall();
+  //   document.getElementById("screen").style.display = "block";
+  // }
+
+  // //when player hits traffic light shows curveball card
+  // player.moveEvent = player.on("moving", () =>
+  //   // {timeout(50, () =>
+  //   {
+  //     if (player.boardTile == trafficLight.boardTile) {
+  //       player.off("moving", player.moveEvent);
+
+  //       displayCard();
+  //     }
+  //     // });
+  //   }
+  // );
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR SCORECARD
@@ -636,52 +778,7 @@ new Label({
 
   
   
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // CURVE BALL
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  // let tileCol = trafficLight.boardTile.tileCol;
-  // let tileRow = trafficLight.boardTile.tileRow;
-
-  // //curve ball condition statement
-  // function curveBall() {
-  //   let chance = "";
-  //   switch (tileCol && tileRow) {
-  //     case 19 && 0:
-  //       chance = "go back 5 steps";
-  //       console.log(chance)
-  //       break;
-  //     case 3 && 3:
-  //       chance = "go 3 steps ahead";
-  //       console.log(chance)
-  //       break;
-  //     case 19 && 19:
-  //       chance = "go 2 steps left";
-  //       console.log(chance)
-  //       break;
-  //   }
-
-  //   document.getElementById("text").innerHTML = chance;
-  // }
-
-  // //displays curveBall card
-  // function displayCard() {
-  //   curveBall();
-  //   document.getElementById("screen").style.display = "block";
-  // }
-
-  // //when player hits traffic light shows curveball card
-  // player.moveEvent = player.on("moving", () =>
-  //   // {timeout(50, () =>
-  //   {
-  //     if (player.boardTile == trafficLight.boardTile) {
-  //       player.off("moving", player.moveEvent);
-
-  //       displayCard();
-  //     }
-  //     // });
-  //   }
-  // );
+ 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT 
