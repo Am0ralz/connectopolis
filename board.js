@@ -2,31 +2,66 @@ import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
 ZIMONON = true;
+  ///////////////////Player/////////////////////////////////
+  class Player extends Person{
+    constructor(startPostion, budget, id){
+      super();
+      this.startPostion = startPostion;
+      this.budget = budget;
+      this.id = id;        
+      this.landmarks = [false, false];
+      this.pathHist = [];
+      // this.mode;
 
-  ///////////////////ScoreCard////////////////////////////////////
-  class scoreCard {
-    constructor(startPostion, budget) {
       this.scores = [{
-          Destination: startPostion,
-          TransitMode: "",
-          CurveBall: "",
-          Budget: budget,
-          Cost: 0,
-          CO2: 0,
-          Calories: 0,
-        }];
-  }
-}
+        Destination: startPostion,
+        TransitMode: "",
+        CurveBall: "",
+        Budget: budget,
+        Cost: 0,
+        CO2: 0,
+        Calories: 0,
+      }];
 
-let landmarks = [false, false];
-let pathHist =[];
+    }
+    sayhello(){
+      alert("hello");
+    }
+
+    Tracker(nw, prev){
+
+      let newspots = nw.length-1
+      let leftover = 10 - prev.length
+    
+      if (prev.length == 10){
+        prev.splice(0,newspots)
+        prev.push.apply(prev,nw.slice(1))
+      }
+      else if (prev.length > 0 && leftover < newspots ){
+        
+          prev.splice(0, newspots - leftover)
+          prev.push.apply(prev,nw.slice(1))
+        
+        } 
+        else if(prev.length == 0){
+          prev.push.apply(prev, nw)
+        }
+      else{
+          prev.push.apply(prev, nw.slice(1))
+    
+        }
+      return prev
+    }
+
+}  
+
 // takes in the new path and the previous path and create a new array with the last 7 steps a bit sloppy
 function Tracker(nw, prev){
 
   let newspots = nw.length-1
-  let leftover = 8 - prev.length
+  let leftover = 10 - prev.length
 
-  if (prev.length == 8){
+  if (prev.length == 10){
     prev.splice(0,newspots)
     prev.push.apply(prev,nw.slice(1))
   }
@@ -43,7 +78,6 @@ function Tracker(nw, prev){
       prev.push.apply(prev, nw.slice(1))
 
     }
-    console.log(prev)
   return prev
 }
 
@@ -52,12 +86,12 @@ function Tracker(nw, prev){
 let mode = "Walk"; 
 
 /////////////////// //Different Modes and their properties////////////////////
-  const modes = {
-    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
-    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
-    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
+const modes = {
+  Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+  Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
+  Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
+  Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+  Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
   };
 
 const frame = new Frame({
@@ -81,11 +115,6 @@ frame.on("ready", () => {
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
 
-let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
-let budget = ["$5", "$15", "$25", "$50"];
-
-var randomLocation = loc[Math.floor(Math.random() * loc.length)];
-var randomBudget = budget[Math.floor(Math.random() * budget.length)];
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,7 +122,7 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   var lablabel = new Label({
-    text: `Your location is ${randomLocation} and budget is ${randomBudget}`,
+    text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
     size: 20,
     font: "Alata",
     labelWidth: 250,
@@ -182,10 +211,34 @@ var randomBudget = budget[Math.floor(Math.random() * budget.length)];
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Player and Scorecard Created
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let budget = [5, 15, 25, 50];
+let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:}}
+const numOfPlayers = 4;
+for (let i = 0; i < numOfPlayers; i++) {
+ console.log(i);
+}
+
+
+
+
+var randomLocation = loc[Math.floor(Math.random() * loc.length)];
+var randomBudget = budget[Math.floor(Math.random() * budget.length)];
+
+
 const player = new Person().sca(0.6).top();
-console.log(typeof player);
+const player1 = new Player( {x:19,y:19}, 26, 1).sca(0.6).top();
 board.add(player, 19, 6);
-let player1Scorecard = new scoreCard({x:8,y:7},26);
+board.add(player1, 19, 7);
+
+console.log(player1.startPostion)
+console.log(player1.budget)
+console.log(player1.landmarks)
+console.log(player1.scores)
+console.log(player1.id)
+console.log(player1.pathHist)
+
+// let player1Scorecard = new scoreCard({x:8,y:7},26);
 
 // adds a traffic light
 // var trafficLight = new TrafficLight();
@@ -269,20 +322,19 @@ function getPath(go) {
       pathHist = Tracker(path, pathHist)
       // console.log(pathHist);
       //Where the score card get updated//
-      player1Scorecard.scores.push({
-          Destination: path[path.length-1],
-          TransitMode: mode,
-          CurveBall: "",
-          Budget:player1Scorecard.scores[player1Scorecard.scores.length -1].Budget - modes[mode].cost,
-          Cost: modes[mode].cost,
-          CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
-          Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
+      // player1Scorecard.scores.push({
+      //     Destination: path[path.length-1],
+      //     TransitMode: mode,
+      //     CurveBall: "",
+      //     Budget:player1Scorecard.scores[player1Scorecard.scores.length -1].Budget - modes[mode].cost,
+      //     Cost: modes[mode].cost,
+      //     CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
+      //     Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
         
 
       })
-
-      console.log(player1Scorecard.scores)
-      pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
+      // console.log(pathHist);
+      // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
     
       path = null;
     } else {
@@ -319,20 +371,23 @@ function getPath(go) {
   //curve ball condition statement
 
   function curveBall(card, md, pth) {
-    let tmpPath = []
+    let tmpPath = pth.slice(0)
     let chance = "";
     switch (card) {
       ///Heat/////
       case 1:
         if(md == "Walk"){
           chance = "go back 1 steps";
-          tmpPath = pth.reverse().slice(0,2)
+          
+          tmpPath = tmpPath.reverse().slice(0,2)
+          console.log(tmpPath)
           board.followPath(player, tmpPath, null, null, );
           return tmpPath;
         }
         if(md == "Bike"){
           chance = "go back 2 steps";
-          tmpPath = pth.reverse().slice(0,3)
+          tmpPath = tmpPath.reverse().slice(0,3)
+          console.log(tmpPath)
           board.followPath(player, tmpPath, null, null, );
           return tmpPath;
         }
@@ -343,17 +398,17 @@ function getPath(go) {
       case 2:
         if(md == "Bike" || md == "Scooter"){
           chance = "go back 2 steps";
-          tmpPath = pth.reverse().slice(0,3)
+          tmpPath = tmpPath.reverse().slice(0,3)
           board.followPath(player, tmpPath, null, null, );
           }
         if(md == "Bus"){
           chance = "go back 1 steps";
-          tmpPath = pth.reverse().slice(0,2)
+          tmpPath = tmpPath.reverse().slice(0,2)
           board.followPath(player, tmpPath, null, null, );
         }
         if(md == "Car"){
           chance = "go back 4 steps";
-          tmpPath = pth.reverse().slice(0,5)
+          tmpPath = tmpPath.reverse().slice(0,5)
           board.followPath(player, tmpPath, null, null, );
         }
         console.log(chance)
@@ -378,13 +433,20 @@ function getPath(go) {
       ///Snow////////
       case 5:
         if(md == "Bus"){
+          tmpPath = tmpPath.reverse().slice(0,2)
+          console.log(tmpPath)
+          board.followPath(player, tmpPath, null, null, );
           chance = "go back 1 steps";
         }
         if(md == "Bike"){
           chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
         }
         if(md == "Scooter"){
           chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
         }
         console.log(chance)
         break;
@@ -397,7 +459,9 @@ function getPath(go) {
           chance = "go forward 1 steps";
         }
         if(md == "Bus"){
-          chance = "go back 3 steps";
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0,4)
+          board.followPath(player, tmpPath, null, null, );
         }
 
         console.log(chance)
@@ -406,9 +470,13 @@ function getPath(go) {
        case 7:
         if(md == "Car"){
           chance = "go back 7 steps";
+          tmpPath = tmpPath.reverse().slice(0,9)
+          board.followPath(player, tmpPath, null, null, );
         }
         if(md == "Bus"){
           chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
         }
         console.log(chance)
         break;
@@ -416,6 +484,8 @@ function getPath(go) {
       case 8:
         if(true){
           chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0,3)
+          board.followPath(player, tmpPath, null, null, );
         }
         console.log(chance)
         break;
