@@ -2,20 +2,19 @@ import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
 ZIMONON = true;
-///////////////////Player/////////////////////////////////
-class Player extends Person {
-  constructor(startPostion, budget, id) {
-    super();
-    this.startPostion = startPostion;
-    this.budget = budget;
-    this.id = id;
-    this.landmarks = [false, false];
-    this.pathHist = [];
-    // this.mode;
+  ///////////////////Player/////////////////////////////////
+  class Player extends Person{
+    constructor(startPosition, budget, id){
+      super();
+      this.startPosition = startPosition;
+      this.budget = budget;
+      this.id = id;        
+      this.landmarks = [false, false];
+      this.pathHist = [];
+      // this.mode;
 
-    this.scores = [
-      {
-        Destination: startPostion,
+      this.scores = [{
+        Destination: startPosition,
         TransitMode: "",
         CurveBall: "",
         Budget: budget,
@@ -45,6 +44,13 @@ class Player extends Person {
       prev.push.apply(prev, nw.slice(1));
     }
     return prev;
+  }
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
@@ -114,7 +120,7 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   var lablabel = new Label({
-    text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
+    // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
     size: 20,
     font: "Alata",
     labelWidth: 250,
@@ -197,38 +203,46 @@ frame.on("ready", () => {
     board.isometric = !board.isometric;
   });
 
-  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0 });
+  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0})
+  
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Player Creation 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Player and Scorecard Created
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
-  let budget = [5, 15, 25, 50];
-  let locPos = {
-    "Rural 1": { x: 0, y: 10 },
-    "Suburban 2": { x: 6, y: 19 },
-    "Urban 3": { x: 16, y: 3 },
-    "Downtown 4": { x: 11, y: 7 },
-  };
-  const numOfPlayers = 4;
-  for (let i = 0; i < numOfPlayers; i++) {
-    console.log(i);
-  }
+// Characters placement cards and Budget Cards setup 
+let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let budget = [5, 15, 25, 50];
+let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:7}}
 
-  var randomLocation = loc[Math.floor(Math.random() * loc.length)];
-  var randomBudget = budget[Math.floor(Math.random() * budget.length)];
+//////////////Shuffle loc cards and budget cards so it can be random////////////
+shuffleArray(loc);
+shuffleArray(budget);
 
-  const player = new Person().sca(0.6).top();
-  const player1 = new Player({ x: 19, y: 19 }, 26, 1).sca(0.6).top();
-  board.add(player, 19, 6);
-  board.add(player1, 19, 7);
 
-  console.log(player1.startPostion);
-  console.log(player1.budget);
-  console.log(player1.landmarks);
-  console.log(player1.scores);
-  console.log(player1.id);
-  console.log(player1.pathHist);
+/////////////Number of players playing the game////////////////////////
+// let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
+// numOfPlayers = parseInt(numOfPlayers);
+let numOfPlayers = 4 ;
+
+if (parseInt(numOfPlayers)){
+  const player1 = new Player( locPos[loc.pop()], budget.pop, 0).sca(0.6).top();
+  const player2 = new Player( locPos[loc.pop()], budget.pop, 1).sca(0.6).top();
+
+  board.add(player1, player1.startPosition['x'], player1.startPosition['y']);
+  board.add(player2, player2.startPosition['x'], player2.startPosition['y']);
+}
+if (parseInt(numOfPlayers) >= 3){
+  const player3 = new Player( locPos[loc.pop()], budget.pop, 2).sca(0.6).top();
+  board.add(player3, player3.startPosition['x'], player3.startPosition['y']);
+}
+if (parseInt(numOfPlayers) >= 4){
+  const player4 = new Player( locPos[loc.pop()], budget.pop, 3).sca(0.6).top();
+  board.add(player4, player4.startPosition['x'], player4.startPosition['y']);
+}
+
+const player = new Person().sca(0.6).top();
+board.add(player, 19, 6);
+// board.add(player1, 19, 7);
 
   // let player1Scorecard = new scoreCard({x:8,y:7},26);
 
@@ -310,7 +324,7 @@ frame.on("ready", () => {
       // Where the character moves
       board.followPath(player, path, null, null); // nudge camera 2
       //Record path for Curveballs
-      pathHist = Tracker(path, pathHist);
+      // pathHist = Tracker(path, pathHist)
       // console.log(pathHist);
       //Where the score card get updated//
       // player1Scorecard.scores.push({
@@ -321,7 +335,6 @@ frame.on("ready", () => {
       //     Cost: modes[mode].cost,
       //     CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
       //     Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
-
       // })
       // console.log(pathHist);
       // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
@@ -359,137 +372,138 @@ frame.on("ready", () => {
 
   //curve ball condition statement
 
-  function curveBall(card, md, pth) {
-    let tmpPath = pth.slice(0);
-    let chance = "";
-    switch (card) {
-      ///Heat/////
-      case 1:
-        if (md == "Walk") {
-          chance = "go back 1 steps";
+  // function curveBall(card, md, pth) {
+  //   let tmpPath = pth.slice(0)
+  //   let chance = "";
+  //   switch (card) {
+  //     ///Heat/////
+  //     case 1:
+  //       if(md == "Walk"){
+  //         chance = "go back 1 steps";
+          
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         return tmpPath;
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         return tmpPath;
+  //       }
+  //       console.log(chance)
+  
+  //       break;
+  //     ///Rain///////  
+  //     case 2:
+  //       if(md == "Bike" || md == "Scooter"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         }
+  //       if(md == "Bus"){
+  //         chance = "go back 1 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Car"){
+  //         chance = "go back 4 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,5)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //      ///High gas///////  
+  //     case 3:
+  //       if(md == "Car"){
+  //         chance = "-$10";
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "-$1";
+  //       }
+  //       chance = "go 2 steps left";
+  //       console.log(chance)
+  //       break;
+  //      ///Late Bus/////// 
+  //      case 4:
+  //       if(md == "Bus"){
+  //         chance = "go back 4 steps";
+  //       }
+  //       break;
+  //     ///Snow////////
+  //     case 5:
+  //       if(md == "Bus"){
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         chance = "go back 1 steps";
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Scooter"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     /// Traffic /////
+  //     case 6:
+  //       if(md == "Walk"){
+  //         chance = "go forward 1 steps";
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go forward 1 steps";
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,4)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
 
-          tmpPath = tmpPath.reverse().slice(0, 2);
-          console.log(tmpPath);
-          board.followPath(player, tmpPath, null, null);
-          return tmpPath;
-        }
-        if (md == "Bike") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          console.log(tmpPath);
-          board.followPath(player, tmpPath, null, null);
-          return tmpPath;
-        }
-        console.log(chance);
+  //       console.log(chance)
+  //       break;
+  //     ///Flat Tire ////////
+  //      case 7:
+  //       if(md == "Car"){
+  //         chance = "go back 7 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,9)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     //////Flood /////////
+  //     case 8:
+  //       if(true){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     /////Free Scooter/////  
+  //     case 9:
+  //       if(md == "Scooter"){
+  //         chance = "Move again with Scooter";
+  //       }
 
-        break;
-      ///Rain///////
-      case 2:
-        if (md == "Bike" || md == "Scooter") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          board.followPath(player, tmpPath, null, null);
-        }
-        if (md == "Bus") {
-          chance = "go back 1 steps";
-          tmpPath = tmpPath.reverse().slice(0, 2);
-          board.followPath(player, tmpPath, null, null);
-        }
-        if (md == "Car") {
-          chance = "go back 4 steps";
-          tmpPath = tmpPath.reverse().slice(0, 5);
-          board.followPath(player, tmpPath, null, null);
-        }
-        console.log(chance);
-        break;
-      ///High gas///////
-      case 3:
-        if (md == "Car") {
-          chance = "-$10";
-        }
-        if (md == "Bus") {
-          chance = "-$1";
-        }
-        chance = "go 2 steps left";
-        console.log(chance);
-        break;
-      ///Late Bus///////
-      case 4:
-        if (md == "Bus") {
-          chance = "go back 4 steps";
-        }
-        break;
-      ///Snow////////
-      case 5:
-        if (md == "Bus") {
-          tmpPath = tmpPath.reverse().slice(0, 2);
-          console.log(tmpPath);
-          board.followPath(player, tmpPath, null, null);
-          chance = "go back 1 steps";
-        }
-        if (md == "Bike") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          board.followPath(player, tmpPath, null, null);
-        }
-        if (md == "Scooter") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          board.followPath(player, tmpPath, null, null);
-        }
-        console.log(chance);
-        break;
-      /// Traffic /////
-      case 6:
-        if (md == "Walk") {
-          chance = "go forward 1 steps";
-        }
-        if (md == "Bike") {
-          chance = "go forward 1 steps";
-        }
-        if (md == "Bus") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 4);
-          board.followPath(player, tmpPath, null, null);
-        }
+  //       console.log(chance)
+  //       break;
+     
+  //   }
 
-        console.log(chance);
-        break;
-      ///Flat Tire ////////
-      case 7:
-        if (md == "Car") {
-          chance = "go back 7 steps";
-          tmpPath = tmpPath.reverse().slice(0, 9);
-          board.followPath(player, tmpPath, null, null);
-        }
-        if (md == "Bus") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          board.followPath(player, tmpPath, null, null);
-        }
-        console.log(chance);
-        break;
-      //////Flood /////////
-      case 8:
-        if (true) {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3);
-          board.followPath(player, tmpPath, null, null);
-        }
-        console.log(chance);
-        break;
-      /////Free Scooter/////
-      case 9:
-        if (md == "Scooter") {
-          chance = "Move again with Scooter";
-        }
-
-        console.log(chance);
-        break;
-    }
-
-    // document.getElementById("text").innerHTML = chance;
-  }
+  //   // document.getElementById("text").innerHTML = chance;
+  // }
 
   // //displays curveBall card
   // function displayCard() {
