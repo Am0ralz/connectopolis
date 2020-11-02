@@ -212,7 +212,7 @@ frame.on("ready", () => {
 // Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
-let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:7}}
+let locPos = {"Rural 1" :{x:11,y:0} , "Suburban 2":{x:19,y:6}, "Urban 3":{x:3,y:16}, "Downtown 4":{x:7,y:11}}
 
 //////////////Shuffle loc cards and budget cards so it can be random////////////
 shuffleArray(loc);
@@ -241,13 +241,13 @@ if (parseInt(numOfPlayers) >= 4){
 }
 
 const player = new Person().sca(0.6).top();
-board.add(player, 19, 6);
+board.add(player, 19, 7);
 // board.add(player1, 19, 7);
 
   // let player1Scorecard = new scoreCard({x:8,y:7},26);
 
   // adds a traffic light
-  // var trafficLight = new TrafficLight();
+  var trafficLight = new TrafficLight();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -320,7 +320,12 @@ board.add(player, 19, 6);
     if (player.moving) return; // moving pieces given moving property
     if (path) {
       // because rolled over already
+      if (player.boardTile == trafficLight.boardTile) {
+        curveBallPane.show();
 
+      }else{
+        curveBallPane.hide();
+      }
       // Where the character moves
       board.followPath(player, path, null, null); // nudge camera 2
       //Record path for Curveballs
