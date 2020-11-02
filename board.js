@@ -4,9 +4,9 @@ import { DiffTree, TrafficLight } from "./objects.js";
 ZIMONON = true;
   ///////////////////Player/////////////////////////////////
   class Player extends Person{
-    constructor(startPostion, budget, id){
+    constructor(startPosition, budget, id){
       super();
-      this.startPostion = startPostion;
+      this.startPosition = startPosition;
       this.budget = budget;
       this.id = id;        
       this.landmarks = [false, false];
@@ -14,7 +14,7 @@ ZIMONON = true;
       // this.mode;
 
       this.scores = [{
-        Destination: startPostion,
+        Destination: startPosition,
         TransitMode: "",
         CurveBall: "",
         Budget: budget,
@@ -54,6 +54,13 @@ ZIMONON = true;
     }
 
 }  
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
 // takes in the new path and the previous path and create a new array with the last 7 steps a bit sloppy
 function Tracker(nw, prev){
@@ -122,7 +129,7 @@ frame.on("ready", () => {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   var lablabel = new Label({
-    text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
+    // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
     size: 20,
     font: "Alata",
     labelWidth: 250,
@@ -209,34 +216,50 @@ frame.on("ready", () => {
   changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0})
   
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Player and Scorecard Created
+// Player Creation 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
-let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:}}
-const numOfPlayers = 4;
-for (let i = 0; i < numOfPlayers; i++) {
- console.log(i);
+let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:7}}
+
+//////////////Shuffle loc cards and budget cards so it can be random////////////
+shuffleArray(loc);
+shuffleArray(budget);
+
+
+/////////////Number of players playing the game////////////////////////
+// let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
+// numOfPlayers = parseInt(numOfPlayers);
+let numOfPlayers = 4 ;
+
+if (parseInt(numOfPlayers)){
+  const player1 = new Player( locPos[loc.pop()], budget.pop, 0).sca(0.6).top();
+  const player2 = new Player( locPos[loc.pop()], budget.pop, 1).sca(0.6).top();
+
+  board.add(player1, player1.startPosition['x'], player1.startPosition['y']);
+  board.add(player2, player2.startPosition['x'], player2.startPosition['y']);
+}
+if (parseInt(numOfPlayers) >= 3){
+  const player3 = new Player( locPos[loc.pop()], budget.pop, 2).sca(0.6).top();
+  board.add(player3, player3.startPosition['x'], player3.startPosition['y']);
+}
+if (parseInt(numOfPlayers) >= 4){
+  const player4 = new Player( locPos[loc.pop()], budget.pop, 3).sca(0.6).top();
+  board.add(player4, player4.startPosition['x'], player4.startPosition['y']);
 }
 
-
-
-
-var randomLocation = loc[Math.floor(Math.random() * loc.length)];
-var randomBudget = budget[Math.floor(Math.random() * budget.length)];
-
-
 const player = new Person().sca(0.6).top();
-const player1 = new Player( {x:19,y:19}, 26, 1).sca(0.6).top();
 board.add(player, 19, 6);
-board.add(player1, 19, 7);
+// board.add(player1, 19, 7);
 
-console.log(player1.startPostion)
-console.log(player1.budget)
-console.log(player1.landmarks)
-console.log(player1.scores)
-console.log(player1.id)
-console.log(player1.pathHist)
+// console.log(player1.startPostion)
+// console.log(player1.budget)
+// console.log(player1.landmarks)
+// console.log(player1.scores)
+// console.log(player1.id)
+// console.log(player1.pathHist)
 
 // let player1Scorecard = new scoreCard({x:8,y:7},26);
 
@@ -330,9 +353,7 @@ function getPath(go) {
       //     Cost: modes[mode].cost,
       //     CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
       //     Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
-        
-
-      })
+      // })
       // console.log(pathHist);
       // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
     
