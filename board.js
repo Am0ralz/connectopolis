@@ -213,7 +213,7 @@ frame.on("ready", () => {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
-let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:}}
+let locPos = {"Rural 1" :{x:0,y:10} , "Suburban 2":{x:6,y:19}, "Urban 3":{x:16,y:3}, "Downtown 4":{x:11,y:7}}
 const numOfPlayers = 4;
 for (let i = 0; i < numOfPlayers; i++) {
  console.log(i);
@@ -332,7 +332,7 @@ function getPath(go) {
       //     Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
         
 
-      })
+      // })
       // console.log(pathHist);
       // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
     
