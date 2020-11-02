@@ -342,7 +342,7 @@ function getPath(go) {
       // Where the character moves
       board.followPath(player, path, null, null, ); // nudge camera 2
       //Record path for Curveballs
-      pathHist = Tracker(path, pathHist)
+      // pathHist = Tracker(path, pathHist)
       // console.log(pathHist);
       //Where the score card get updated//
       // player1Scorecard.scores.push({
@@ -391,138 +391,138 @@ function getPath(go) {
 
   //curve ball condition statement
 
-  function curveBall(card, md, pth) {
-    let tmpPath = pth.slice(0)
-    let chance = "";
-    switch (card) {
-      ///Heat/////
-      case 1:
-        if(md == "Walk"){
-          chance = "go back 1 steps";
+  // function curveBall(card, md, pth) {
+  //   let tmpPath = pth.slice(0)
+  //   let chance = "";
+  //   switch (card) {
+  //     ///Heat/////
+  //     case 1:
+  //       if(md == "Walk"){
+  //         chance = "go back 1 steps";
           
-          tmpPath = tmpPath.reverse().slice(0,2)
-          console.log(tmpPath)
-          board.followPath(player, tmpPath, null, null, );
-          return tmpPath;
-        }
-        if(md == "Bike"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          console.log(tmpPath)
-          board.followPath(player, tmpPath, null, null, );
-          return tmpPath;
-        }
-        console.log(chance)
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         return tmpPath;
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         return tmpPath;
+  //       }
+  //       console.log(chance)
   
-        break;
-      ///Rain///////  
-      case 2:
-        if(md == "Bike" || md == "Scooter"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          board.followPath(player, tmpPath, null, null, );
-          }
-        if(md == "Bus"){
-          chance = "go back 1 steps";
-          tmpPath = tmpPath.reverse().slice(0,2)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        if(md == "Car"){
-          chance = "go back 4 steps";
-          tmpPath = tmpPath.reverse().slice(0,5)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        console.log(chance)
-        break;
-       ///High gas///////  
-      case 3:
-        if(md == "Car"){
-          chance = "-$10";
-        }
-        if(md == "Bus"){
-          chance = "-$1";
-        }
-        chance = "go 2 steps left";
-        console.log(chance)
-        break;
-       ///Late Bus/////// 
-       case 4:
-        if(md == "Bus"){
-          chance = "go back 4 steps";
-        }
-        break;
-      ///Snow////////
-      case 5:
-        if(md == "Bus"){
-          tmpPath = tmpPath.reverse().slice(0,2)
-          console.log(tmpPath)
-          board.followPath(player, tmpPath, null, null, );
-          chance = "go back 1 steps";
-        }
-        if(md == "Bike"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        if(md == "Scooter"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        console.log(chance)
-        break;
-      /// Traffic /////
-      case 6:
-        if(md == "Walk"){
-          chance = "go forward 1 steps";
-        }
-        if(md == "Bike"){
-          chance = "go forward 1 steps";
-        }
-        if(md == "Bus"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,4)
-          board.followPath(player, tmpPath, null, null, );
-        }
+  //       break;
+  //     ///Rain///////  
+  //     case 2:
+  //       if(md == "Bike" || md == "Scooter"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         }
+  //       if(md == "Bus"){
+  //         chance = "go back 1 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Car"){
+  //         chance = "go back 4 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,5)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //      ///High gas///////  
+  //     case 3:
+  //       if(md == "Car"){
+  //         chance = "-$10";
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "-$1";
+  //       }
+  //       chance = "go 2 steps left";
+  //       console.log(chance)
+  //       break;
+  //      ///Late Bus/////// 
+  //      case 4:
+  //       if(md == "Bus"){
+  //         chance = "go back 4 steps";
+  //       }
+  //       break;
+  //     ///Snow////////
+  //     case 5:
+  //       if(md == "Bus"){
+  //         tmpPath = tmpPath.reverse().slice(0,2)
+  //         console.log(tmpPath)
+  //         board.followPath(player, tmpPath, null, null, );
+  //         chance = "go back 1 steps";
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Scooter"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     /// Traffic /////
+  //     case 6:
+  //       if(md == "Walk"){
+  //         chance = "go forward 1 steps";
+  //       }
+  //       if(md == "Bike"){
+  //         chance = "go forward 1 steps";
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,4)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
 
-        console.log(chance)
-        break;
-      ///Flat Tire ////////
-       case 7:
-        if(md == "Car"){
-          chance = "go back 7 steps";
-          tmpPath = tmpPath.reverse().slice(0,9)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        if(md == "Bus"){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        console.log(chance)
-        break;
-      //////Flood /////////
-      case 8:
-        if(true){
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0,3)
-          board.followPath(player, tmpPath, null, null, );
-        }
-        console.log(chance)
-        break;
-      /////Free Scooter/////  
-      case 9:
-        if(md == "Scooter"){
-          chance = "Move again with Scooter";
-        }
+  //       console.log(chance)
+  //       break;
+  //     ///Flat Tire ////////
+  //      case 7:
+  //       if(md == "Car"){
+  //         chance = "go back 7 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,9)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       if(md == "Bus"){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     //////Flood /////////
+  //     case 8:
+  //       if(true){
+  //         chance = "go back 2 steps";
+  //         tmpPath = tmpPath.reverse().slice(0,3)
+  //         board.followPath(player, tmpPath, null, null, );
+  //       }
+  //       console.log(chance)
+  //       break;
+  //     /////Free Scooter/////  
+  //     case 9:
+  //       if(md == "Scooter"){
+  //         chance = "Move again with Scooter";
+  //       }
 
-        console.log(chance)
-        break;
+  //       console.log(chance)
+  //       break;
      
-    }
+  //   }
 
-    // document.getElementById("text").innerHTML = chance;
-  }
+  //   // document.getElementById("text").innerHTML = chance;
+  // }
 
   // //displays curveBall card
   // function displayCard() {
