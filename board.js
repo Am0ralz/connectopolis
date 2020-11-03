@@ -181,7 +181,7 @@ frame.on("ready", () => {
     board.isometric = !board.isometric;
   });
 
-  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0 })
+  changeView.pos({ x: 20, y: 50, vertical: "bottom", index: 0 })
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Player Creation 
@@ -358,14 +358,12 @@ frame.on("ready", () => {
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-
-//   player.moveEvent = player.on("moving", () => {
-//     if (player.boardTile == trafficLight1.boardTile || player.boardTile == trafficLight2.boardTile ||
-//       player.boardTile == trafficLight3.boardTile || player.boardTile == trafficLight4.boardTile ||
-//       player.boardTile == trafficLight5.boardTile || player.boardTile == trafficLight6.boardTile ||
-//       player.boardTile == trafficLight7.boardTile || player.boardTile == trafficLight8.boardTile ||
-//       player.boardTile == trafficLight9.boardTile 
+//   listofPlayers[playerTurn].moveEvent = listofPlayers[playerTurn].on("moving", () => {
+//     if (listofPlayers[playerTurn].boardTile == trafficLight1.boardTile || listofPlayers[playerTurn].boardTile == trafficLight2.boardTile ||
+//       listofPlayers[playerTurn].boardTile == trafficLight3.boardTile || listofPlayers[playerTurn].boardTile == trafficLight4.boardTile ||
+//       listofPlayers[playerTurn].boardTile == trafficLight5.boardTile || listofPlayers[playerTurn].boardTile == trafficLight6.boardTile ||
+//       listofPlayers[playerTurn].boardTile == trafficLight7.boardTile || listofPlayers[playerTurn].boardTile == trafficLight8.boardTile ||
+//       listofPlayers[playerTurn].boardTile == trafficLight9.boardTile 
 //       ) {
 //       curveBallPane.show();
 //     } else {
@@ -373,8 +371,6 @@ frame.on("ready", () => {
 //     }
 //   }
 // );
-
-
 
 
 
@@ -563,7 +559,7 @@ frame.on("ready", () => {
     scoreCardPane.show();
   });
 
-  scoreCardBtn.pos({ x: 50, y: 80, index: 0 });
+  scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
 
   //scorecard pane that will show the players score
   var scoreCardPane = new Pane({
@@ -982,11 +978,11 @@ frame.on("ready", () => {
   });
 
   //displays buttons on right side of screen
-  walkBtn.pos({ horizontal: "right", x: 20, y: 80, index: 0 });
-  bikeBtn.pos({ horizontal: "right", x: 20, y: 160, index: 0 });
-  carBtn.pos({ horizontal: "right", x: 20, y: 400, index: 0 });
-  scooterBtn.pos({ horizontal: "right", x: 20, y: 320, index: 0 });
-  busBtn.pos({ horizontal: "right", x: 20, y: 240, index: 0 });
+  walkBtn.pos({ horizontal: "right", x: 20, y: 50, index: 0 });
+  bikeBtn.pos({ horizontal: "right", x: 20, y: 130, index: 0 });
+  carBtn.pos({ horizontal: "right", x: 20, y: 210, index: 0 });
+  scooterBtn.pos({ horizontal: "right", x: 20, y: 290, index: 0 });
+  busBtn.pos({ horizontal: "right", x: 20, y: 370, index: 0 });
 
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
@@ -1309,6 +1305,7 @@ frame.on("ready", () => {
     curveBallPane.hide();
   });
 
+  closeCB.center(curveBallPane).pos(null, 165);
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1330,7 +1327,7 @@ frame.on("ready", () => {
 
   helpBtn.pos({
     x: 20,
-    y: 100,
+    y: 50,
     vertical: "bottom",
     horizontal: "right",
     index: 0,
