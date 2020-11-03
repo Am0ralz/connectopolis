@@ -566,9 +566,6 @@ frame.on("ready", () => {
     width: 500,
     height: 600,
     backgroundColor: "white",
-    // backdropClose: false,
-    // displayClose: false,
-    // close: true,
     corner: 0,
   });
 
@@ -596,34 +593,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 100);
+    .pos(35, 100);
 
+  //first label for destination
   new Label({
-    text: " ",
+    text: "1 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 100);
+    .pos(145, 100);
 
+  //second label for destination
   new Label({
-    text: " ",
+    text: "2 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 100);
+    .pos(255, 100);
 
+  //third label for destination
   new Label({
-    text: " ",
+    text: "3 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 100);
+    .pos(365, 100);
 
   ///////////////labels for transit
   new Label({
@@ -634,34 +637,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 150);
+    .pos(35, 150);
 
+  //first label for transit mode
   new Label({
-    text: " ",
+    text: "4 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 150);
+    .pos(145, 150);
 
+  //second label for transit mode
   new Label({
-    text: " ",
+    text: "5 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 150);
+    .pos(255, 150);
 
+  //third label for transit mode
   new Label({
-    text: " ",
+    text: "6 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 150);
+    .pos(365, 150);
 
   ///////////////labels for curve ball
   new Label({
@@ -672,34 +681,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 200);
+    .pos(35, 200);
 
+  //first label for curve ball
   new Label({
-    text: " ",
+    text: "7 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 200);
+    .pos(145, 200);
 
+    //second label for curve ball
   new Label({
-    text: " ",
+    text: "8 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 200);
+    .pos(255, 200);
 
+  //third label for curve ball
   new Label({
-    text: " ",
+    text: "9 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 200);
+    .pos(365, 200);
 
   /////labels for cost
 
@@ -711,34 +726,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 250);
+    .pos(35, 250);
 
+  //first label for cost
   new Label({
-    text: " ",
+    text: "10 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 250);
+    .pos(145, 250);
 
+  //second label for cost
   new Label({
-    text: " ",
+    text: "11 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 250);
+    .pos(255, 250);
 
+  //third label for cost
   new Label({
-    text: " ",
+    text: "12 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 250);
+    .pos(365, 250);
 
   /////labels for CO2 Impact
 
@@ -750,34 +771,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 300);
+    .pos(35, 300);
 
+  //first label for CO2 impact
   new Label({
-    text: " ",
+    text: "13 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 300);
+    .pos(145, 300);
 
+  //second label for CO2 impact
   new Label({
-    text: " ",
+    text: "14 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 300);
+    .pos(255, 300);
 
+  //third label for CO2 impact
   new Label({
-    text: " ",
+    text: "15 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 300);
+    .pos(365, 300);
 
   //////labels for calories
 
@@ -789,34 +816,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 350);
+    .pos(35, 350);
 
+  //first label for calories
   new Label({
-    text: " ",
+    text: "16",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 350);
-
+    .pos(145, 350);
+  
+  //second label for calories
   new Label({
-    text: " ",
+    text: "17",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 350);
+    .pos(255, 350);
 
+  //third label for calories
   new Label({
-    text: " ",
+    text: "18",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 350);
+    .pos(365, 350);
 
   //////labels for budget
 
@@ -828,34 +861,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 400);
+    .pos(35, 400);
 
+  //first label for budget
   new Label({
-    text: " ",
+    text: "19",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 400);
+    .pos(145, 400);
 
+  //second label for budget
   new Label({
-    text: " ",
+    text: "20",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 400);
+    .pos(255, 400);
 
+  //third label for budget
   new Label({
-    text: " ",
+    text: "21",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 400);
+    .pos(365, 400);
 
   //////label indicating which is the current
 
@@ -865,9 +904,13 @@ frame.on("ready", () => {
     color: "white",
     backing: new Rectangle(100, 40, "#383838"),
     font: "Alata",
+    align: "center"
+
+    
+
   })
     .center(scoreCardPane)
-    .pos(350, 450);
+    .pos(365, 450);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT
