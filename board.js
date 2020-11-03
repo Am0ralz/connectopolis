@@ -2,75 +2,53 @@ import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
 ZIMONON = true;
-  ///////////////////Player/////////////////////////////////
-  class Player extends Person{
-    constructor(startPosition, budget, id){
-      super();
-      this.startPosition = startPosition;
-      this.budget = budget;
-      this.id = id;        
-      this.landmarks = [false, false];
-      this.pathHist = [];
-      // this.mode;
+///////////////////Player/////////////////////////////////
+class Player extends Person {
+  constructor(startPosition, budget, id) {
+    super();
+    this.startPosition = startPosition;
+    this.budget = budget;
+    this.id = id;
+    this.landmarks = [false, false];
+    this.pathHist = [];
+    // this.mode;
 
-      this.scores = [{
-        Destination: startPosition,
-        TransitMode: "",
-        CurveBall: "",
-        Budget: budget,
-        Cost: 0,
-        CO2: 0,
-        Calories: 0,
-      },
+    this.scores = [{
+      Destination: startPosition,
+      TransitMode: "",
+      CurveBall: "",
+      Budget: budget,
+      Cost: 0,
+      CO2: 0,
+      Calories: 0,
+    },
     ];
   }
-  sayhello() {
-    alert("hello");
-  }
 
-  Tracker(nw, prev) {
+  Tracker(nw) {
     let newspots = nw.length - 1;
-    let leftover = 10 - prev.length;
+    let leftover = 10 - this.pathHist.length;
 
-    if (prev.length == 10) {
-      prev.splice(0, newspots);
-      prev.push.apply(prev, nw.slice(1));
-    } else if (prev.length > 0 && leftover < newspots) {
-      prev.splice(0, newspots - leftover);
-      prev.push.apply(prev, nw.slice(1));
-    } else if (prev.length == 0) {
-      prev.push.apply(prev, nw);
+    if (this.pathHist.length == 10) {
+      this.pathHist.splice(0, newspots);
+      this.pathHist.push.apply(this.pathHist, nw.slice(1));
+    } else if (this.pathHist.length > 0 && leftover < newspots) {
+      this.pathHist.splice(0, newspots - leftover);
+      this.pathHist.push.apply(this.pathHist, nw.slice(1));
+    } else if (this.pathHist.length == 0) {
+      this.pathHist.push.apply(this.pathHist, nw);
     } else {
-      prev.push.apply(prev, nw.slice(1));
+      this.pathHist.push.apply(this.pathHist, nw.slice(1));
     }
-    return prev;
+    return this.pathHist;
   }
 }
-
+///function to shuffle arrays arround///
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-}
-
-// takes in the new path and the previous path and create a new array with the last 7 steps a bit sloppy
-function Tracker(nw, prev) {
-  let newspots = nw.length - 1;
-  let leftover = 10 - prev.length;
-
-  if (prev.length == 10) {
-    prev.splice(0, newspots);
-    prev.push.apply(prev, nw.slice(1));
-  } else if (prev.length > 0 && leftover < newspots) {
-    prev.splice(0, newspots - leftover);
-    prev.push.apply(prev, nw.slice(1));
-  } else if (prev.length == 0) {
-    prev.push.apply(prev, nw);
-  } else {
-    prev.push.apply(prev, nw.slice(1));
-  }
-  return prev;
 }
 
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
@@ -203,48 +181,55 @@ frame.on("ready", () => {
     board.isometric = !board.isometric;
   });
 
-  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0})
-  
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Player Creation 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  changeView.pos({ x: 50, y: 100, vertical: "bottom", index: 0 })
 
-// Characters placement cards and Budget Cards setup 
-let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
-let budget = [5, 15, 25, 50];
-let locPos = {"Rural 1" :{x:11,y:0} , "Suburban 2":{x:19,y:6}, "Urban 3":{x:3,y:16}, "Downtown 4":{x:7,y:11}}
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Player Creation 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-//////////////Shuffle loc cards and budget cards so it can be random////////////
-shuffleArray(loc);
-shuffleArray(budget);
+  // Characters placement cards and Budget Cards setup 
+  let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+  let budget = [5, 15, 25, 50];
+  let locPos = { "Rural 1": { x: 11, y: 0 }, "Suburban 2": { x: 19, y: 6 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 7, y: 11 } }
+
+  //////////////Shuffle loc cards and budget cards so it can be random////////////
+  shuffleArray(loc);
+  shuffleArray(budget);
 
 
-/////////////Number of players playing the game////////////////////////
-// let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
-// numOfPlayers = parseInt(numOfPlayers);
-let numOfPlayers = 4 ;
+  /////////////Number of players playing the game////////////////////////
+  // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
+  // numOfPlayers = parseInt(numOfPlayers);
+  let numOfPlayers = 4;
 
-if (parseInt(numOfPlayers)){
-  const player1 = new Player( locPos[loc.pop()], budget.pop, 0).sca(0.6).top();
-  const player2 = new Player( locPos[loc.pop()], budget.pop, 1).sca(0.6).top();
+  let listofPlayers = [];
+  let playerTurn = 0;
 
-  board.add(player1, player1.startPosition['x'], player1.startPosition['y']);
-  board.add(player2, player2.startPosition['x'], player2.startPosition['y']);
-}
-if (parseInt(numOfPlayers) >= 3){
-  const player3 = new Player( locPos[loc.pop()], budget.pop, 2).sca(0.6).top();
-  board.add(player3, player3.startPosition['x'], player3.startPosition['y']);
-}
-if (parseInt(numOfPlayers) >= 4){
-  const player4 = new Player( locPos[loc.pop()], budget.pop, 3).sca(0.6).top();
-  board.add(player4, player4.startPosition['x'], player4.startPosition['y']);
-}
 
-const player = new Person().sca(0.6).top();
-board.add(player, 19, 7);
-// board.add(player1, 19, 7);
+  if (parseInt(numOfPlayers)) {
+    const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
+    const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
 
-  // let player1Scorecard = new scoreCard({x:8,y:7},26);
+    board.add(player1, player1.startPosition['x'], player1.startPosition['y']);
+    board.add(player2, player2.startPosition['x'], player2.startPosition['y']);
+
+    listofPlayers.push(player1)
+    listofPlayers.push(player2)
+
+  }
+  if (parseInt(numOfPlayers) >= 3) {
+    const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
+    board.add(player3, player3.startPosition['x'], player3.startPosition['y']);
+    listofPlayers.push(player3)
+  }
+  if (parseInt(numOfPlayers) >= 4) {
+    const player4 = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
+    board.add(player4, player4.startPosition['x'], player4.startPosition['y']);
+    listofPlayers.push(player4)
+  }
+
+  const player = new Person().sca(0.6).top();
+  board.add(player, 19, 7);
 
   // adds a traffic light
   var trafficLight = new TrafficLight();
@@ -267,7 +252,7 @@ board.add(player, 19, 7);
 
   board.on("change", () => {
     // change triggers when rolled over square changes
-    if (player.moving) return;
+    if (listofPlayers[playerTurn].moving) return;
     getPath(); // just get path - don't go to path with the go parameter true
   });
 
@@ -287,8 +272,8 @@ board.add(player, 19, 7);
     // get a path from the player to the currentTile
     // currentTile is the selected or highlighted tile
     pathID = AI.findPath(
-      player.boardCol, // any board item has a boardCol prop
-      player.boardRow,
+      listofPlayers[playerTurn].boardCol, // any board item has a boardCol prop
+      listofPlayers[playerTurn].boardRow,
       board.currentTile.boardCol, // any tile has a boardColo prop
       board.currentTile.boardRow,
       function (thePath) {
@@ -302,7 +287,7 @@ board.add(player, 19, 7);
           // this how to get move character by clicking on the screen might omit later//
           if (go) {
             // from a press on the tile
-            board.followPath(player, path, null, null, 2); // nudge camera 2
+            board.followPath(listofPlayers[playerTurn], path, null, null, 2); // nudge camera 2
             path = null;
           }
         }
@@ -317,32 +302,40 @@ board.add(player, 19, 7);
   /////Player Moves /////////////////////////////////////////////////////////
 
   board.tiles.tap((e) => {
-    if (player.moving) return; // moving pieces given moving property
+    if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
     if (path) {
+
       // because rolled over already
-      if (player.boardTile == trafficLight.boardTile) {
+      if (listofPlayers[playerTurn].boardTile == trafficLight.boardTile) {
         curveBallPane.show();
 
-      }else{
+      } else {
         curveBallPane.hide();
       }
       // Where the character moves
-      board.followPath(player, path, null, null); // nudge camera 2
+      
+      board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
       //Record path for Curveballs
-      // pathHist = Tracker(path, pathHist)
-      // console.log(pathHist);
+      listofPlayers[playerTurn].Tracker(path);
       //Where the score card get updated//
-      // player1Scorecard.scores.push({
-      //     Destination: path[path.length-1],
-      //     TransitMode: mode,
-      //     CurveBall: "",
-      //     Budget:player1Scorecard.scores[player1Scorecard.scores.length -1].Budget - modes[mode].cost,
-      //     Cost: modes[mode].cost,
-      //     CO2: player1Scorecard.scores[player1Scorecard.scores.length -1].CO2 + modes[mode].cImpact,
-      //     Calories: player1Scorecard.scores[player1Scorecard.scores.length -1].Calories + modes[mode].calories,
-      // })
-      // console.log(pathHist);
+      listofPlayers[playerTurn].scores.push({
+          Destination: path[path.length-1],
+          TransitMode: mode,
+          CurveBall: "",
+          Budget:listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].Budget - modes[mode].cost,
+          Cost: modes[mode].cost,
+          CO2: listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].CO2 + modes[mode].cImpact,
+          Calories: listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].Calories + modes[mode].calories,
+      })
+      console.log(listofPlayers[playerTurn].scores)
+      console.log(listofPlayers[playerTurn].pathHist);
       // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
+
+      playerTurn++;
+      console.log(playerTurn)
+      if (playerTurn === numOfPlayers) {
+        playerTurn = 0;
+      }
 
       path = null;
     } else {
@@ -352,17 +345,17 @@ board.add(player, 19, 7);
     stage.update();
   });
 
-  player.on("moved", function () {
+  listofPlayers[playerTurn].on("moved", function () {
     //could be used later after jas finishes landmarks
     // console.log(player.boardTile.lastColor);
-    console.log(player.square);
-    if (player.square == "16-10") {
+    console.log(listofPlayers[playerTurn].square);
+    if (listofPlayers[playerTurn].square == "16-10") {
       landmarks[0] = true;
     }
-    if (player.square == "8-1" && landmarks[0]) {
+    if (listofPlayers[playerTurn].square == "8-1" && landmarks[0]) {
       landmarks[1] = true;
     }
-    if (player.square == "7-9" && landmarks.every(Boolean)) {
+    if (listofPlayers[playerTurn].square == "7-9" && landmarks.every(Boolean)) {
       //Player has won the game
       console.log("Winnnerrrr");
     }
@@ -385,7 +378,7 @@ board.add(player, 19, 7);
   //     case 1:
   //       if(md == "Walk"){
   //         chance = "go back 1 steps";
-          
+
   //         tmpPath = tmpPath.reverse().slice(0,2)
   //         console.log(tmpPath)
   //         board.followPath(player, tmpPath, null, null, );
@@ -399,7 +392,7 @@ board.add(player, 19, 7);
   //         return tmpPath;
   //       }
   //       console.log(chance)
-  
+
   //       break;
   //     ///Rain///////  
   //     case 2:
@@ -504,7 +497,7 @@ board.add(player, 19, 7);
 
   //       console.log(chance)
   //       break;
-     
+
   //   }
 
   //   // document.getElementById("text").innerHTML = chance;
@@ -1569,7 +1562,7 @@ board.add(player, 19, 7);
 
   switch (rCB) {
     case 1:
-     randomLabel = cb1;
+      randomLabel = cb1;
       break;
     case 2:
       randomLabel = cb2;
@@ -1606,7 +1599,7 @@ board.add(player, 19, 7);
 
 
 
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
