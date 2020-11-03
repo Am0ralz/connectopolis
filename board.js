@@ -1170,12 +1170,6 @@ frame.on("ready", () => {
   // CURVE BALL UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  //curve ball number array
-  let cb = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  //random curve ball array
-  let rCB = cb[Math.floor(Math.random() * cb.length)];
-
   var cb1 = new Label({
     text: `Heat 
     Subtract spaces: 
@@ -1186,6 +1180,7 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
   });
 
   var cb2 = new Label({
@@ -1199,6 +1194,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb3 = new Label({
@@ -1212,6 +1209,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb4 = new Label({
@@ -1225,6 +1224,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb5 = new Label({
@@ -1237,6 +1238,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb6 = new Label({
@@ -1249,6 +1252,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb7 = new Label({
@@ -1261,6 +1266,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb8 = new Label({
@@ -1272,6 +1279,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb9 = new Label({
@@ -1282,46 +1291,39 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
-  let randomLabel;
 
-  switch (rCB) {
-    case 1:
-      randomLabel = cb1;
-      break;
-    case 2:
-      randomLabel = cb2;
-      break;
-    case 3:
-      randomLabel = cb3;
-      break;
-    case 4:
-      randomLabel = cb4;
-      break;
-    case 5:
-      randomLabel = cb5;
-      break;
-    case 6:
-      randomLabel = cb6;
-      break;
-    case 7:
-      randomLabel = cb7;
-      break;
-    case 8:
-      randomLabel = cb8;
-      break;
-    case 9:
-      randomLabel = cb9;
-      break;
-  }
+  let cb = [cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9]
+  
+  //random curve ball array
+   let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var curveBallPane = new Pane({
-    label: randomLabel,
+    label: rCB,
     width: 300,
-    height: 200,
+    height: 240,
     corner: 15,
+    backdropClose: false,
+    displayClose: false,
   });
+
+  var closeCB = new Button({
+    label: btnlabel,
+    width: 100,
+    height: 50,
+    backgroundColor: "#2C57A0",
+    rollBackgroundColor: "#244682",
+    corner: 10,
+  }).tap(function () {
+    curveBallPane.hide();
+  });
+
+
+
+  closeCB.center(curveBallPane).pos(null, 165);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
