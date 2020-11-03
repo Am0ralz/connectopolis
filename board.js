@@ -196,43 +196,36 @@ frame.on("ready", () => {
   shuffleArray(loc);
   shuffleArray(budget);
 
-
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
   let numOfPlayers = 4;
-
-  let listofPlayers = [];
+  let listofPlayers= []
   let playerTurn = 0;
-
 
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
 
-    board.add(player1, player1.startPosition['x'], player1.startPosition['y']);
-    board.add(player2, player2.startPosition['x'], player2.startPosition['y']);
+    board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
+    board.add(player2, player2.startPosition["x"], player2.startPosition["y"]); 
 
     listofPlayers.push(player1)
     listofPlayers.push(player2)
-
   }
   if (parseInt(numOfPlayers) >= 3) {
     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
-    board.add(player3, player3.startPosition['x'], player3.startPosition['y']);
+    board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
     listofPlayers.push(player3)
   }
   if (parseInt(numOfPlayers) >= 4) {
     const player4 = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-    board.add(player4, player4.startPosition['x'], player4.startPosition['y']);
+    board.add(player4, player4.startPosition["x"], player4.startPosition["y"]);
     listofPlayers.push(player4)
   }
 
-  const player = new Person().sca(0.6).top();
-  board.add(player, 19, 7);
+ 
 
-  // adds a traffic light
-  var trafficLight = new TrafficLight();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -305,14 +298,14 @@ frame.on("ready", () => {
     if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
     if (path) {
 
-      // because rolled over already
-      if (listofPlayers[playerTurn].boardTile == trafficLight.boardTile) {
-        curveBallPane.show();
+      // // because rolled over already
+      // if (listofPlayers[playerTurn].boardTile == trafficLight.boardTile) {
+      //   curveBallPane.show();
 
-      } else {
-        curveBallPane.hide();
-      }
-      // Where the character moves
+      // } else {
+      //   curveBallPane.hide();
+      // }
+      // // Where the character moves
       
       board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
       //Record path for Curveballs
@@ -365,6 +358,26 @@ frame.on("ready", () => {
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
+//   player.moveEvent = player.on("moving", () => {
+//     if (player.boardTile == trafficLight1.boardTile || player.boardTile == trafficLight2.boardTile ||
+//       player.boardTile == trafficLight3.boardTile || player.boardTile == trafficLight4.boardTile ||
+//       player.boardTile == trafficLight5.boardTile || player.boardTile == trafficLight6.boardTile ||
+//       player.boardTile == trafficLight7.boardTile || player.boardTile == trafficLight8.boardTile ||
+//       player.boardTile == trafficLight9.boardTile 
+//       ) {
+//       curveBallPane.show();
+//     } else {
+//       curveBallPane.hide();
+//     }
+//   }
+// );
+
+
+
+
+
   // let tileCol = trafficLight.boardTile.tileCol;
   // let tileRow = trafficLight.boardTile.tileRow;
 
@@ -394,7 +407,7 @@ frame.on("ready", () => {
   //       console.log(chance)
 
   //       break;
-  //     ///Rain///////  
+  //     ///Rain///////
   //     case 2:
   //       if(md == "Bike" || md == "Scooter"){
   //         chance = "go back 2 steps";
@@ -413,7 +426,7 @@ frame.on("ready", () => {
   //       }
   //       console.log(chance)
   //       break;
-  //      ///High gas///////  
+  //      ///High gas///////
   //     case 3:
   //       if(md == "Car"){
   //         chance = "-$10";
@@ -424,7 +437,7 @@ frame.on("ready", () => {
   //       chance = "go 2 steps left";
   //       console.log(chance)
   //       break;
-  //      ///Late Bus/////// 
+  //      ///Late Bus///////
   //      case 4:
   //       if(md == "Bus"){
   //         chance = "go back 4 steps";
@@ -489,7 +502,7 @@ frame.on("ready", () => {
   //       }
   //       console.log(chance)
   //       break;
-  //     /////Free Scooter/////  
+  //     /////Free Scooter/////
   //     case 9:
   //       if(md == "Scooter"){
   //         chance = "Move again with Scooter";
@@ -1031,424 +1044,119 @@ frame.on("ready", () => {
   // BOARD ITEMS
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  //adds landmarks to board
-  let school = frame.asset("assets/school.png").rot(270).sca(0.4);
-  let park = frame.asset("assets/park.png").rot(270).sca(0.4);
-  let library = frame.asset("assets/library.png").rot(270).sca(0.4);
-
-  board.info[16][10] = { data: "x", color: "#707070", icon: school, items: [] };
-  board.info[8][1] = { data: "x", color: "#acd241", icon: park, items: [] };
-  board.info[7][9] = { data: "x", color: "#707070", icon: library, items: [] };
-
+  ///adds landmarks to board
+  let school = frame.asset("assets/school.png").rot(270).sca(.4);
+  let park = frame.asset("assets/park.png").rot(270).sca(.4);
+  let library = frame.asset("assets/library.png").rot(270).sca(.4);
+  
+  board.info[16][10] = {data:"x", color:"#707070", icon:school, items:[]};
+  board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
+  board.info[7][9] = {data:"x", color:"#707070", icon:library, items:[]};
+  
+  
   //adds road to board
-  board.info[8][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile3.png").sca(0.4),
-    items: [],
-  };
-  board.info[9][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4),
-    items: [],
-  };
-  board.info[10][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[11][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[14][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
+  board.info[8][9] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4), items:[]};
+  board.info[9][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4), items:[]};
+  board.info[10][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[11][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[14][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
 
-  board.info[12][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[13][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[15][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[16][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[17][9] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile4.png").sca(0.4).rot(180),
-    items: [],
-  };
-  board.info[17][10] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile3.png").clone().sca(0.4),
-    items: [],
-  };
-  board.info[18][10] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").clone().sca(0.4),
-    items: [],
-  };
-  board.info[19][10] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").clone().sca(0.4),
-    items: [],
-  };
-  board.info[8][8] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile5.png").sca(0.4),
-    items: [],
-  };
-  board.info[8][7] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile4.png").sca(0.4).rot(180).clone(),
-    items: [],
-  };
-  board.info[7][7] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[6][7] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[5][7] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile3.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[5][6] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile5.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[5][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile4.png").sca(0.4).clone().rot(180),
-    items: [],
-  };
-  board.info[4][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[3][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[2][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[1][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-  board.info[0][5] = {
-    data: "o",
-    color: "#555",
-    icon: asset("tile2.png").sca(0.4).clone(),
-    items: [],
-  };
-
+  board.info[12][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[13][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[15][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[16][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[17][9] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180), items:[]};
+  board.info[17][10] = {data:"o", color:"#555", icon:asset("tile3.png").clone().sca(.4), items:[]};
+  board.info[18][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[19][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
+  board.info[8][8] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4), items:[]};
+  board.info[8][7] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180).clone(), items:[]};
+  board.info[7][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[6][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[5][7] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4).clone(), items:[]};
+  board.info[5][6] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4).clone(), items:[]};
+  board.info[5][5] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).clone().rot(180), items:[]};
+  board.info[4][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[3][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[2][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[1][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[0][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  
   //adds bus route tile
-  board.info[19][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90),
-    items: [],
-  };
-  board.info[18][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[17][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[16][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[15][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[13][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[12][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[11][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[10][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[9][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("2.png").sca(0.15).rot(90).clone(),
-    items: [],
-  };
-  board.info[14][0] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15),
-    items: [],
-  };
-  board.info[14][1] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][2] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][4] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][5] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][6] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][7] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][8] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
+  board.info[19][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90), items:[]};
+  board.info[18][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[17][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[16][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[15][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[13][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[12][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[11][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[10][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[9][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
+  board.info[14][0] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15), items:[]};
+  board.info[14][1] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][2] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][4] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][5] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][6] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][7] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][8] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
   // board.info[14][9] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][10] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][11] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][13] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][14] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][15] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
-  board.info[14][16] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [],
-  };
+  board.info[14][10] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][11] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][13] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][14] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][15] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][16] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
 
+  
   //adds trees to board
-  board.info[17][1] = {
-    data: "0",
-    color: "#333",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[4][1] = {
-    data: "0",
-    color: "#333",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[9][1] = {
-    data: "0",
-    color: "#acd241",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[17][18] = {
-    data: "0",
-    color: "#acd241",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[2][13] = {
-    data: "0",
-    color: "#acd241",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[5][12] = {
-    data: "0",
-    color: "#acd241",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
-  board.info[2][17] = {
-    data: "0",
-    color: "#acd241",
-    icon: null,
-    items: [new Tree().sca(0.8).alp(0.9)],
-  };
+  board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[4][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[9][1] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[17][18] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[2][13] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[5][12] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
+  
 
+  
   //adds all traffic lights on board
-  board.info[2][0] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[12][0] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[19][5] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[3][4] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[4][9] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[9][13] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[11][19] = {
-    data: "x",
-    color: "#707070",
-    icon: null,
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[14][3] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("3.png").sca(0.15).clone(),
-    items: [new TrafficLight().sca(0.6)],
-  };
-  board.info[14][12] = {
-    data: "r",
-    color: "#707070",
-    icon: asset("1.png").sca(0.15),
-    items: [new TrafficLight().sca(0.6)],
-  };
+  var trafficLight1 = new TrafficLight().sca(.6);
+  var trafficLight2 = new TrafficLight().sca(.6);
+  var trafficLight3 = new TrafficLight().sca(.6);
+  var trafficLight4 = new TrafficLight().sca(.6);
+  var trafficLight5 = new TrafficLight().sca(.6);
+  var trafficLight6 = new TrafficLight().sca(.6);
+  var trafficLight7 = new TrafficLight().sca(.6);
+  var trafficLight8 = new TrafficLight().sca(.6);
+  var trafficLight9 = new TrafficLight().sca(.6);
+
+  board.add(trafficLight1, 0, 2);
+  board.add(trafficLight2, 0, 12);
+  board.add(trafficLight3, 5, 19);
+  board.add(trafficLight4, 4, 3);
+  board.add(trafficLight5, 9, 4);
+  board.add(trafficLight6, 13, 9);
+  board.add(trafficLight7, 19, 11);
+  board.add(trafficLight8, 3, 14);
+  board.add(trafficLight9, 12, 14);
+  
+  board.info[2][0] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[12][0] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[19][5] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[3][4] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[4][9] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[9][13] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[11][19] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
+  board.info[14][3] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[new TrafficLight().sca(.6)]};
+  board.info[14][12] = {data:"r", color:"#707070", icon:asset("1.png").sca(.15), items:[new TrafficLight().sca(.6)]};
+  
+  
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  //curve ball number array
-  let cb = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  //random curve ball array
-  let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var cb1 = new Label({
     text: `Heat 
@@ -1460,6 +1168,7 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
   });
 
   var cb2 = new Label({
@@ -1473,6 +1182,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb3 = new Label({
@@ -1486,6 +1197,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb4 = new Label({
@@ -1499,6 +1212,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb5 = new Label({
@@ -1511,6 +1226,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb6 = new Label({
@@ -1523,6 +1240,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb7 = new Label({
@@ -1535,6 +1254,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb8 = new Label({
@@ -1546,6 +1267,8 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
   var cb9 = new Label({
@@ -1556,47 +1279,35 @@ frame.on("ready", () => {
     labelWidth: 250,
     shiftVertical: -30,
     align: "center",
+    lineHeight: 25,
+
   });
 
-  let randomLabel;
 
-  switch (rCB) {
-    case 1:
-      randomLabel = cb1;
-      break;
-    case 2:
-      randomLabel = cb2;
-      break;
-    case 3:
-      randomLabel = cb3;
-      break;
-    case 4:
-      randomLabel = cb4;
-      break;
-    case 5:
-      randomLabel = cb5;
-      break;
-    case 6:
-      randomLabel = cb6;
-      break;
-    case 7:
-      randomLabel = cb7;
-      break;
-    case 8:
-      randomLabel = cb8;
-      break;
-    case 9:
-      randomLabel = cb9;
-      break;
-  }
+  let cb = [cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9]
+  
+  //random curve ball array
+   let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var curveBallPane = new Pane({
-    label: randomLabel,
-    width: 600,
-    height: 600,
+    label: rCB,
+    width: 300,
+    height: 240,
     corner: 15,
+    backdropClose: false,
+    displayClose: false,
   });
 
+  var closeCB = new Button({
+    label: btnlabel,
+    width: 100,
+    height: 50,
+    backgroundColor: "#2C57A0",
+    rollBackgroundColor: "#244682",
+    corner: 10,
+  }).tap(function () {
+    curveBallPane.hide();
+  });
 
 
 
