@@ -224,9 +224,6 @@ frame.on("ready", () => {
     listofPlayers.push(player4)
   }
 
- 
-
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1381,6 +1378,117 @@ frame.on("ready", () => {
     height: 600,
     corner: 15,
   });
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // PLAYER INFO UI
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  var playerInfo = new Rectangle({
+   width: 150,
+   height: 150,
+   color: "white",
+   corner: 10,
+  });
+  playerInfo.pos({x: 20, y: 110, vertical: "bottom"});
+
+  var player1Label = new Label({
+    text: "Player 1",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player2Label = new Label({
+    text: "Player 2",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player3Label = new Label({
+    text: "Player 3",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player4Label = new Label({
+    text: "Player 4",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+
+
+  //player avatars
+  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20,20);
+  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20,50);
+  listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
+  listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
+
+  //labels for player numbers
+  player1Label.center(playerInfo).pos(40,48);
+  player2Label.center(playerInfo).pos(40,78);
+  player3Label.center(playerInfo).pos(40,108);
+  player4Label.center(playerInfo).pos(40,138);
+
+
+var circle1 = new Circle(5, "white");
+circle1.center(playerInfo).pos(110,30);
+
+var circle2= new Circle(5, "white");
+circle2.center(playerInfo).pos(110,60);
+
+var circle3 = new Circle(5, "white");
+circle3.center(playerInfo).pos(110,90);
+
+var circle4 = new Circle(5, "white");
+circle4.center(playerInfo).pos(110,120);
+
+
+
+console.log(listofPlayers[playerTurn]);
+
+  // switch(playerTurn) {
+  //   case 1:
+  //     circle1.color = "green";
+  //     circle2.color = "white";
+  //     circle3.color = "white";
+  //     circle4.color = "white";
+  //     break;
+  //   case 2:
+  //     circle1.color = "white";
+  //     circle2.color = "green";
+  //     circle3.color = "white";
+  //     circle4.color = "white";
+  //     break;
+  //   case 3:
+  //     circle1.color = "white";
+  //     circle2.color = "white";
+  //     circle3.color = "green";
+  //     circle4.color = "white";
+  //     break;
+  //   case 4:
+  //     circle1.color = "white";
+  //     circle2.color = "white";
+  //     circle3.color = "white";
+  //     circle4.color = "green";
+  //     break;
+  // }
 
   board.update();
 
