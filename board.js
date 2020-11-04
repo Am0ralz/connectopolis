@@ -251,8 +251,6 @@ frame.on("ready", () => {
 
   //sets color of circle of player turn green
   function setReady(){
-
-    console.log(playerTurn)
     switch(playerTurn) {
     case 0:
       circle1.color = "green";
@@ -369,7 +367,8 @@ frame.on("ready", () => {
         playerTurn = 0;
       }
 
-      setReady();
+      setTimeout(setReady, 1000);
+      
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -1440,36 +1439,9 @@ var circle4 = new Circle(5, "white");
 circle4.center(playerInfo).pos(110,120);
 
 
+// setTimeout(setReady, 10000);
+
 setReady();
-// console.log(listofPlayers[playerTurn]);
-
-  // switch(playerTurn) {
-  //   case 1:
-  //     circle1.color = "green";
-  //     circle2.color = "white";
-  //     circle3.color = "white";
-  //     circle4.color = "white";
-  //     break;
-  //   case 2:
-  //     circle1.color = "white";
-  //     circle2.color = "green";
-  //     circle3.color = "white";
-  //     circle4.color = "white";
-  //     break;
-  //   case 3:
-  //     circle1.color = "white";
-  //     circle2.color = "white";
-  //     circle3.color = "green";
-  //     circle4.color = "white";
-  //     break;
-  //   case 4:
-  //     circle1.color = "white";
-  //     circle2.color = "white";
-  //     circle3.color = "white";
-  //     circle4.color = "green";
-  //     break;
-  // }
-
 
    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
