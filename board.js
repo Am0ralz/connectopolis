@@ -109,6 +109,14 @@ const frame = new Frame({
     "tile3.png",
     "tile4.png",
     "tile5.png",
+    "bike.png",
+    "bus.png",
+    "car.png",
+    "scooter.png",
+    "walk.png",
+    "library.png",
+    "park.png",
+    "school.png"
   ],
   path: "assets/",
 });
@@ -273,6 +281,40 @@ frame.on("ready", () => {
   let ticker;
   let path;
 
+
+  //sets color of circle of player turn green
+  function setReady(){
+
+    console.log(playerTurn)
+    switch(playerTurn) {
+    case 0:
+      circle1.color = "green";
+      circle2.color = "white";
+      circle3.color = "white";
+      circle4.color = "white";
+      break;
+    case 1:
+      circle1.color = "white";
+      circle2.color = "green";
+      circle3.color = "white";
+      circle4.color = "white";
+      break;
+    case 2:
+      circle1.color = "white";
+      circle2.color = "white";
+      circle3.color = "green";
+      circle4.color = "white";
+      break;
+    case 3:
+      circle1.color = "white";
+      circle2.color = "white";
+      circle3.color = "white";
+      circle4.color = "green";
+      break;
+  }
+  }
+
+
   board.on("change", () => {
     // change triggers when rolled over square changes
     if (listofPlayers[playerTurn].moving) return;
@@ -355,6 +397,8 @@ frame.on("ready", () => {
       }else{
         alert("not enough money!! Pick a different Mode")
       }
+
+      setReady();
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -591,9 +635,6 @@ frame.on("ready", () => {
     width: 500,
     height: 600,
     backgroundColor: "white",
-    // backdropClose: false,
-    // displayClose: false,
-    // close: true,
     corner: 0,
   });
 
@@ -621,34 +662,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 100);
+    .pos(35, 100);
 
+  //first label for destination
   new Label({
-    text: " ",
+    text: "1 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 100);
+    .pos(145, 100);
 
+  //second label for destination
   new Label({
-    text: " ",
+    text: "2 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 100);
+    .pos(255, 100);
 
+  //third label for destination
   new Label({
-    text: " ",
+    text: "3 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 100);
+    .pos(365, 100);
 
   ///////////////labels for transit
   new Label({
@@ -659,34 +706,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 150);
+    .pos(35, 150);
 
+  //first label for transit mode
   new Label({
-    text: " ",
+    text: "4 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 150);
+    .pos(145, 150);
 
+  //second label for transit mode
   new Label({
-    text: " ",
+    text: "5 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 150);
+    .pos(255, 150);
 
+  //third label for transit mode
   new Label({
-    text: " ",
+    text: "6 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 150);
+    .pos(365, 150);
 
   ///////////////labels for curve ball
   new Label({
@@ -697,34 +750,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 200);
+    .pos(35, 200);
 
+  //first label for curve ball
   new Label({
-    text: " ",
+    text: "7 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 200);
+    .pos(145, 200);
 
+    //second label for curve ball
   new Label({
-    text: " ",
+    text: "8 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 200);
+    .pos(255, 200);
 
+  //third label for curve ball
   new Label({
-    text: " ",
+    text: "9 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 200);
+    .pos(365, 200);
 
   /////labels for cost
 
@@ -736,34 +795,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 250);
+    .pos(35, 250);
 
+  //first label for cost
   new Label({
-    text: " ",
+    text: "10 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 250);
+    .pos(145, 250);
 
+  //second label for cost
   new Label({
-    text: " ",
+    text: "11 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 250);
+    .pos(255, 250);
 
+  //third label for cost
   new Label({
-    text: " ",
+    text: "12 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 250);
+    .pos(365, 250);
 
   /////labels for CO2 Impact
 
@@ -775,34 +840,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 300);
+    .pos(35, 300);
 
+  //first label for CO2 impact
   new Label({
-    text: " ",
+    text: "13 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 300);
+    .pos(145, 300);
 
+  //second label for CO2 impact
   new Label({
-    text: " ",
+    text: "14 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 300);
+    .pos(255, 300);
 
+  //third label for CO2 impact
   new Label({
-    text: " ",
+    text: "15 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 300);
+    .pos(365, 300);
 
   //////labels for calories
 
@@ -814,34 +885,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 350);
+    .pos(35, 350);
 
+  //first label for calories
   new Label({
-    text: " ",
+    text: "16",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 350);
-
+    .pos(145, 350);
+  
+  //second label for calories
   new Label({
-    text: " ",
+    text: "17",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 350);
+    .pos(255, 350);
 
+  //third label for calories
   new Label({
-    text: " ",
+    text: "18",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 350);
+    .pos(365, 350);
 
   //////labels for budget
 
@@ -853,34 +930,40 @@ frame.on("ready", () => {
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(20, 400);
+    .pos(35, 400);
 
+  //first label for budget
   new Label({
-    text: " ",
+    text: "19",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(130, 400);
+    .pos(145, 400);
 
+  //second label for budget
   new Label({
-    text: " ",
+    text: "20",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(240, 400);
+    .pos(255, 400);
 
+  //third label for budget
   new Label({
-    text: " ",
+    text: "21",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
+    align: "center"
   })
     .center(scoreCardPane)
-    .pos(350, 400);
+    .pos(365, 400);
 
   //////label indicating which is the current
 
@@ -890,51 +973,24 @@ frame.on("ready", () => {
     color: "white",
     backing: new Rectangle(100, 40, "#383838"),
     font: "Alata",
+    align: "center"
+
+    
+
   })
     .center(scoreCardPane)
-    .pos(350, 450);
+    .pos(365, 450);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //icons for mode of transport
-  let walkIcon = frame.asset("assets/walk.png").pos(14, 15).sca(0.65);
-  let bikeIcon = frame.asset("assets/bike.png").pos(14, 15).sca(0.65);
-  let carIcon = frame.asset("assets/car.png").pos(14, 15).sca(0.65);
-  let scooterIcon = frame.asset("assets/scooter.png").pos(14, 15).sca(0.65);
-  let busIcon = frame.asset("assets/bus.png").pos(14, 15).sca(0.65);
-
-  //labels for mode of transport
-  var walklabel = new Label({
-    text: "Walk",
-    size: 18,
-    font: "Alata",
-  });
-
-  var bikelabel = new Label({
-    text: "Bike",
-    size: 18,
-    font: "Alata",
-  });
-
-  var carlabel = new Label({
-    text: "Car",
-    size: 18,
-    font: "Alata",
-  });
-
-  var scooterlabel = new Label({
-    text: "e-Scooter",
-    size: 18,
-    font: "Alata",
-  });
-
-  var buslabel = new Label({
-    text: "Bus",
-    size: 18,
-    font: "Alata",
-  });
+  let walkIcon = asset("assets/walk.png").pos(14, 15).sca(0.65);
+  let bikeIcon = asset("assets/bike.png").pos(14, 15).sca(0.65);
+  let carIcon = asset("assets/car.png").pos(14, 15).sca(0.65);
+  let scooterIcon = asset("assets/scooter.png").pos(14, 15).sca(0.65);
+  let busIcon = asset("assets/bus.png").pos(14, 15).sca(0.65);
 
   //buttons for mode of transport
   var walkBtn = new Button({
@@ -1334,6 +1390,117 @@ frame.on("ready", () => {
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // PLAYER INFO UI
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  var playerInfo = new Rectangle({
+   width: 150,
+   height: 150,
+   color: "white",
+   corner: 10,
+  });
+  playerInfo.pos({x: 20, y: 110, vertical: "bottom"});
+
+  var player1Label = new Label({
+    text: "Player 1",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player2Label = new Label({
+    text: "Player 2",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player3Label = new Label({
+    text: "Player 3",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+  var player4Label = new Label({
+    text: "Player 4",
+    size: 12,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+    lineHeight: 25,
+
+  });
+
+
+  //player avatars
+  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20,20);
+  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20,50);
+  listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
+  listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
+
+  //labels for player numbers
+  player1Label.center(playerInfo).pos(40,48);
+  player2Label.center(playerInfo).pos(40,78);
+  player3Label.center(playerInfo).pos(40,108);
+  player4Label.center(playerInfo).pos(40,138);
+
+
+var circle1 = new Circle(5, "white");
+circle1.center(playerInfo).pos(110,30);
+
+var circle2= new Circle(5, "white");
+circle2.center(playerInfo).pos(110,60);
+
+var circle3 = new Circle(5, "white");
+circle3.center(playerInfo).pos(110,90);
+
+var circle4 = new Circle(5, "white");
+circle4.center(playerInfo).pos(110,120);
+
+
+setReady();
+// console.log(listofPlayers[playerTurn]);
+
+  // switch(playerTurn) {
+  //   case 1:
+  //     circle1.color = "green";
+  //     circle2.color = "white";
+  //     circle3.color = "white";
+  //     circle4.color = "white";
+  //     break;
+  //   case 2:
+  //     circle1.color = "white";
+  //     circle2.color = "green";
+  //     circle3.color = "white";
+  //     circle4.color = "white";
+  //     break;
+  //   case 3:
+  //     circle1.color = "white";
+  //     circle2.color = "white";
+  //     circle3.color = "green";
+  //     circle4.color = "white";
+  //     break;
+  //   case 4:
+  //     circle1.color = "white";
+  //     circle2.color = "white";
+  //     circle3.color = "white";
+  //     circle4.color = "green";
+  //     break;
+  // }
+
+
+   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1363,6 +1530,175 @@ frame.on("ready", () => {
     height: 600,
     corner: 15,
   });
+
+
+
+//map key label
+new Label({
+  text: "Map Key",
+  size: 25,
+  font: "Alata",
+}).center(helpPane).pos(null,40);
+
+
+//icon for road
+new Rectangle(30, 30, "#707070").center(helpPane).pos(65,90);
+
+new Label({
+text: `Road - walk, 
+bike, car &
+scooter only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(40,140);
+
+//icon for grass
+new Rectangle(30, 30, "#acd241").center(helpPane).pos(190,90);
+
+new Label({
+text: `Grass - walk & 
+bike only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(160,140);
+
+//icon for bus line
+asset("assets/3.png").sca(.25).center(helpPane).pos(330,90);
+
+new Label({
+text: `Bus Line - walk,
+bus & car only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(300,140);
+
+
+//icon for highway
+new Rectangle(30, 30, "#555555").center(helpPane).pos(490,90);
+asset("assets/tile5.png").sca(.7).center(helpPane).pos(490,90);
+
+new Label({
+text: `Highway - walk 
+& car only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(450,140);
+
+
+//modes of transportation label
+ new Label({
+  text: "Modes of Transportation",
+  size: 25,
+  font: "Alata",
+  }).center(helpPane).pos(null,210);
+
+
+//labels for mode of transport
+new Label({
+text: `Cost: Free
+Spaces: 1
+CO2 Impact: 0
+Calories: 21`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(20,300);
+
+new Label({
+text: `Cost: $1
+Spaces: 2
+CO2 Impact: 0
+Calories 27`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(140,300);
+
+new Label({
+text: `Cost: $4
+Spaces: 4
+CO2 Impact: 6
+Calories: 1.6`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(260,300);
+
+
+new Label({
+text: `Cost: $3
+Spaces: 3
+CO2 Impact: 0
+Calories: 1.8`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(380,300);
+
+new Label({
+text: `Cost: 8
+Spaces: 5
+CO2 Impact: 10
+Calories: 3`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(500,300);
+
+
+//icons for mode of transportation
+asset("walk.png").sca(.8).center(helpPane).pos(50,260);
+asset("bike.png").sca(.8).center(helpPane).pos(170,260);
+asset("bus.png").sca(.8).center(helpPane).pos(280,260);
+asset("scooter.png").sca(.8).center(helpPane).pos(400,260);
+asset("car.png").sca(.8).center(helpPane).pos(520,260);
+
+
+
+//How to Play Label
+ new Label({
+  text: "How To Play",
+  size: 25,
+  font: "Alata",
+  }).center(helpPane).pos(null,390);
+
+  new Label({
+  text: "At the beginnning of the game each player will be given a random location and a random budget which the player will need to use to their advantage to get to their destinations. The goal of this game is to get to these destinations, in order, first. You must visit the school first, park second, and lastly the library. Whoever visits all places first, wins. Be mindful of your budget, calories, and CO2 impact all while playing this game as this is also important.",
+  size: 14,
+  font: "Alata",
+  labelWidth: 550,
+  align: "center"
+  }).center(helpPane).pos(null,430);
+  
+
+
+//icons for destinations
+  asset("school.png").sca(.7).center(helpPane).pos(240,530);
+  asset("park.png").sca(.7).center(helpPane).pos(300,530);
+  asset("library.png").sca(.7).center(helpPane).pos(360,530);
+  
+  
+//labels for destinations
+  new Label({
+  text: "School",
+  size: 12,
+  font: "Alata",
+  labelWidth: 550,
+  align: "center",
+  }).center(helpPane).pos(230,560);
+
+
+  new Label({
+    text: "Park",
+    size: 12,
+    font: "Alata",
+    labelWidth: 550,
+    align: "center",
+    }).center(helpPane).pos(300,560);
+
+    new Label({
+      text: "Library",
+      size: 12,
+      font: "Alata",
+      labelWidth: 550,
+      align: "center",
+      }).center(helpPane).pos(350,560);
+    
 
   board.update();
 
