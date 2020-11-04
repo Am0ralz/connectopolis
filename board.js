@@ -248,6 +248,40 @@ frame.on("ready", () => {
   let ticker;
   let path;
 
+
+  //sets color of circle of player turn green
+  function setReady(){
+
+    console.log(playerTurn)
+    switch(playerTurn) {
+    case 0:
+      circle1.color = "green";
+      circle2.color = "white";
+      circle3.color = "white";
+      circle4.color = "white";
+      break;
+    case 1:
+      circle1.color = "white";
+      circle2.color = "green";
+      circle3.color = "white";
+      circle4.color = "white";
+      break;
+    case 2:
+      circle1.color = "white";
+      circle2.color = "white";
+      circle3.color = "green";
+      circle4.color = "white";
+      break;
+    case 3:
+      circle1.color = "white";
+      circle2.color = "white";
+      circle3.color = "white";
+      circle4.color = "green";
+      break;
+  }
+  }
+
+
   board.on("change", () => {
     // change triggers when rolled over square changes
     if (listofPlayers[playerTurn].moving) return;
@@ -335,6 +369,7 @@ frame.on("ready", () => {
         playerTurn = 0;
       }
 
+      setReady();
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -1405,8 +1440,8 @@ var circle4 = new Circle(5, "white");
 circle4.center(playerInfo).pos(110,120);
 
 
-
-console.log(listofPlayers[playerTurn]);
+setReady();
+// console.log(listofPlayers[playerTurn]);
 
   // switch(playerTurn) {
   //   case 1:
@@ -1594,26 +1629,47 @@ asset("car.png").sca(.8).center(helpPane).pos(520,260);
   }).center(helpPane).pos(null,390);
 
   new Label({
-  text: "The goal of this game is to get to these destinations, in order, first. You must visit the school first, second the park, and lastly the library.  ",
+  text: "At the beginnning of the game each player will be given a random location and a random budget which the player will need to use to their advantage to get to their destinations. The goal of this game is to get to these destinations, in order, first. You must visit the school first, park second, and lastly the library. Whoever visits all places first, wins. Be mindful of your budget, calories, and CO2 impact all while playing this game as this is also important.",
   size: 14,
   font: "Alata",
   labelWidth: 550,
   align: "center"
   }).center(helpPane).pos(null,430);
   
+
+
+//icons for destinations
+  asset("school.png").sca(.7).center(helpPane).pos(240,530);
+  asset("park.png").sca(.7).center(helpPane).pos(300,530);
+  asset("library.png").sca(.7).center(helpPane).pos(360,530);
   
+  
+//labels for destinations
   new Label({
-    text: "The goal of this game is to get to these destinations, in order, first. You must visit the school first, second the park, and lastly the library.  ",
-    size: 14,
+  text: "School",
+  size: 12,
+  font: "Alata",
+  labelWidth: 550,
+  align: "center",
+  }).center(helpPane).pos(230,560);
+
+
+  new Label({
+    text: "Park",
+    size: 12,
     font: "Alata",
     labelWidth: 550,
-    align: "center"
-    }).center(helpPane).pos(null,430);
-    
-  asset("school.png").sca(.7).center(helpPane).pos(240,470);
-  asset("park.png").sca(.7).center(helpPane).pos(300,470);
-  asset("library.png").sca(.7).center(helpPane).pos(360,470);
+    align: "center",
+    }).center(helpPane).pos(300,560);
 
+    new Label({
+      text: "Library",
+      size: 12,
+      font: "Alata",
+      labelWidth: 550,
+      align: "center",
+      }).center(helpPane).pos(350,560);
+    
 
   board.update();
 
