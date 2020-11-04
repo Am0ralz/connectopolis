@@ -79,6 +79,14 @@ const frame = new Frame({
     "tile3.png",
     "tile4.png",
     "tile5.png",
+    "bike.png",
+    "bus.png",
+    "car.png",
+    "scooter.png",
+    "walk.png",
+    "library.png",
+    "park.png",
+    "school.png"
   ],
   path: "assets/",
 });
@@ -914,42 +922,11 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //icons for mode of transport
-  let walkIcon = frame.asset("assets/walk.png").pos(14, 15).sca(0.65);
-  let bikeIcon = frame.asset("assets/bike.png").pos(14, 15).sca(0.65);
-  let carIcon = frame.asset("assets/car.png").pos(14, 15).sca(0.65);
-  let scooterIcon = frame.asset("assets/scooter.png").pos(14, 15).sca(0.65);
-  let busIcon = frame.asset("assets/bus.png").pos(14, 15).sca(0.65);
-
-  //labels for mode of transport
-  var walklabel = new Label({
-    text: "Walk",
-    size: 18,
-    font: "Alata",
-  });
-
-  var bikelabel = new Label({
-    text: "Bike",
-    size: 18,
-    font: "Alata",
-  });
-
-  var carlabel = new Label({
-    text: "Car",
-    size: 18,
-    font: "Alata",
-  });
-
-  var scooterlabel = new Label({
-    text: "e-Scooter",
-    size: 18,
-    font: "Alata",
-  });
-
-  var buslabel = new Label({
-    text: "Bus",
-    size: 18,
-    font: "Alata",
-  });
+  let walkIcon = asset("assets/walk.png").pos(14, 15).sca(0.65);
+  let bikeIcon = asset("assets/bike.png").pos(14, 15).sca(0.65);
+  let carIcon = asset("assets/car.png").pos(14, 15).sca(0.65);
+  let scooterIcon = asset("assets/scooter.png").pos(14, 15).sca(0.65);
+  let busIcon = asset("assets/bus.png").pos(14, 15).sca(0.65);
 
   //buttons for mode of transport
   var walkBtn = new Button({
@@ -1349,38 +1326,6 @@ frame.on("ready", () => {
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // HELP BUTTON / MAP KEY
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  let helpIcon = frame.asset("assets/help.png").center();
-
-  var helpBtn = new Button({
-    width: 50,
-    height: 50,
-    backgroundColor: "white",
-    rollBackgroundColor: "#f5f5f5",
-    corner: 25,
-    icon: helpIcon,
-  }).tap(function () {
-    helpPane.show();
-  });
-
-  helpBtn.pos({
-    x: 20,
-    y: 50,
-    vertical: "bottom",
-    horizontal: "right",
-    index: 0,
-  });
-
-  var helpPane = new Pane({
-    width: 600,
-    height: 600,
-    corner: 15,
-  });
-
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PLAYER INFO UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1489,6 +1434,186 @@ console.log(listofPlayers[playerTurn]);
   //     circle4.color = "green";
   //     break;
   // }
+
+
+   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // HELP BUTTON / MAP KEY
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let helpIcon = frame.asset("assets/help.png").center();
+
+  var helpBtn = new Button({
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 25,
+    icon: helpIcon,
+  }).tap(function () {
+    helpPane.show();
+  });
+
+  helpBtn.pos({
+    x: 20,
+    y: 50,
+    vertical: "bottom",
+    horizontal: "right",
+    index: 0,
+  });
+
+  var helpPane = new Pane({
+    width: 600,
+    height: 600,
+    corner: 15,
+  });
+
+
+
+//map key label
+new Label({
+  text: "Map Key",
+  size: 25,
+  font: "Alata",
+}).center(helpPane).pos(null,40);
+
+
+//icon for road
+new Rectangle(30, 30, "#707070").center(helpPane).pos(65,90);
+
+new Label({
+text: `Road - walk, 
+bike, car &
+scooter only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(40,140);
+
+//icon for grass
+new Rectangle(30, 30, "#acd241").center(helpPane).pos(190,90);
+
+new Label({
+text: `Grass - walk & 
+bike only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(160,140);
+
+//icon for bus line
+asset("assets/3.png").sca(.25).center(helpPane).pos(330,90);
+
+new Label({
+text: `Bus Line - walk,
+bus & car only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(300,140);
+
+
+//icon for highway
+new Rectangle(30, 30, "#555555").center(helpPane).pos(490,90);
+asset("assets/tile5.png").sca(.7).center(helpPane).pos(490,90);
+
+new Label({
+text: `Highway - walk 
+& car only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(450,140);
+
+
+//modes of transportation label
+ new Label({
+  text: "Modes of Transportation",
+  size: 25,
+  font: "Alata",
+  }).center(helpPane).pos(null,210);
+
+
+//labels for mode of transport
+new Label({
+text: `Cost: Free
+Spaces: 1
+CO2 Impact: 0
+Calories: 21`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(20,300);
+
+new Label({
+text: `Cost: $1
+Spaces: 2
+CO2 Impact: 0
+Calories 27`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(140,300);
+
+new Label({
+text: `Cost: $4
+Spaces: 4
+CO2 Impact: 6
+Calories: 1.6`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(260,300);
+
+
+new Label({
+text: `Cost: $3
+Spaces: 3
+CO2 Impact: 0
+Calories: 1.8`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(380,300);
+
+new Label({
+text: `Cost: 8
+Spaces: 5
+CO2 Impact: 10
+Calories: 3`,
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(500,300);
+
+
+//icons for mode of transportation
+asset("walk.png").sca(.8).center(helpPane).pos(50,260);
+asset("bike.png").sca(.8).center(helpPane).pos(170,260);
+asset("bus.png").sca(.8).center(helpPane).pos(280,260);
+asset("scooter.png").sca(.8).center(helpPane).pos(400,260);
+asset("car.png").sca(.8).center(helpPane).pos(520,260);
+
+
+
+//How to Play Label
+ new Label({
+  text: "How To Play",
+  size: 25,
+  font: "Alata",
+  }).center(helpPane).pos(null,390);
+
+  new Label({
+  text: "The goal of this game is to get to these destinations, in order, first. You must visit the school first, second the park, and lastly the library.  ",
+  size: 14,
+  font: "Alata",
+  labelWidth: 550,
+  align: "center"
+  }).center(helpPane).pos(null,430);
+  
+  
+  new Label({
+    text: "The goal of this game is to get to these destinations, in order, first. You must visit the school first, second the park, and lastly the library.  ",
+    size: 14,
+    font: "Alata",
+    labelWidth: 550,
+    align: "center"
+    }).center(helpPane).pos(null,430);
+    
+  asset("school.png").sca(.7).center(helpPane).pos(240,470);
+  asset("park.png").sca(.7).center(helpPane).pos(300,470);
+  asset("library.png").sca(.7).center(helpPane).pos(360,470);
+
 
   board.update();
 
