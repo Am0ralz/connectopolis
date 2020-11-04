@@ -4,10 +4,21 @@ import { DiffTree, TrafficLight } from "./objects.js";
 ZIMONON = true;
 ///////////////////Player/////////////////////////////////
 class Player extends Person {
+
+   modes = {
+    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
+    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
+    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
+  };
   constructor(startPosition, budget, id) {
     super();
     this.startPosition = startPosition;
     this.budget = budget;
+    this.cO2 = 0;
+    this.calories= 0;
+
     this.id = id;
     this.landmarks = [false, false];
     this.pathHist = [];
@@ -23,9 +34,34 @@ class Player extends Person {
       Calories: 0,
     },
     ];
+    
   }
 
-  Tracker(nw) {
+  moneyMove(mode){
+    if (this.budget >= this.modes[mode].cost){
+      return true;
+    }
+    return false;
+  }
+
+  updatePlayerInfo(path, mode){
+    this.budget = this.budget - this.modes[mode].cost;
+    this.cO2 = this.cO2 + this.modes[mode].cImpact ;
+    this.calories = this.calories + this.modes[mode].calories;
+    this.scores.push({
+      Destination: path[path.length-1],
+      TransitMode: mode,
+      CurveBall: "",
+      Budget:this.budget,
+      Cost: this.modes[mode].cost,
+      CO2: this.cO2,
+      Calories: this.calories,
+  })
+
+    
+
+  }
+  tracker(nw) {
     let newspots = nw.length - 1;
     let leftover = 10 - this.pathHist.length;
 
@@ -55,13 +91,7 @@ function shuffleArray(array) {
 let mode = "Walk";
 
 /////////////////// //Different Modes and their properties////////////////////
-const modes = {
-  Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-  Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-  Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
-  Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
-  Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
-};
+
 
 const frame = new Frame({
   scaling: "full",
@@ -217,7 +247,7 @@ frame.on("ready", () => {
 
     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
     board.add(player2, player2.startPosition["x"], player2.startPosition["y"]); 
-
+    
     listofPlayers.push(player1)
     listofPlayers.push(player2)
   }
@@ -231,6 +261,9 @@ frame.on("ready", () => {
     board.add(player4, player4.startPosition["x"], player4.startPosition["y"]);
     listofPlayers.push(player4)
   }
+
+
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -310,14 +343,14 @@ frame.on("ready", () => {
         // the callback function when path is found
         if (thePath) {
           ////// This where we set the path according to the Mode/////
-          path = thePath.slice(0, modes[mode].spaces + 1);
+          path = thePath.slice(0, listofPlayers[playerTurn].modes[mode].spaces + 1);
 
           Ticker.remove(ticker);
           board.showPath(path);
           // this how to get move character by clicking on the screen might omit later//
           if (go) {
             // from a press on the tile
-            board.followPath(listofPlayers[playerTurn], path, null, null, 2); // nudge camera 2
+            // board.followPath(listofPlayers[playerTurn], path, null, null, 2); // nudge camera 2
             path = null;
           }
         }
@@ -343,28 +376,24 @@ frame.on("ready", () => {
       //   curveBallPane.hide();
       // }
       // // Where the character moves
-      
-      board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+
+     if(listofPlayers[playerTurn].moneyMove(mode)){
+        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
       //Record path for Curveballs
-      listofPlayers[playerTurn].Tracker(path);
+        listofPlayers[playerTurn].tracker(path);
       //Where the score card get updated//
-      listofPlayers[playerTurn].scores.push({
-          Destination: path[path.length-1],
-          TransitMode: mode,
-          CurveBall: "",
-          Budget:listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].Budget - modes[mode].cost,
-          Cost: modes[mode].cost,
-          CO2: listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].CO2 + modes[mode].cImpact,
-          Calories: listofPlayers[playerTurn].scores[listofPlayers[playerTurn].scores.length -1].Calories + modes[mode].calories,
-      })
-      console.log(listofPlayers[playerTurn].scores)
-      console.log(listofPlayers[playerTurn].pathHist);
+        listofPlayers[playerTurn].updatePlayerInfo(path,mode);
+        console.log(listofPlayers[playerTurn].scores)
+        console.log(listofPlayers[playerTurn].pathHist);
       // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
 
-      playerTurn++;
-      console.log(playerTurn)
-      if (playerTurn === numOfPlayers) {
-        playerTurn = 0;
+        playerTurn++;
+        console.log(playerTurn)
+        if (playerTurn === numOfPlayers) {
+          playerTurn = 0;
+        }
+      }else{
+        alert("not enough money!! Pick a different Mode")
       }
 
       setTimeout(setReady, 1000);
