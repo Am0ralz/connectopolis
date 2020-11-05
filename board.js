@@ -44,6 +44,7 @@ class Player extends Person {
     return false;
   }
 
+
   updatePlayerInfo(path, mode){
     this.budget = this.budget - this.modes[mode].cost;
     this.cO2 = this.cO2 + this.modes[mode].cImpact ;
@@ -58,7 +59,6 @@ class Player extends Person {
       Calories: this.calories,
   })
 
-    
 
   }
   tracker(nw) {
@@ -397,7 +397,7 @@ frame.on("ready", () => {
       }
 
       setTimeout(setReady, 1000);
-      
+
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -664,7 +664,7 @@ frame.on("ready", () => {
     .pos(35, 100);
 
   //first label for destination
-  new Label({
+  var des1 = new Label({
     text: "1 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -675,7 +675,7 @@ frame.on("ready", () => {
     .pos(145, 100);
 
   //second label for destination
-  new Label({
+  var des2 = new Label({
     text: "2 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -686,7 +686,7 @@ frame.on("ready", () => {
     .pos(255, 100);
 
   //third label for destination
-  new Label({
+  var des3 = new Label({
     text: "3 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -708,7 +708,7 @@ frame.on("ready", () => {
     .pos(35, 150);
 
   //first label for transit mode
-  new Label({
+  var transit1= new Label({
     text: "4 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -719,7 +719,7 @@ frame.on("ready", () => {
     .pos(145, 150);
 
   //second label for transit mode
-  new Label({
+  var transit2 = new Label({
     text: "5 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -730,7 +730,7 @@ frame.on("ready", () => {
     .pos(255, 150);
 
   //third label for transit mode
-  new Label({
+  var transit3 = new Label({
     text: "6 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -752,7 +752,7 @@ frame.on("ready", () => {
     .pos(35, 200);
 
   //first label for curve ball
-  new Label({
+  var curve1 = new Label({
     text: "7 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -763,7 +763,7 @@ frame.on("ready", () => {
     .pos(145, 200);
 
     //second label for curve ball
-  new Label({
+  var curve2 = new Label({
     text: "8 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -774,7 +774,7 @@ frame.on("ready", () => {
     .pos(255, 200);
 
   //third label for curve ball
-  new Label({
+  var curve3 = new Label({
     text: "9 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -797,7 +797,7 @@ frame.on("ready", () => {
     .pos(35, 250);
 
   //first label for cost
-  new Label({
+  var cost1 = new Label({
     text: "10 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -808,7 +808,7 @@ frame.on("ready", () => {
     .pos(145, 250);
 
   //second label for cost
-  new Label({
+  var cost2 = new Label({
     text: "11 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -819,7 +819,7 @@ frame.on("ready", () => {
     .pos(255, 250);
 
   //third label for cost
-  new Label({
+  var cost3 = new Label({
     text: "12 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -842,7 +842,7 @@ frame.on("ready", () => {
     .pos(35, 300);
 
   //first label for CO2 impact
-  new Label({
+  var cimpact1 = new Label({
     text: "13 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -853,7 +853,7 @@ frame.on("ready", () => {
     .pos(145, 300);
 
   //second label for CO2 impact
-  new Label({
+  var cimpact2 = new Label({
     text: "14 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -864,7 +864,7 @@ frame.on("ready", () => {
     .pos(255, 300);
 
   //third label for CO2 impact
-  new Label({
+  var cimpact3 = new Label({
     text: "15 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -887,7 +887,7 @@ frame.on("ready", () => {
     .pos(35, 350);
 
   //first label for calories
-  new Label({
+  var calories1 = new Label({
     text: "16",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -898,7 +898,7 @@ frame.on("ready", () => {
     .pos(145, 350);
   
   //second label for calories
-  new Label({
+  var calories2 = new Label({
     text: "17",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -909,7 +909,7 @@ frame.on("ready", () => {
     .pos(255, 350);
 
   //third label for calories
-  new Label({
+  var calories3 = new Label({
     text: "18",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -932,9 +932,9 @@ frame.on("ready", () => {
     .pos(35, 400);
 
   //first label for budget
-  new Label({
-    text: "19",
-    size: 18,
+  var budget1 = new Label({
+    text: `Initial Budget: $${listofPlayers[0].budget} `,
+    size: 10,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
     align: "center"
@@ -943,8 +943,8 @@ frame.on("ready", () => {
     .pos(145, 400);
 
   //second label for budget
-  new Label({
-    text: "20",
+  var budget2 = new Label({
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -953,9 +953,10 @@ frame.on("ready", () => {
     .center(scoreCardPane)
     .pos(255, 400);
 
+
   //third label for budget
-  new Label({
-    text: "21",
+  var budget3 = new Label({
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1018,31 +1019,6 @@ frame.on("ready", () => {
     align: "right",
   });
 
-  var carBtn = new Button({
-    // label: carlabel,
-    // width: 95,
-    width: 50,
-    height: 50,
-    backgroundColor: "white",
-    rollBackgroundColor: "#f5f5f5",
-    corner: 10,
-    icon: carIcon,
-    indent: 20,
-    align: "right",
-  });
-
-  var scooterBtn = new Button({
-    // label: scooterlabel,
-    // width: 150,
-    width: 50,
-    height: 50,
-    backgroundColor: "white",
-    rollBackgroundColor: "#f5f5f5",
-    corner: 10,
-    icon: scooterIcon,
-    indent: 20,
-    align: "right",
-  });
 
   var busBtn = new Button({
     // label: buslabel,
@@ -1056,13 +1032,41 @@ frame.on("ready", () => {
     indent: 20,
     align: "right",
   });
+  
+  var scooterBtn = new Button({
+    // label: scooterlabel,
+    // width: 150,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: scooterIcon,
+    indent: 20,
+    align: "right",
+  });
+
+ 
+  var carBtn = new Button({
+    // label: carlabel,
+    // width: 95,
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: carIcon,
+    indent: 20,
+    align: "right",
+  });
+
 
   //displays buttons on right side of screen
   walkBtn.pos({ horizontal: "right", x: 20, y: 50, index: 0 });
   bikeBtn.pos({ horizontal: "right", x: 20, y: 130, index: 0 });
-  carBtn.pos({ horizontal: "right", x: 20, y: 210, index: 0 });
+  busBtn.pos({ horizontal: "right", x: 20, y: 210, index: 0 });
   scooterBtn.pos({ horizontal: "right", x: 20, y: 290, index: 0 });
-  busBtn.pos({ horizontal: "right", x: 20, y: 370, index: 0 });
+  carBtn.pos({ horizontal: "right", x: 20, y: 370, index: 0 });
 
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
