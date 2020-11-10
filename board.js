@@ -6,7 +6,7 @@ ZIMONON = true;
 class Player extends Person {
 
    modes = {
-    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
+    Walk: { cost: 0, spaces: 15, cImpact: 0, calories: 21 },
     Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
     Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
     Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
@@ -18,6 +18,7 @@ class Player extends Person {
     this.budget = budget;
     this.cO2 = 0;
     this.calories= 0;
+    this.hitCurveBall = "false";
 
     this.id = id;
     this.landmarks = [false, false];
@@ -34,8 +35,11 @@ class Player extends Person {
       Calories: 0,
     },
     ];
+
+    
     
   }
+
 
   moneyMove(mode){
     if (this.budget >= this.modes[mode].cost){
@@ -61,6 +65,23 @@ class Player extends Person {
 
 
   }
+  didWin(){
+    console.log(this.landmarks);
+    if (this.square == "16-10") {
+      this.landmarks[0] = true;
+    }
+    if (this.square == "8-1" && this.landmarks[0]) {
+      this.landmarks[1] = true;
+    }
+    if (this.square == "7-9" && this.landmarks.every(Boolean)) {
+      //Player has won the game
+      alert("player"+this.id+1+" won!!!!! Congratulations I hope you play again!")
+      return true;
+    }
+    return false;
+  }
+
+
   tracker(nw) {
     let newspots = nw.length - 1;
     let leftover = 10 - this.pathHist.length;
@@ -237,14 +258,80 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 4;
+  let numOfPlayers = 2;
   let listofPlayers= []
   let playerTurn = 0;
 
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
+    player1.on("moving", () => {
+      console.log(player1.square)
+      if (player1.square == ("16-10" ||"2-0"|| "12-0"||"5-19"||"3-4"||"4-9"||"9-13"||"11-19"|| "14-3"||"14-12")){
+        player1.hitCurveBall = "true"
+      
+      }
+      console.log(player1.hitCurveBall)
 
+    });
+
+    player2.on("moving", () => {
+      console.log(player2.square)
+      // if ((player2.square == "16-10")||(player2.square == "2-0")||( player2.square == "12-0")||(player2.square == "5-19")
+      // ||(player2.square == "3-4")||(player2.square == "4-9"||(player2.square == "9-13")||(player2.square == "11-19")|| (player2.square == "14-3")||(player2.square == "14-12"))){
+      //   player2.hitCurveBall = "true";
+      
+      // }
+      // console.log(player2.hitCurveBall)
+
+    });
+
+    player1.on("movingdone", () => {
+      
+    console.log(player1.square);
+    console.log(player1.landmarks);
+    if (player1.square == "16-10") {
+      player1.landmarks[0] = true;
+    }
+    if (  player1.square == "8-1" && player1.landmarks[0]) {
+      listofPlayers[playerTurn].landmarks[1] = true;
+    }
+    if (player1.square == "7-9" && player1.landmarks.every(Boolean)) {
+    //Player has won the game
+        alert("player"+(player1.id+1)+" won!!!!! Congratulations I hope you play again!")
+
+    }else{
+      playerTurn++;
+      if (playerTurn === numOfPlayers) {
+        playerTurn = 0;
+      }
+
+      setReady();
+    }
+  });
+
+  player2.on("movingdone", () => {
+      
+    console.log(player2.square);
+    if (player2.square == "16-10") {
+      player2.landmarks[0] = true;
+    }
+    if (  player2.square == "8-1" && player2.landmarks[0]) {
+      player2.landmarks[1] = true;
+    }
+    if (player2.square == "7-9" && player2.landmarks.every(Boolean)) {
+    //Player has won the game
+        alert("player"+(player2.id+1)+" won!!!!! Congratulations I hope you play again!")
+    }else{
+      playerTurn++;
+      if (playerTurn === numOfPlayers) {
+        playerTurn = 0;
+      }
+
+      setReady();
+    }
+  });
+  
     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
     board.add(player2, player2.startPosition["x"], player2.startPosition["y"]); 
     
@@ -367,37 +454,22 @@ frame.on("ready", () => {
   board.tiles.tap((e) => {
     if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
     if (path) {
+      if(listofPlayers[playerTurn].moneyMove(mode)){
 
-      // // because rolled over already
-      // if (listofPlayers[playerTurn].boardTile == trafficLight.boardTile) {
-      //   curveBallPane.show();
-
-      // } else {
-      //   curveBallPane.hide();
-      // }
-      // // Where the character moves
-
-     if(listofPlayers[playerTurn].moneyMove(mode)){
+        
+       
         board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
-      //Record path for Curveballs
+        //Record path for Curveballs
         listofPlayers[playerTurn].tracker(path);
-      //Where the score card get updated//
+        //Where the score card get updated//
         listofPlayers[playerTurn].updatePlayerInfo(path,mode);
-        console.log(listofPlayers[playerTurn].scores)
-        console.log(listofPlayers[playerTurn].pathHist);
-      // pathHist = Tracker(curveBall(1,mode,pathHist), pathHist);
+        
 
-        playerTurn++;
-        console.log(playerTurn)
-        if (playerTurn === numOfPlayers) {
-          playerTurn = 0;
-        }
+
+        
       }else{
         alert("not enough money!! Pick a different Mode")
-      }
-
-      setTimeout(setReady, 1000);
-
+        }
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -406,22 +478,7 @@ frame.on("ready", () => {
     stage.update();
   });
 
-  listofPlayers[playerTurn].on("moved", function () {
-    //could be used later after jas finishes landmarks
-    // console.log(player.boardTile.lastColor);
-    console.log(listofPlayers[playerTurn].square);
-    if (listofPlayers[playerTurn].square == "16-10") {
-      landmarks[0] = true;
-    }
-    if (listofPlayers[playerTurn].square == "8-1" && landmarks[0]) {
-      landmarks[1] = true;
-    }
-    if (listofPlayers[playerTurn].square == "7-9" && landmarks.every(Boolean)) {
-      //Player has won the game
-      console.log("Winnnerrrr");
-    }
-  });
-
+  
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1449,8 +1506,8 @@ frame.on("ready", () => {
   //player avatars
   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20,20);
   listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20,50);
-  listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
-  listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
+  // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
+  // listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
   player1Label.center(playerInfo).pos(40,48);
