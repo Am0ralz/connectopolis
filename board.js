@@ -288,8 +288,7 @@ frame.on("ready", () => {
 
     player1.on("movingdone", () => {
       
-    console.log(player1.square);
-    console.log(player1.landmarks);
+    
     if (player1.square == "16-10") {
       player1.landmarks[0] = true;
     }
@@ -306,13 +305,15 @@ frame.on("ready", () => {
         playerTurn = 0;
       }
 
-      setReady();
+      setReady(playerTurn);
     }
+    console.log(player1.square);
+    console.log(player1.landmarks);
   });
 
   player2.on("movingdone", () => {
       
-    console.log(player2.square);
+  
     if (player2.square == "16-10") {
       player2.landmarks[0] = true;
     }
@@ -328,7 +329,9 @@ frame.on("ready", () => {
         playerTurn = 0;
       }
 
-      setReady();
+      setReady(playerTurn);
+      console.log(player2.square);
+      console.log(player2.landmarks);
     }
   });
   
@@ -370,8 +373,8 @@ frame.on("ready", () => {
 
 
   //sets color of circle of player turn green
-  function setReady(){
-    switch(playerTurn) {
+  function setReady(n){
+    switch(n) {
     case 0:
       circle1.color = "green";
       circle2.color = "white";
@@ -397,6 +400,7 @@ frame.on("ready", () => {
       circle4.color = "green";
       break;
   }
+  stage.update();
   }
 
 
