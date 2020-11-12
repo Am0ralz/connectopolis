@@ -18,7 +18,7 @@ class Player extends Person {
     this.budget = budget;
     this.cO2 = 0;
     this.calories= 0;
-    this.hitCurveBall = "false";
+    this.hitCurveBall = false;
 
     this.id = id;
     this.landmarks = [false, false];
@@ -261,14 +261,15 @@ frame.on("ready", () => {
   let numOfPlayers = 2;
   let listofPlayers= []
   let playerTurn = 0;
-
+  let trafficlights =["12-0","2-0","5-19"]
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
+
     player1.on("moving", () => {
-      console.log(player1.square)
-      if (player1.square == ("16-10" ||"2-0"|| "12-0"||"5-19"||"3-4"||"4-9"||"9-13"||"11-19"|| "14-3"||"14-12")){
-        player1.hitCurveBall = "true"
+      console.log(board.getItems(player1.boardTile)[0])
+      if (board.getItems(player1.boardTile)[0].type == "TrafficLight") {
+        player1.hitCurveBall = true
       
       }
       console.log(player1.hitCurveBall)
@@ -276,19 +277,19 @@ frame.on("ready", () => {
     });
 
     player2.on("moving", () => {
-      console.log(player2.square)
-      // if ((player2.square == "16-10")||(player2.square == "2-0")||( player2.square == "12-0")||(player2.square == "5-19")
-      // ||(player2.square == "3-4")||(player2.square == "4-9"||(player2.square == "9-13")||(player2.square == "11-19")|| (player2.square == "14-3")||(player2.square == "14-12"))){
-      //   player2.hitCurveBall = "true";
+      console.log(player2.boardTile)
+      console.log(board.getItems(player2.boardTile)[0])
+      if (board.getItems(player2.boardTile)[0].type === "TrafficLight") {
+        player2.hitCurveBall = true
       
-      // }
-      // console.log(player2.hitCurveBall)
+      }
+      console.log(player2.hitCurveBall)
 
     });
 
     player1.on("movingdone", () => {
       
-    
+  if(!player2.hitCurveBall){
     if (player1.square == "16-10") {
       player1.landmarks[0] = true;
     }
@@ -298,6 +299,7 @@ frame.on("ready", () => {
     if (player1.square == "7-9" && player1.landmarks.every(Boolean)) {
     //Player has won the game
         alert("player"+(player1.id+1)+" won!!!!! Congratulations I hope you play again!")
+        board.removeEventListener("change");
 
     }else{
       playerTurn++;
@@ -307,13 +309,16 @@ frame.on("ready", () => {
 
       setReady(playerTurn);
     }
+  }else{
+    
+  }
     console.log(player1.square);
     console.log(player1.landmarks);
   });
 
   player2.on("movingdone", () => {
       
-  
+  if(!player2.hitCurveBall){
     if (player2.square == "16-10") {
       player2.landmarks[0] = true;
     }
@@ -323,6 +328,7 @@ frame.on("ready", () => {
     if (player2.square == "7-9" && player2.landmarks.every(Boolean)) {
     //Player has won the game
         alert("player"+(player2.id+1)+" won!!!!! Congratulations I hope you play again!")
+      
     }else{
       playerTurn++;
       if (playerTurn === numOfPlayers) {
@@ -330,9 +336,12 @@ frame.on("ready", () => {
       }
 
       setReady(playerTurn);
-      console.log(player2.square);
-      console.log(player2.landmarks);
+  
     }
+  }
+  else{
+
+  }
   });
   
     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
@@ -1535,7 +1544,7 @@ circle4.center(playerInfo).pos(110,120);
 
 // setTimeout(setReady, 10000);
 
-setReady();
+setReady(playerTurn);
 
    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
