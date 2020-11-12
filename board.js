@@ -265,7 +265,7 @@ frame.on("ready", () => {
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
-
+    
     player1.on("moving", () => {
       console.log(board.getItems(player1.boardTile)[0])
       if (board.getItems(player1.boardTile)[0].type == "TrafficLight") {
@@ -289,7 +289,7 @@ frame.on("ready", () => {
 
     player1.on("movingdone", () => {
       
-  if(!player2.hitCurveBall){
+    
     if (player1.square == "16-10") {
       player1.landmarks[0] = true;
     }
@@ -309,16 +309,13 @@ frame.on("ready", () => {
 
       setReady(playerTurn);
     }
-  }else{
-    
-  }
     console.log(player1.square);
     console.log(player1.landmarks);
   });
 
   player2.on("movingdone", () => {
       
-  if(!player2.hitCurveBall){
+  
     if (player2.square == "16-10") {
       player2.landmarks[0] = true;
     }
@@ -338,10 +335,6 @@ frame.on("ready", () => {
       setReady(playerTurn);
   
     }
-  }
-  else{
-
-  }
   });
   
     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
