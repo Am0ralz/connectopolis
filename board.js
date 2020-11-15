@@ -76,7 +76,9 @@ class Player extends Person {
     if (this.square == "7-9" && this.landmarks.every(Boolean)) {
       return true;
     }
+
     return false;
+    
   }
 
 
@@ -119,6 +121,14 @@ function updateTurn(turn, num) {
 
 
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
+let tilesLimits = {
+  Walk: ["x", "g", "r"],
+  Bike: ["x","g"],
+  Bus: ["r"],
+  Scooter:["x"],
+  Car: ["r","o"],
+  Special: ["x","g","r","o"]
+};
 let mode = "Walk";
 
 /////////////////// //Different Modes and their properties////////////////////
@@ -294,20 +304,16 @@ frame.on("ready", () => {
 
   for (let plyer of listofPlayers) {
     plyer.on("moving", () => {
-      console.log(board.getColor(plyer.boardTile));
       if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
         plyer.hitCurveBall = true
 
       }
-      console.log(plyer.hitCurveBall)
-
+      
     });
 
 
     plyer.on("movingdone", () => {
-      console.log(plyer.pathHist)
-      console.log(plyer.didWin())
-      console.log(plyer.hitCurveBall)
+     
 
       if (walkBtn.enabled == false) {
         walkBtn.enabled = true;
@@ -320,14 +326,13 @@ frame.on("ready", () => {
 
       if (!plyer.hitCurveBall) {
         if (!plyer.didWin()) {
-          console.log(1);
           plyer.secondturn = false;
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          console.log(des1);
           UpdateScoreUI(listofPlayers[playerTurn]);
 
           mode = "Walk"
+          AI.setAcceptableTiles(tilesLimits["Walk"]);
           walkBtn.backgroundColor = "#ccc";
           bikeBtn.backgroundColor = "white";
           busBtn.backgroundColor = "white";
@@ -358,8 +363,8 @@ frame.on("ready", () => {
   AI.setTileCost("g", 0); // nothing
   AI.setTileCost("o", 0); // nothing
   AI.setTileCost("r", 0); // nothing
-
-  AI.setAcceptableTiles(["x", "g", "o", "r"]); // default lighter grey tile
+  AI.setAcceptableTiles(tilesLimits[mode]);
+   // default lighter grey tile
   let pathID;
   let ticker;
   let path;
@@ -647,7 +652,17 @@ frame.on("ready", () => {
       /////Free Scooter/////
       case 9:
         if (md == "Scooter") {
-          chance = "Move again with Scooter";
+            chance = "Move again with Scooter";
+            alert("Move forward 4 step");
+            mode="Scooter"
+            walkBtn.enabled = false;
+            walkBtn.enabled = false;
+            bikeBtn.enabled = false;
+            busBtn.enabled = false;
+            scooterBtn.enabled = false;
+            carBtn.enabled = false;
+
+        plyr.secondturn = true;
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
@@ -659,7 +674,9 @@ frame.on("ready", () => {
       case 10:
         chance = "go forward 5 steps";
         alert("Move forward 4 step");
-        mode = "Bus"
+        mode = "Scooter"
+        AI.setAcceptableTiles(tilesLimits["Special"]);
+    
 
         walkBtn.enabled = false;
         walkBtn.enabled = false;
@@ -678,6 +695,7 @@ frame.on("ready", () => {
         chance = "go forward 5 steps";
         alert("Move forward 5 step");
         mode = "Car"
+        AI.setAcceptableTiles(tilesLimits["Special"]);
 
         walkBtn.enabled = false;
         walkBtn.enabled = false;
@@ -699,6 +717,7 @@ frame.on("ready", () => {
     }
   else{
     tmpScores = plyr.scores.slice(0);
+    console.log(tmpScores);
   }
     des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
     transit1.text = tmpScores[0].TransitMode;
@@ -707,6 +726,7 @@ frame.on("ready", () => {
     cimpact1.text = tmpScores[0].CO2
     calories1.text = tmpScores[0].Calories
     budget1.text = tmpScores[0].Budget
+    
   if (plyr.scores.length > 1){
     des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
     transit2.text = tmpScores[1].TransitMode
@@ -1356,7 +1376,7 @@ frame.on("ready", () => {
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
     mode = "Walk";
-
+    AI.setAcceptableTiles(tilesLimits[mode]);
     //changes the background color for the chosen mode transport
     walkBtn.backgroundColor = "#ccc";
     bikeBtn.backgroundColor = "white";
@@ -1366,6 +1386,7 @@ frame.on("ready", () => {
   });
   bikeBtn.on("click", function () {
     mode = "Bike";
+    AI.setAcceptableTiles(tilesLimits[mode]);
 
     //changes the background color for the chosen mode transport
     walkBtn.backgroundColor = "white";
@@ -1376,6 +1397,7 @@ frame.on("ready", () => {
   });
   busBtn.on("click", function () {
     mode = "Bus";
+    AI.setAcceptableTiles(tilesLimits[mode]);
 
     //changes the background color for the chosen mode transport
     walkBtn.backgroundColor = "white";
@@ -1386,7 +1408,7 @@ frame.on("ready", () => {
   });
   scooterBtn.on("click", function () {
     mode = "Scooter";
-
+    AI.setAcceptableTiles(tilesLimits[mode]);
     //changes the background color for the chosen mode transport
     walkBtn.backgroundColor = "white";
     bikeBtn.backgroundColor = "white";
@@ -1396,6 +1418,7 @@ frame.on("ready", () => {
   });
   carBtn.on("click", function () {
     mode = "Car";
+    AI.setAcceptableTiles(tilesLimits[mode]);
 
     //changes the background color for the chosen mode transport
     walkBtn.backgroundColor = "white";
