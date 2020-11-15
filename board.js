@@ -117,6 +117,7 @@ function updateTurn(turn, num) {
 }
 
 
+
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
 let mode = "Walk";
 
@@ -323,6 +324,8 @@ frame.on("ready", () => {
           plyer.secondturn = false;
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          console.log(des1);
+          UpdateScoreUI(listofPlayers[playerTurn]);
 
           mode = "Walk"
           walkBtn.backgroundColor = "#ccc";
@@ -343,7 +346,7 @@ frame.on("ready", () => {
     });
   }
 
-
+  
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -689,7 +692,42 @@ frame.on("ready", () => {
     }
   }
 
-
+  function UpdateScoreUI(plyr){
+    let tmpScores;
+    if (plyr.scores.length > 3){
+      tmpScores = plyr.scores.slice(plyr.scores.length - 3);
+    }
+  else{
+    tmpScores = plyr.scores.slice(0);
+  }
+    des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
+    transit1.text = tmpScores[0].TransitMode;
+    curve1.text = tmpScores[0].CurveBall;
+    cost1.text = tmpScores[0].Cost
+    cimpact1.text = tmpScores[0].CO2
+    calories1.text = tmpScores[0].Calories
+    budget1.text = tmpScores[0].Budget
+  if (plyr.scores.length > 1){
+    des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
+    transit2.text = tmpScores[1].TransitMode
+    curve2.text = tmpScores[1].CurveBall
+    cost2.text = tmpScores[1].Cost
+    cimpact2.text = tmpScores[1].CO2
+    calories2.text = tmpScores[1].Calories
+    budget2.text = tmpScores[1].Budget
+  }
+  if (plyr.scores.length > 2){
+    des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
+    transit3.text = tmpScores[2].TransitMode
+    curve3.text = tmpScores[2].CurveBall
+    cost3.text = tmpScores[2].Cost
+    cimpact3.text = tmpScores[2].CO2
+    calories3.text = tmpScores[2].Calories
+    budget3.text = tmpScores[2].Budget
+    
+  }
+  }
+  
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1366,7 +1404,7 @@ frame.on("ready", () => {
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "#ccc";
   });
-
+  UpdateScoreUI(listofPlayers[0]);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD ITEMS
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1691,7 +1729,6 @@ frame.on("ready", () => {
     lineHeight: 25,
 
   });
-
 
   //player avatars
   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
