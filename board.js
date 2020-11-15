@@ -5,11 +5,11 @@ ZIMONON = true;
 ///////////////////Player/////////////////////////////////
 class Player extends Person {
 
-   modes = {
-    Walk: { cost: 0, spaces: 15, cImpact: 0, calories: 21 },
+  modes = {
+    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
     Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-    Bus: { cost: 4, spaces: 4, cImpact: 6, calories: 1.6 },
-    Scooter: { cost: 3, spaces: 3, cImpact: 0, calories: 1.8 },
+    Bus: { cost: 4, spaces: 3, cImpact: 6, calories: 1.6 },
+    Scooter: { cost: 3, spaces: 4, cImpact: 0, calories: 1.8 },
     Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
   };
   constructor(startPosition, budget, id) {
@@ -17,8 +17,9 @@ class Player extends Person {
     this.startPosition = startPosition;
     this.budget = budget;
     this.cO2 = 0;
-    this.calories= 0;
+    this.calories = 0;
     this.hitCurveBall = false;
+    this.secondturn = false;
 
     this.id = id;
     this.landmarks = [false, false];
@@ -36,37 +37,36 @@ class Player extends Person {
     },
     ];
 
-    
-    
+
+
   }
 
 
-  moneyMove(mode){
-    if (this.budget >= this.modes[mode].cost){
+  moneyMove(mode) {
+    if (this.budget >= this.modes[mode].cost) {
       return true;
     }
     return false;
   }
 
 
-  updatePlayerInfo(path, mode){
+  updatePlayerInfo(path, mode) {
     this.budget = this.budget - this.modes[mode].cost;
-    this.cO2 = this.cO2 + this.modes[mode].cImpact ;
+    this.cO2 = this.cO2 + this.modes[mode].cImpact;
     this.calories = this.calories + this.modes[mode].calories;
     this.scores.push({
-      Destination: path[path.length-1],
+      Destination: path[path.length - 1],
       TransitMode: mode,
       CurveBall: "",
-      Budget:this.budget,
+      Budget: this.budget,
       Cost: this.modes[mode].cost,
       CO2: this.cO2,
       Calories: this.calories,
-  })
+    })
 
 
   }
-  didWin(){
-    console.log(this.landmarks);
+  didWin() {
     if (this.square == "16-10") {
       this.landmarks[0] = true;
     }
@@ -74,8 +74,6 @@ class Player extends Person {
       this.landmarks[1] = true;
     }
     if (this.square == "7-9" && this.landmarks.every(Boolean)) {
-      //Player has won the game
-      alert("player"+this.id+1+" won!!!!! Congratulations I hope you play again!")
       return true;
     }
     return false;
@@ -107,6 +105,17 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+function updateTurn(turn, num) {
+  let playerTurn = turn;
+  playerTurn++;
+  if (playerTurn === num) {
+    playerTurn = 0;
+  }
+
+  // setReady(playerTurn);
+  return playerTurn;
+}
+
 
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
 let mode = "Walk";
@@ -258,88 +267,16 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 2;
-  let listofPlayers= []
+  let numOfPlayers = 4;
+  let listofPlayers = []
   let playerTurn = 0;
-  let trafficlights =["12-0","2-0","5-19"]
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
-    
-    player1.on("moving", () => {
-      console.log(board.getItems(player1.boardTile)[0])
-      if (board.getItems(player1.boardTile)[0].type == "TrafficLight") {
-        player1.hitCurveBall = true
-      
-      }
-      console.log(player1.hitCurveBall)
 
-    });
-
-    player2.on("moving", () => {
-      console.log(player2.boardTile)
-      console.log(board.getItems(player2.boardTile)[0])
-      if (board.getItems(player2.boardTile)[0].type === "TrafficLight") {
-        player2.hitCurveBall = true
-      
-      }
-      console.log(player2.hitCurveBall)
-
-    });
-
-    player1.on("movingdone", () => {
-      
-    
-    if (player1.square == "16-10") {
-      player1.landmarks[0] = true;
-    }
-    if (  player1.square == "8-1" && player1.landmarks[0]) {
-      listofPlayers[playerTurn].landmarks[1] = true;
-    }
-    if (player1.square == "7-9" && player1.landmarks.every(Boolean)) {
-    //Player has won the game
-        alert("player"+(player1.id+1)+" won!!!!! Congratulations I hope you play again!")
-        board.removeEventListener("change");
-
-    }else{
-      playerTurn++;
-      if (playerTurn === numOfPlayers) {
-        playerTurn = 0;
-      }
-
-      setReady(playerTurn);
-    }
-    console.log(player1.square);
-    console.log(player1.landmarks);
-  });
-
-  player2.on("movingdone", () => {
-      
-  
-    if (player2.square == "16-10") {
-      player2.landmarks[0] = true;
-    }
-    if (  player2.square == "8-1" && player2.landmarks[0]) {
-      player2.landmarks[1] = true;
-    }
-    if (player2.square == "7-9" && player2.landmarks.every(Boolean)) {
-    //Player has won the game
-        alert("player"+(player2.id+1)+" won!!!!! Congratulations I hope you play again!")
-      
-    }else{
-      playerTurn++;
-      if (playerTurn === numOfPlayers) {
-        playerTurn = 0;
-      }
-
-      setReady(playerTurn);
-  
-    }
-  });
-  
     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
-    board.add(player2, player2.startPosition["x"], player2.startPosition["y"]); 
-    
+    board.add(player2, player2.startPosition["x"], player2.startPosition["y"]);
+
     listofPlayers.push(player1)
     listofPlayers.push(player2)
   }
@@ -354,6 +291,57 @@ frame.on("ready", () => {
     listofPlayers.push(player4)
   }
 
+  for (let plyer of listofPlayers) {
+    plyer.on("moving", () => {
+      console.log(board.getColor(plyer.boardTile));
+      if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
+        plyer.hitCurveBall = true
+
+      }
+      console.log(plyer.hitCurveBall)
+
+    });
+
+
+    plyer.on("movingdone", () => {
+      console.log(plyer.pathHist)
+      console.log(plyer.didWin())
+      console.log(plyer.hitCurveBall)
+
+      if (walkBtn.enabled == false) {
+        walkBtn.enabled = true;
+        bikeBtn.enabled = true;
+        busBtn.enabled = true;
+        scooterBtn.enabled = true;
+        carBtn.enabled = true;
+
+      }
+
+      if (!plyer.hitCurveBall) {
+        if (!plyer.didWin()) {
+          console.log(1);
+          plyer.secondturn = false;
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+
+          mode = "Walk"
+          walkBtn.backgroundColor = "#ccc";
+          bikeBtn.backgroundColor = "white";
+          busBtn.backgroundColor = "white";
+          scooterBtn.backgroundColor = "white";
+          carBtn.backgroundColor = "white";
+
+        } else {
+          alert("player" + (plyer.id + 1) + " won!!!!! Congratulations I hope you play again!");
+        }
+      } else {
+
+        curveBall(mode, plyer);
+
+
+      }
+    });
+  }
 
 
 
@@ -375,34 +363,34 @@ frame.on("ready", () => {
 
 
   //sets color of circle of player turn green
-  function setReady(n){
-    switch(n) {
-    case 0:
-      circle1.color = "green";
-      circle2.color = "white";
-      circle3.color = "white";
-      circle4.color = "white";
-      break;
-    case 1:
-      circle1.color = "white";
-      circle2.color = "green";
-      circle3.color = "white";
-      circle4.color = "white";
-      break;
-    case 2:
-      circle1.color = "white";
-      circle2.color = "white";
-      circle3.color = "green";
-      circle4.color = "white";
-      break;
-    case 3:
-      circle1.color = "white";
-      circle2.color = "white";
-      circle3.color = "white";
-      circle4.color = "green";
-      break;
-  }
-  stage.update();
+  function setReady(n) {
+    switch (n) {
+      case 0:
+        circle1.color = "green";
+        circle2.color = "white";
+        circle3.color = "white";
+        circle4.color = "white";
+        break;
+      case 1:
+        circle1.color = "white";
+        circle2.color = "green";
+        circle3.color = "white";
+        circle4.color = "white";
+        break;
+      case 2:
+        circle1.color = "white";
+        circle2.color = "white";
+        circle3.color = "green";
+        circle4.color = "white";
+        break;
+      case 3:
+        circle1.color = "white";
+        circle2.color = "white";
+        circle3.color = "white";
+        circle4.color = "green";
+        break;
+    }
+    stage.update();
   }
 
 
@@ -460,22 +448,26 @@ frame.on("ready", () => {
   board.tiles.tap((e) => {
     if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
     if (path) {
-      if(listofPlayers[playerTurn].moneyMove(mode)){
+      if (listofPlayers[playerTurn].moneyMove(mode)) {
 
-        
-       
+
+
         board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+
         //Record path for Curveballs
         listofPlayers[playerTurn].tracker(path);
+
         //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(path,mode);
-        
+        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
 
-        
-      }else{
+
+
+
+
+      } else {
         alert("not enough money!! Pick a different Mode")
-        }
+      }
       path = null;
     } else {
       // could be tapping or on mobile with no rollover
@@ -484,31 +476,223 @@ frame.on("ready", () => {
     stage.update();
   });
 
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-//   listofPlayers[playerTurn].moveEvent = listofPlayers[playerTurn].on("moving", () => {
-//     if (listofPlayers[playerTurn].boardTile == trafficLight1.boardTile || listofPlayers[playerTurn].boardTile == trafficLight2.boardTile ||
-//       listofPlayers[playerTurn].boardTile == trafficLight3.boardTile || listofPlayers[playerTurn].boardTile == trafficLight4.boardTile ||
-//       listofPlayers[playerTurn].boardTile == trafficLight5.boardTile || listofPlayers[playerTurn].boardTile == trafficLight6.boardTile ||
-//       listofPlayers[playerTurn].boardTile == trafficLight7.boardTile || listofPlayers[playerTurn].boardTile == trafficLight8.boardTile ||
-//       listofPlayers[playerTurn].boardTile == trafficLight9.boardTile 
-//       ) {
-//       curveBallPane.show();
-//     } else {
-//       curveBallPane.hide();
-//     }
-//   }
-// );
+  function curveBall(md, plyr) {
+    let card = Math.floor(Math.random() * 10) + 1;;
+    console.log("This card was chosen: " + card)
+    plyr.hitCurveBall = false;
+    let tmpPath = plyr.pathHist.slice(0)
+    let chance = "";
+    switch (card) {
+      ///Heat/////
+      case 1:
+        if (md == "Walk") {
+          chance = "go back 1 steps";
+          tmpPath = tmpPath.reverse().slice(0, 2)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else if (md == "Bike") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+
+        break;
+      ///Rain///////
+      case 2:
+        if (md == "Bike" || md == "Scooter") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        else if (md == "Bus") {
+          chance = "go back 1 steps";
+          tmpPath = tmpPath.reverse().slice(0, 2)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        else if (md == "Car") {
+          chance = "go back 4 steps";
+          tmpPath = tmpPath.reverse().slice(0, 5)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+        break;
+      ///High gas///////
+      case 3:
+        if (md == "Car") {
+          chance = "-$10";
+          plyr.budget = plyr.budget - 10;
+        }
+        if (md == "Bus") {
+          chance = "-$1";
+          plyr.budget = plyr.budget - 1;
+          playerTurn++;
+        }
+        playerTurn = updateTurn(playerTurn, numOfPlayers);
+        setReady(playerTurn);
+        console.log("$" + plyr.budget);
+        break;
+      ///Late Bus///////
+      case 4:
+        if (md == "Bus") {
+          chance = "go back 4 steps";
+        }
+        console.log(chance)
+        break;
+      ///Snow////////
+      case 5:
+        if (md == "Bus") {
+          tmpPath = tmpPath.reverse().slice(0, 2)
+          board.followPath(plyr, tmpPath, null, null,);
+          chance = "go back 1 steps";
+          plyr.secondturn = true;
+        } else if (md == "Bike") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else if (md == "Scooter") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+        break;
+      /// Traffic /////
+      case 6:
+        if (md == "Walk" || "Bike") {
+          chance = "go forward 1 steps";
+          alert("Move forward 1 step");
+          mode = "Walk"
+
+          walkBtn.enabled = false;
+          walkBtn.enabled = false;
+          bikeBtn.enabled = false;
+          busBtn.enabled = false;
+          scooterBtn.enabled = false;
+          carBtn.enabled = false;
+
+          plyr.secondturn = true;
+          // return mode
+
+        } else if (md == "Bus") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 4)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+
+        console.log(chance)
+        break;
+      ///Flat Tire ////////
+      case 7:
+        if (md == "Car") {
+          chance = "go back 7 steps";
+          tmpPath = tmpPath.reverse().slice(0, 9)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else if (md == "Bus") {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+        break;
+      //////Flood /////////
+      case 8:
+        if (board.getColor(plyr.boardTile) == "#acd241"
+        ) {
+          chance = "go back 2 steps";
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        } else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+        break;
+      /////Free Scooter/////
+      case 9:
+        if (md == "Scooter") {
+          chance = "Move again with Scooter";
+        } else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+
+        console.log(chance)
+        break;
+      ////Sunny Day////  
+      case 10:
+        chance = "go forward 5 steps";
+        alert("Move forward 4 step");
+        mode = "Bus"
+
+        walkBtn.enabled = false;
+        walkBtn.enabled = false;
+        bikeBtn.enabled = false;
+        busBtn.enabled = false;
+        scooterBtn.enabled = false;
+        carBtn.enabled = false;
+
+        plyr.secondturn = true;
 
 
+        break;
 
-  // let tileCol = trafficLight.boardTile.tileCol;
-  // let tileRow = trafficLight.boardTile.tileRow;
+      ////Great Breakfast////  
+      case 11:
+        chance = "go forward 5 steps";
+        alert("Move forward 5 step");
+        mode = "Car"
 
-  //curve ball condition statement
+        walkBtn.enabled = false;
+        walkBtn.enabled = false;
+        bikeBtn.enabled = false;
+        busBtn.enabled = false;
+        scooterBtn.enabled = false;
+        carBtn.enabled = false;
+        plyr.secondturn = true;
+
+        break;
+
+    }
+  }
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // CURVE BALL
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // function curveBall(card, md, pth) {
   //   let tmpPath = pth.slice(0)
@@ -771,7 +955,7 @@ frame.on("ready", () => {
     .pos(35, 150);
 
   //first label for transit mode
-  var transit1= new Label({
+  var transit1 = new Label({
     text: "4 ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
@@ -825,7 +1009,7 @@ frame.on("ready", () => {
     .center(scoreCardPane)
     .pos(145, 200);
 
-    //second label for curve ball
+  //second label for curve ball
   var curve2 = new Label({
     text: "8 ",
     size: 18,
@@ -959,7 +1143,7 @@ frame.on("ready", () => {
   })
     .center(scoreCardPane)
     .pos(145, 350);
-  
+
   //second label for calories
   var calories2 = new Label({
     text: "17",
@@ -1038,7 +1222,7 @@ frame.on("ready", () => {
     font: "Alata",
     align: "center"
 
-    
+
 
   })
     .center(scoreCardPane)
@@ -1061,7 +1245,7 @@ frame.on("ready", () => {
     // width: 100,
     width: 50,
     height: 50,
-    backgroundColor: "white",
+    backgroundColor: "#ccc",
     rollBackgroundColor: "#f5f5f5",
     corner: 10,
     icon: walkIcon,
@@ -1095,7 +1279,7 @@ frame.on("ready", () => {
     indent: 20,
     align: "right",
   });
-  
+
   var scooterBtn = new Button({
     // label: scooterlabel,
     // width: 150,
@@ -1109,7 +1293,7 @@ frame.on("ready", () => {
     align: "right",
   });
 
- 
+
   var carBtn = new Button({
     // label: carlabel,
     // width: 95,
@@ -1191,79 +1375,79 @@ frame.on("ready", () => {
   let school = frame.asset("assets/school.png").rot(270).sca(.4);
   let park = frame.asset("assets/park.png").rot(270).sca(.4);
   let library = frame.asset("assets/library.png").rot(270).sca(.4);
-  
-  board.info[16][10] = {data:"x", color:"#707070", icon:school, items:[]};
-  board.info[8][1] = {data:"x", color:"#acd241", icon:park, items:[]};
-  board.info[7][9] = {data:"x", color:"#707070", icon:library, items:[]};
-  
-  
+
+  board.info[16][10] = { data: "x", color: "#707070", icon: school, items: [] };
+  board.info[8][1] = { data: "x", color: "#acd241", icon: park, items: [] };
+  board.info[7][9] = { data: "x", color: "#707070", icon: library, items: [] };
+
+
   //adds road to board
-  board.info[8][9] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4), items:[]};
-  board.info[9][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4), items:[]};
-  board.info[10][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[11][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[14][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
+  board.info[8][9] = { data: "o", color: "#555", icon: asset("tile3.png").sca(.4), items: [] };
+  board.info[9][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4), items: [] };
+  board.info[10][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[11][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[14][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
 
-  board.info[12][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[13][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[15][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[16][9] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[17][9] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180), items:[]};
-  board.info[17][10] = {data:"o", color:"#555", icon:asset("tile3.png").clone().sca(.4), items:[]};
-  board.info[18][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
-  board.info[19][10] = {data:"o", color:"#555", icon:asset("tile2.png").clone().sca(.4), items:[]};
-  board.info[8][8] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4), items:[]};
-  board.info[8][7] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).rot(180).clone(), items:[]};
-  board.info[7][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[6][7] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[5][7] = {data:"o", color:"#555", icon:asset("tile3.png").sca(.4).clone(), items:[]};
-  board.info[5][6] = {data:"o", color:"#555", icon:asset("tile5.png").sca(.4).clone(), items:[]};
-  board.info[5][5] = {data:"o", color:"#555", icon:asset("tile4.png").sca(.4).clone().rot(180), items:[]};
-  board.info[4][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[3][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[2][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[1][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  board.info[0][5] = {data:"o", color:"#555", icon:asset("tile2.png").sca(.4).clone(), items:[]};
-  
+  board.info[12][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[13][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[15][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[16][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[17][9] = { data: "o", color: "#555", icon: asset("tile4.png").sca(.4).rot(180), items: [] };
+  board.info[17][10] = { data: "o", color: "#555", icon: asset("tile3.png").clone().sca(.4), items: [] };
+  board.info[18][10] = { data: "o", color: "#555", icon: asset("tile2.png").clone().sca(.4), items: [] };
+  board.info[19][10] = { data: "o", color: "#555", icon: asset("tile2.png").clone().sca(.4), items: [] };
+  board.info[8][8] = { data: "o", color: "#555", icon: asset("tile5.png").sca(.4), items: [] };
+  board.info[8][7] = { data: "o", color: "#555", icon: asset("tile4.png").sca(.4).rot(180).clone(), items: [] };
+  board.info[7][7] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[6][7] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[5][7] = { data: "o", color: "#555", icon: asset("tile3.png").sca(.4).clone(), items: [] };
+  board.info[5][6] = { data: "o", color: "#555", icon: asset("tile5.png").sca(.4).clone(), items: [] };
+  board.info[5][5] = { data: "o", color: "#555", icon: asset("tile4.png").sca(.4).clone().rot(180), items: [] };
+  board.info[4][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[3][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[2][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[1][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[0][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+
   //adds bus route tile
-  board.info[19][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90), items:[]};
-  board.info[18][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[17][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[16][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[15][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[13][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[12][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[11][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[10][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[9][12] = {data:"r", color:"#707070", icon:asset("2.png").sca(.15).rot(90).clone(), items:[]};
-  board.info[14][0] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15), items:[]};
-  board.info[14][1] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][2] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][4] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][5] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][6] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][7] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][8] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[19][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90), items: [] };
+  board.info[18][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[17][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[16][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[15][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[13][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[12][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[11][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[10][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[9][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
+  board.info[14][0] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15), items: [] };
+  board.info[14][1] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][2] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][4] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][5] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][6] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][7] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][8] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   // board.info[14][9] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][10] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][11] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][13] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][14] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][15] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
-  board.info[14][16] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
+  board.info[14][10] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][11] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][13] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][14] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][15] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][16] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
 
-  
+
   //adds trees to board
-  board.info[17][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[4][1] = {data:"0", color:"#333", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[9][1] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[17][18] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[2][13] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[5][12] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  board.info[2][17] = {data:"0", color:"#acd241", icon:null, items:[new Tree().sca(.8).alp(.9)]};
-  
+  board.info[17][1] = { data: "0", color: "#333", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[4][1] = { data: "0", color: "#333", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[9][1] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[17][18] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[2][13] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[5][12] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[2][17] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
 
-  
+
+
   //adds all traffic lights on board
   var trafficLight1 = new TrafficLight().sca(.6);
   var trafficLight2 = new TrafficLight().sca(.6);
@@ -1284,18 +1468,18 @@ frame.on("ready", () => {
   board.add(trafficLight7, 19, 11);
   board.add(trafficLight8, 3, 14);
   board.add(trafficLight9, 12, 14);
-  
-  board.info[2][0] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[12][0] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[19][5] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[3][4] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[4][9] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[9][13] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[11][19] = {data:"x", color:"#707070", icon:null, items:[new TrafficLight().sca(.6)]};
-  board.info[14][3] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[new TrafficLight().sca(.6)]};
-  board.info[14][12] = {data:"r", color:"#707070", icon:asset("1.png").sca(.15), items:[new TrafficLight().sca(.6)]};
-  
-  
+
+  board.info[2][0] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[12][0] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[19][5] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[3][4] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[4][9] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[9][13] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[11][19] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[14][3] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [new TrafficLight().sca(.6)] };
+  board.info[14][12] = { data: "r", color: "#707070", icon: asset("1.png").sca(.15), items: [new TrafficLight().sca(.6)] };
+
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL UI
@@ -1428,9 +1612,9 @@ frame.on("ready", () => {
 
 
   let cb = [cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9]
-  
+
   //random curve ball array
-   let rCB = cb[Math.floor(Math.random() * cb.length)];
+  let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var curveBallPane = new Pane({
     label: rCB,
@@ -1460,12 +1644,12 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   var playerInfo = new Rectangle({
-   width: 150,
-   height: 150,
-   color: "white",
-   corner: 10,
+    width: 150,
+    height: 150,
+    color: "white",
+    corner: 10,
   });
-  playerInfo.pos({x: 20, y: 110, vertical: "bottom"});
+  playerInfo.pos({ x: 20, y: 110, vertical: "bottom" });
 
   var player1Label = new Label({
     text: "Player 1",
@@ -1510,36 +1694,36 @@ frame.on("ready", () => {
 
 
   //player avatars
-  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20,20);
-  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20,50);
-  // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
-  // listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
+  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
+  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
+  listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
+  listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
-  player1Label.center(playerInfo).pos(40,48);
-  player2Label.center(playerInfo).pos(40,78);
-  player3Label.center(playerInfo).pos(40,108);
-  player4Label.center(playerInfo).pos(40,138);
+  player1Label.center(playerInfo).pos(40, 48);
+  player2Label.center(playerInfo).pos(40, 78);
+  player3Label.center(playerInfo).pos(40, 108);
+  player4Label.center(playerInfo).pos(40, 138);
 
 
-var circle1 = new Circle(5, "white");
-circle1.center(playerInfo).pos(110,30);
+  var circle1 = new Circle(5, "white");
+  circle1.center(playerInfo).pos(110, 30);
 
-var circle2= new Circle(5, "white");
-circle2.center(playerInfo).pos(110,60);
+  var circle2 = new Circle(5, "white");
+  circle2.center(playerInfo).pos(110, 60);
 
-var circle3 = new Circle(5, "white");
-circle3.center(playerInfo).pos(110,90);
+  var circle3 = new Circle(5, "white");
+  circle3.center(playerInfo).pos(110, 90);
 
-var circle4 = new Circle(5, "white");
-circle4.center(playerInfo).pos(110,120);
+  var circle4 = new Circle(5, "white");
+  circle4.center(playerInfo).pos(110, 120);
 
 
-// setTimeout(setReady, 10000);
+  // setTimeout(setReady, 10000);
 
-setReady(playerTurn);
+  setReady(playerTurn);
 
-   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // HELP BUTTON / MAP KEY
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1572,154 +1756,154 @@ setReady(playerTurn);
 
 
 
-//map key label
-new Label({
-  text: "Map Key",
-  size: 25,
-  font: "Alata",
-}).center(helpPane).pos(null,40);
+  //map key label
+  new Label({
+    text: "Map Key",
+    size: 25,
+    font: "Alata",
+  }).center(helpPane).pos(null, 40);
 
 
-//icon for road
-new Rectangle(30, 30, "#707070").center(helpPane).pos(65,90);
+  //icon for road
+  new Rectangle(30, 30, "#707070").center(helpPane).pos(65, 90);
 
-new Label({
-text: `Road - walk, 
+  new Label({
+    text: `Road - walk, 
 bike, car &
 scooter only`,
-size: 14,
-font: "Alata",
-}).center(helpPane).pos(40,140);
+    size: 14,
+    font: "Alata",
+  }).center(helpPane).pos(40, 140);
 
-//icon for grass
-new Rectangle(30, 30, "#acd241").center(helpPane).pos(190,90);
+  //icon for grass
+  new Rectangle(30, 30, "#acd241").center(helpPane).pos(190, 90);
 
-new Label({
-text: `Grass - walk & 
+  new Label({
+    text: `Grass - walk & 
 bike only`,
-size: 14,
-font: "Alata",
-}).center(helpPane).pos(160,140);
+    size: 14,
+    font: "Alata",
+  }).center(helpPane).pos(160, 140);
 
-//icon for bus line
-asset("assets/3.png").sca(.25).center(helpPane).pos(330,90);
+  //icon for bus line
+  asset("assets/3.png").sca(.25).center(helpPane).pos(330, 90);
 
-new Label({
-text: `Bus Line - walk,
+  new Label({
+    text: `Bus Line - walk,
 bus & car only`,
-size: 14,
-font: "Alata",
-}).center(helpPane).pos(300,140);
+    size: 14,
+    font: "Alata",
+  }).center(helpPane).pos(300, 140);
 
 
-//icon for highway
-new Rectangle(30, 30, "#555555").center(helpPane).pos(490,90);
-asset("assets/tile5.png").sca(.7).center(helpPane).pos(490,90);
+  //icon for highway
+  new Rectangle(30, 30, "#555555").center(helpPane).pos(490, 90);
+  asset("assets/tile5.png").sca(.7).center(helpPane).pos(490, 90);
 
-new Label({
-text: `Highway - walk 
+  new Label({
+    text: `Highway - walk 
 & car only`,
-size: 14,
-font: "Alata",
-}).center(helpPane).pos(450,140);
+    size: 14,
+    font: "Alata",
+  }).center(helpPane).pos(450, 140);
 
 
-//modes of transportation label
- new Label({
-  text: "Modes of Transportation",
-  size: 25,
-  font: "Alata",
-  }).center(helpPane).pos(null,210);
+  //modes of transportation label
+  new Label({
+    text: "Modes of Transportation",
+    size: 25,
+    font: "Alata",
+  }).center(helpPane).pos(null, 210);
 
 
-//labels for mode of transport
-new Label({
-text: `Cost: Free
+  //labels for mode of transport
+  new Label({
+    text: `Cost: Free
 Spaces: 1
 CO2 Impact: 0
 Calories: 21`,
-size: 12,
-font: "Alata",
-}).center(helpPane).pos(20,300);
+    size: 12,
+    font: "Alata",
+  }).center(helpPane).pos(20, 300);
 
-new Label({
-text: `Cost: $1
+  new Label({
+    text: `Cost: $1
 Spaces: 2
 CO2 Impact: 0
 Calories 27`,
-size: 12,
-font: "Alata",
-}).center(helpPane).pos(140,300);
+    size: 12,
+    font: "Alata",
+  }).center(helpPane).pos(140, 300);
 
-new Label({
-text: `Cost: $4
+  new Label({
+    text: `Cost: $4
 Spaces: 4
 CO2 Impact: 6
 Calories: 1.6`,
-size: 12,
-font: "Alata",
-}).center(helpPane).pos(260,300);
+    size: 12,
+    font: "Alata",
+  }).center(helpPane).pos(260, 300);
 
 
-new Label({
-text: `Cost: $3
+  new Label({
+    text: `Cost: $3
 Spaces: 3
 CO2 Impact: 0
 Calories: 1.8`,
-size: 12,
-font: "Alata",
-}).center(helpPane).pos(380,300);
+    size: 12,
+    font: "Alata",
+  }).center(helpPane).pos(380, 300);
 
-new Label({
-text: `Cost: 8
+  new Label({
+    text: `Cost: 8
 Spaces: 5
 CO2 Impact: 10
 Calories: 3`,
-size: 12,
-font: "Alata",
-}).center(helpPane).pos(500,300);
+    size: 12,
+    font: "Alata",
+  }).center(helpPane).pos(500, 300);
 
 
-//icons for mode of transportation
-asset("walk.png").sca(.8).center(helpPane).pos(50,260);
-asset("bike.png").sca(.8).center(helpPane).pos(170,260);
-asset("bus.png").sca(.8).center(helpPane).pos(280,260);
-asset("scooter.png").sca(.8).center(helpPane).pos(400,260);
-asset("car.png").sca(.8).center(helpPane).pos(520,260);
+  //icons for mode of transportation
+  asset("walk.png").sca(.8).center(helpPane).pos(50, 260);
+  asset("bike.png").sca(.8).center(helpPane).pos(170, 260);
+  asset("bus.png").sca(.8).center(helpPane).pos(280, 260);
+  asset("scooter.png").sca(.8).center(helpPane).pos(400, 260);
+  asset("car.png").sca(.8).center(helpPane).pos(520, 260);
 
 
 
-//How to Play Label
- new Label({
-  text: "How To Play",
-  size: 25,
-  font: "Alata",
-  }).center(helpPane).pos(null,390);
+  //How to Play Label
+  new Label({
+    text: "How To Play",
+    size: 25,
+    font: "Alata",
+  }).center(helpPane).pos(null, 390);
 
   new Label({
-  text: "At the beginnning of the game each player will be given a random location and a random budget which the player will need to use to their advantage to get to their destinations. The goal of this game is to get to these destinations, in order, first. You must visit the school first, park second, and lastly the library. Whoever visits all places first, wins. Be mindful of your budget, calories, and CO2 impact all while playing this game as this is also important.",
-  size: 14,
-  font: "Alata",
-  labelWidth: 550,
-  align: "center"
-  }).center(helpPane).pos(null,430);
-  
+    text: "At the beginnning of the game each player will be given a random location and a random budget which the player will need to use to their advantage to get to their destinations. The goal of this game is to get to these destinations, in order, first. You must visit the school first, park second, and lastly the library. Whoever visits all places first, wins. Be mindful of your budget, calories, and CO2 impact all while playing this game as this is also important.",
+    size: 14,
+    font: "Alata",
+    labelWidth: 550,
+    align: "center"
+  }).center(helpPane).pos(null, 430);
 
 
-//icons for destinations
-  asset("school.png").sca(.7).center(helpPane).pos(240,530);
-  asset("park.png").sca(.7).center(helpPane).pos(300,530);
-  asset("library.png").sca(.7).center(helpPane).pos(360,530);
-  
-  
-//labels for destinations
+
+  //icons for destinations
+  asset("school.png").sca(.7).center(helpPane).pos(240, 530);
+  asset("park.png").sca(.7).center(helpPane).pos(300, 530);
+  asset("library.png").sca(.7).center(helpPane).pos(360, 530);
+
+
+  //labels for destinations
   new Label({
-  text: "School",
-  size: 12,
-  font: "Alata",
-  labelWidth: 550,
-  align: "center",
-  }).center(helpPane).pos(230,560);
+    text: "School",
+    size: 12,
+    font: "Alata",
+    labelWidth: 550,
+    align: "center",
+  }).center(helpPane).pos(230, 560);
 
 
   new Label({
@@ -1728,16 +1912,16 @@ asset("car.png").sca(.8).center(helpPane).pos(520,260);
     font: "Alata",
     labelWidth: 550,
     align: "center",
-    }).center(helpPane).pos(300,560);
+  }).center(helpPane).pos(300, 560);
 
-    new Label({
-      text: "Library",
-      size: 12,
-      font: "Alata",
-      labelWidth: 550,
-      align: "center",
-      }).center(helpPane).pos(350,560);
-    
+  new Label({
+    text: "Library",
+    size: 12,
+    font: "Alata",
+    labelWidth: 550,
+    align: "center",
+  }).center(helpPane).pos(350, 560);
+
 
   board.update();
 
