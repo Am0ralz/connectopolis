@@ -126,7 +126,7 @@ let tilesLimits = {
   Bike: ["x","g"],
   Bus: ["r"],
   Scooter:["x"],
-  Car: ["r","o"],
+  Car: ["r","o","x"],
   Special: ["x","g","r","o"]
 };
 let mode = "Walk";
@@ -303,6 +303,7 @@ frame.on("ready", () => {
   }
 
   for (let plyer of listofPlayers) {
+    console.log(plyer.budget);
     plyer.on("moving", () => {
       if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
         plyer.hitCurveBall = true
