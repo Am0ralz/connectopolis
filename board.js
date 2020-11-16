@@ -726,7 +726,7 @@ frame.on("ready", () => {
     cost1.text = tmpScores[0].Cost
     cimpact1.text = tmpScores[0].CO2
     calories1.text = tmpScores[0].Calories
-    budget1.text = tmpScores[0].Budget
+    budget1.text = "$" + tmpScores[0].Budget
     
   if (plyr.scores.length > 1){
     des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
@@ -735,7 +735,7 @@ frame.on("ready", () => {
     cost2.text = tmpScores[1].Cost
     cimpact2.text = tmpScores[1].CO2
     calories2.text = tmpScores[1].Calories
-    budget2.text = tmpScores[1].Budget
+    budget2.text = "$" + tmpScores[1].Budget
   }
   if (plyr.scores.length > 2){
     des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
@@ -744,7 +744,7 @@ frame.on("ready", () => {
     cost3.text = tmpScores[2].Cost
     cimpact3.text = tmpScores[2].CO2
     calories3.text = tmpScores[2].Calories
-    budget3.text = tmpScores[2].Budget
+    budget3.text = "$" + tmpScores[2].Budget
     
   }
   }
@@ -971,7 +971,7 @@ frame.on("ready", () => {
 
   //first label for destination
   var des1 = new Label({
-    text: "1 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -982,7 +982,7 @@ frame.on("ready", () => {
 
   //second label for destination
   var des2 = new Label({
-    text: "2 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -993,7 +993,7 @@ frame.on("ready", () => {
 
   //third label for destination
   var des3 = new Label({
-    text: "3 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1015,7 +1015,7 @@ frame.on("ready", () => {
 
   //first label for transit mode
   var transit1 = new Label({
-    text: "4 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1026,7 +1026,7 @@ frame.on("ready", () => {
 
   //second label for transit mode
   var transit2 = new Label({
-    text: "5 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1037,7 +1037,7 @@ frame.on("ready", () => {
 
   //third label for transit mode
   var transit3 = new Label({
-    text: "6 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1059,7 +1059,7 @@ frame.on("ready", () => {
 
   //first label for curve ball
   var curve1 = new Label({
-    text: "7 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1070,7 +1070,7 @@ frame.on("ready", () => {
 
   //second label for curve ball
   var curve2 = new Label({
-    text: "8 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1081,7 +1081,7 @@ frame.on("ready", () => {
 
   //third label for curve ball
   var curve3 = new Label({
-    text: "9 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1104,7 +1104,7 @@ frame.on("ready", () => {
 
   //first label for cost
   var cost1 = new Label({
-    text: "10 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1115,7 +1115,7 @@ frame.on("ready", () => {
 
   //second label for cost
   var cost2 = new Label({
-    text: "11 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1126,7 +1126,7 @@ frame.on("ready", () => {
 
   //third label for cost
   var cost3 = new Label({
-    text: "12 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1149,7 +1149,7 @@ frame.on("ready", () => {
 
   //first label for CO2 impact
   var cimpact1 = new Label({
-    text: "13 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1160,7 +1160,7 @@ frame.on("ready", () => {
 
   //second label for CO2 impact
   var cimpact2 = new Label({
-    text: "14 ",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1171,7 +1171,7 @@ frame.on("ready", () => {
 
   //third label for CO2 impact
   var cimpact3 = new Label({
-    text: "15 ",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1194,7 +1194,7 @@ frame.on("ready", () => {
 
   //first label for calories
   var calories1 = new Label({
-    text: "16",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1205,7 +1205,7 @@ frame.on("ready", () => {
 
   //second label for calories
   var calories2 = new Label({
-    text: "17",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1216,7 +1216,7 @@ frame.on("ready", () => {
 
   //third label for calories
   var calories3 = new Label({
-    text: "18",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1239,8 +1239,8 @@ frame.on("ready", () => {
 
   //first label for budget
   var budget1 = new Label({
-    text: `Initial Budget: $${listofPlayers[0].budget} `,
-    size: 10,
+    text: "",
+    size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
     align: "center"
@@ -1879,49 +1879,49 @@ bus & car only`,
 
   //labels for mode of transport
   new Label({
-    text: `Cost: Free
+text: `CO2 Impact: 0
+Cost: Free
 Spaces: 1
-CO2 Impact: 0
 Calories: 21`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(20, 300);
 
-  new Label({
-    text: `Cost: $1
+new Label({
+text: `CO2 Impact: 0
+Cost: $1
 Spaces: 2
-CO2 Impact: 0
 Calories 27`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(140, 300);
 
-  new Label({
-    text: `Cost: $4
+new Label({
+text: `CO2 Impact: 6
+Cost: $4
 Spaces: 4
-CO2 Impact: 6
 Calories: 1.6`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(260, 300);
 
 
-  new Label({
-    text: `Cost: $3
+new Label({
+text: `CO2 Impact: 0
+Cost: $3   
 Spaces: 3
-CO2 Impact: 0
 Calories: 1.8`,
-    size: 12,
-    font: "Alata",
-  }).center(helpPane).pos(380, 300);
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(380, 300);
 
-  new Label({
-    text: `Cost: 8
+new Label({
+text: `CO2 Impact: 10
+Cost: $8
 Spaces: 5
-CO2 Impact: 10
 Calories: 3`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(500, 300);
 
 
