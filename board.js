@@ -501,11 +501,13 @@ frame.on("ready", () => {
       case 1:
         if (md == "Walk") {
           chance = "go back 1 steps";
+          alert(chance);
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         } else if (md == "Bike") {
           chance = "go back 2 steps";
+          alert(chance);
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -715,6 +717,7 @@ frame.on("ready", () => {
     let tmpScores;
     if (plyr.scores.length > 3){
       tmpScores = plyr.scores.slice(plyr.scores.length - 3);
+      console.log(tmpScores);
     }
   else{
     tmpScores = plyr.scores.slice(0);
