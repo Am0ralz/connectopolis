@@ -67,13 +67,13 @@ class Player extends Person {
 
   }
   didWin() {
-    if (this.square == "16-10") {
+    if (this.square == "20-13") {
       this.landmarks[0] = true;
     }
     if (this.square == "8-1" && this.landmarks[0]) {
       this.landmarks[1] = true;
     }
-    if (this.square == "7-9" && this.landmarks.every(Boolean)) {
+    if (this.square == "2-7" && this.landmarks.every(Boolean)) {
       return true;
     }
 
@@ -224,9 +224,9 @@ frame.on("ready", () => {
 
   const board = new Board({
     // num: 20,
-    rows: 20,
-    cols: 20,
-    size: 18,
+    rows: 25,
+    cols: 25,
+    size: 17,
     info: JSON.stringify(data), // these are the paths from info.js
     borderWidth: 0.2,
     borderColor: "#555555",
@@ -269,7 +269,7 @@ frame.on("ready", () => {
   // Characters placement cards and Budget Cards setup 
   let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
   let budget = [5, 15, 25, 50];
-  let locPos = { "Rural 1": { x: 11, y: 0 }, "Suburban 2": { x: 19, y: 6 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 7, y: 11 } }
+  let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
 
   //////////////Shuffle loc cards and budget cards so it can be random////////////
   shuffleArray(loc);
@@ -304,6 +304,7 @@ frame.on("ready", () => {
 
   for (let plyer of listofPlayers) {
     console.log(plyer.budget);
+    
     plyer.on("moving", () => {
       if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
         plyer.hitCurveBall = true
@@ -729,7 +730,7 @@ frame.on("ready", () => {
     cost1.text = tmpScores[0].Cost
     cimpact1.text = tmpScores[0].CO2
     calories1.text = tmpScores[0].Calories
-    budget1.text = tmpScores[0].Budget
+    budget1.text = "$" + tmpScores[0].Budget
     
   if (plyr.scores.length > 1){
     des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
@@ -738,7 +739,7 @@ frame.on("ready", () => {
     cost2.text = tmpScores[1].Cost
     cimpact2.text = tmpScores[1].CO2
     calories2.text = tmpScores[1].Calories
-    budget2.text = tmpScores[1].Budget
+    budget2.text = "$" + tmpScores[1].Budget
   }
   if (plyr.scores.length > 2){
     des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
@@ -747,7 +748,7 @@ frame.on("ready", () => {
     cost3.text = tmpScores[2].Cost
     cimpact3.text = tmpScores[2].CO2
     calories3.text = tmpScores[2].Calories
-    budget3.text = tmpScores[2].Budget
+    budget3.text = "$" + tmpScores[2].Budget
     
   }
   }
@@ -974,7 +975,7 @@ frame.on("ready", () => {
 
   //first label for destination
   var des1 = new Label({
-    text: "1 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -985,7 +986,7 @@ frame.on("ready", () => {
 
   //second label for destination
   var des2 = new Label({
-    text: "2 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -996,7 +997,7 @@ frame.on("ready", () => {
 
   //third label for destination
   var des3 = new Label({
-    text: "3 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1018,7 +1019,7 @@ frame.on("ready", () => {
 
   //first label for transit mode
   var transit1 = new Label({
-    text: "4 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1029,7 +1030,7 @@ frame.on("ready", () => {
 
   //second label for transit mode
   var transit2 = new Label({
-    text: "5 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1040,7 +1041,7 @@ frame.on("ready", () => {
 
   //third label for transit mode
   var transit3 = new Label({
-    text: "6 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1062,7 +1063,7 @@ frame.on("ready", () => {
 
   //first label for curve ball
   var curve1 = new Label({
-    text: "7 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1073,7 +1074,7 @@ frame.on("ready", () => {
 
   //second label for curve ball
   var curve2 = new Label({
-    text: "8 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1084,7 +1085,7 @@ frame.on("ready", () => {
 
   //third label for curve ball
   var curve3 = new Label({
-    text: "9 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1107,7 +1108,7 @@ frame.on("ready", () => {
 
   //first label for cost
   var cost1 = new Label({
-    text: "10 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1118,7 +1119,7 @@ frame.on("ready", () => {
 
   //second label for cost
   var cost2 = new Label({
-    text: "11 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1129,7 +1130,7 @@ frame.on("ready", () => {
 
   //third label for cost
   var cost3 = new Label({
-    text: "12 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1152,7 +1153,7 @@ frame.on("ready", () => {
 
   //first label for CO2 impact
   var cimpact1 = new Label({
-    text: "13 ",
+    text: " ",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1163,7 +1164,7 @@ frame.on("ready", () => {
 
   //second label for CO2 impact
   var cimpact2 = new Label({
-    text: "14 ",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1174,7 +1175,7 @@ frame.on("ready", () => {
 
   //third label for CO2 impact
   var cimpact3 = new Label({
-    text: "15 ",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1197,7 +1198,7 @@ frame.on("ready", () => {
 
   //first label for calories
   var calories1 = new Label({
-    text: "16",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1208,7 +1209,7 @@ frame.on("ready", () => {
 
   //second label for calories
   var calories2 = new Label({
-    text: "17",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1219,7 +1220,7 @@ frame.on("ready", () => {
 
   //third label for calories
   var calories3 = new Label({
-    text: "18",
+    text: "",
     size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
@@ -1242,8 +1243,8 @@ frame.on("ready", () => {
 
   //first label for budget
   var budget1 = new Label({
-    text: `Initial Budget: $${listofPlayers[0].budget} `,
-    size: 10,
+    text: "",
+    size: 18,
     backing: new Rectangle(100, 40, "#f0f0f0"),
     font: "Alata",
     align: "center"
@@ -1441,9 +1442,9 @@ frame.on("ready", () => {
   let park = frame.asset("assets/park.png").rot(270).sca(.4);
   let library = frame.asset("assets/library.png").rot(270).sca(.4);
 
-  board.info[16][10] = { data: "x", color: "#707070", icon: school, items: [] };
+  board.info[20][13] = { data: "x", color: "#707070", icon: school, items: [] };
   board.info[8][1] = { data: "x", color: "#acd241", icon: park, items: [] };
-  board.info[7][9] = { data: "x", color: "#707070", icon: library, items: [] };
+  board.info[2][7] = { data: "x", color: "#707070", icon: library, items: [] };
 
 
   //adds road to board
@@ -1451,8 +1452,7 @@ frame.on("ready", () => {
   board.info[9][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4), items: [] };
   board.info[10][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[11][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
-  board.info[14][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
-
+  // board.info[14][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[12][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[13][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[15][9] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
@@ -1473,8 +1473,16 @@ frame.on("ready", () => {
   board.info[2][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[1][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
   board.info[0][5] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[20][10] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[21][10] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[22][10] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[23][10] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
+  board.info[24][10] = { data: "o", color: "#555", icon: asset("tile2.png").sca(.4).clone(), items: [] };
 
+
+  
   //adds bus route tile
+  board.info[14][9] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[19][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90), items: [] };
   board.info[18][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
   board.info[17][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).rot(90).clone(), items: [] };
@@ -1493,23 +1501,30 @@ frame.on("ready", () => {
   board.info[14][6] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][7] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][8] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
-  // board.info[14][9] = {data:"r", color:"#707070", icon:asset("3.png").sca(.15).clone(), items:[]};
   board.info[14][10] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][11] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][13] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][14] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][15] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
   board.info[14][16] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[20][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).clone(), items: [] };
+  board.info[21][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).clone(), items: [] };
+  board.info[22][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).clone(), items: [] };
+  board.info[23][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).clone(), items: [] };
+  board.info[24][12] = { data: "r", color: "#707070", icon: asset("2.png").sca(.15).clone(), items: [] };
+  board.info[14][17] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+  board.info[14][18] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [] };
+
 
 
   //adds trees to board
-  board.info[17][1] = { data: "0", color: "#333", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[18][1] = { data: "0", color: "#333", icon: null, items: [new Tree().sca(.8).alp(.9)] };
   board.info[4][1] = { data: "0", color: "#333", icon: null, items: [new Tree().sca(.8).alp(.9)] };
   board.info[9][1] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
-  board.info[17][18] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
-  board.info[2][13] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
-  board.info[5][12] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
-  board.info[2][17] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[5][20] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[2][15] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[5][14] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
+  board.info[2][19] = { data: "0", color: "#acd241", icon: null, items: [new Tree().sca(.8).alp(.9)] };
 
 
 
@@ -1524,23 +1539,23 @@ frame.on("ready", () => {
   var trafficLight8 = new TrafficLight().sca(.6);
   var trafficLight9 = new TrafficLight().sca(.6);
 
-  board.add(trafficLight1, 0, 2);
+  board.add(trafficLight1, 2, 3);
   board.add(trafficLight2, 0, 12);
-  board.add(trafficLight3, 5, 19);
-  board.add(trafficLight4, 4, 3);
-  board.add(trafficLight5, 9, 4);
+  board.add(trafficLight3, 15, 24);
+  board.add(trafficLight4, 19, 22);
+  board.add(trafficLight5, 10, 6);
   board.add(trafficLight6, 13, 9);
-  board.add(trafficLight7, 19, 11);
+  board.add(trafficLight7, 9, 18);
   board.add(trafficLight8, 3, 14);
   board.add(trafficLight9, 12, 14);
 
-  board.info[2][0] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[3][2] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
   board.info[12][0] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
-  board.info[19][5] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
-  board.info[3][4] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
-  board.info[4][9] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[24][15] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[22][19] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[6][10] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
   board.info[9][13] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
-  board.info[11][19] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
+  board.info[9][18] = { data: "x", color: "#707070", icon: null, items: [new TrafficLight().sca(.6)] };
   board.info[14][3] = { data: "r", color: "#707070", icon: asset("3.png").sca(.15).clone(), items: [new TrafficLight().sca(.6)] };
   board.info[14][12] = { data: "r", color: "#707070", icon: asset("1.png").sca(.15), items: [new TrafficLight().sca(.6)] };
 
@@ -1865,8 +1880,7 @@ bus & car only`,
   asset("assets/tile5.png").sca(.7).center(helpPane).pos(490, 90);
 
   new Label({
-    text: `Highway - walk 
-& car only`,
+    text: `Highway - car only`,
     size: 14,
     font: "Alata",
   }).center(helpPane).pos(450, 140);
@@ -1882,49 +1896,49 @@ bus & car only`,
 
   //labels for mode of transport
   new Label({
-    text: `Cost: Free
+text: `CO2 Impact: 0
+Cost: Free
 Spaces: 1
-CO2 Impact: 0
 Calories: 21`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(20, 300);
 
-  new Label({
-    text: `Cost: $1
+new Label({
+text: `CO2 Impact: 0
+Cost: $1
 Spaces: 2
-CO2 Impact: 0
 Calories 27`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(140, 300);
 
-  new Label({
-    text: `Cost: $4
+new Label({
+text: `CO2 Impact: 6
+Cost: $4
 Spaces: 4
-CO2 Impact: 6
 Calories: 1.6`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(260, 300);
 
 
-  new Label({
-    text: `Cost: $3
+new Label({
+text: `CO2 Impact: 0
+Cost: $3   
 Spaces: 3
-CO2 Impact: 0
 Calories: 1.8`,
-    size: 12,
-    font: "Alata",
-  }).center(helpPane).pos(380, 300);
+size: 12,
+font: "Alata",
+}).center(helpPane).pos(380, 300);
 
-  new Label({
-    text: `Cost: 8
+new Label({
+text: `CO2 Impact: 10
+Cost: $8
 Spaces: 5
-CO2 Impact: 10
 Calories: 3`,
-    size: 12,
-    font: "Alata",
+size: 12,
+font: "Alata",
   }).center(helpPane).pos(500, 300);
 
 
