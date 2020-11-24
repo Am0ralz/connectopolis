@@ -1,6 +1,8 @@
 import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
+console.log(firebase);
+
 ZIMONON = true;
 ///////////////////Player/////////////////////////////////
 class Player extends Person {

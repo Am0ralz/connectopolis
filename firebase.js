@@ -11,5 +11,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+  
+  var db = firebase.firestore();
 
-  console.log(firebase);
+console.log(db)
