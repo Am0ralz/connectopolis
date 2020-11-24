@@ -1,4 +1,5 @@
 import { data } from "./info.js";
+
 var db = firebase.firestore();
 // console.log(db);
 //create a new game reference in firebase
@@ -18,3 +19,5 @@ db.collection("games").add({
 } 
 
 
+const createGameBtn = document.getElementById("create-game-btn");
+createGameBtn.addEventListener('click', createGame);
