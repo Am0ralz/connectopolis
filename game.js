@@ -6,11 +6,12 @@ var db = firebase.firestore();
 function createGame(){
     // Add a new document with a generated id.
 db.collection("games").add({
-    users: ["Jasmin", "Cam", "Bobby", "Angel"],
+    players: ["Jasmin"],
     board: JSON.stringify(data)
 })
 .then(function(docRef) {
     console.log("Document written with ID: ", docRef.id);
+    //create new board and redirect user 
 })
 .catch(function(error) {
     console.error("Error adding document: ", error);
@@ -21,3 +22,8 @@ db.collection("games").add({
 
 const createGameBtn = document.getElementById("create-game-btn");
 createGameBtn.addEventListener('click', createGame);
+
+//add user to an open game
+function connectGame(){
+
+}
