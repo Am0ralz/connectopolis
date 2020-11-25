@@ -12,12 +12,15 @@ db.collection("games").add({
 .then(function(docRef) {
     console.log("Document written with ID: ", docRef.id);
     //create new board and redirect user 
+    localStorage.setItem("gameId", docRef.id);
+    window.location.replace("/board.html")
 })
 .catch(function(error) {
     console.error("Error adding document: ", error);
 });
 
 } 
+
 
 
 const createGameBtn = document.getElementById("create-game-btn");

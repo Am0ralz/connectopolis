@@ -3,6 +3,11 @@ import { DiffTree, TrafficLight } from "./objects.js";
 
 console.log(firebase);
 
+
+var gameId = localStorage.getItem("gameId");
+console.log(gameId)
+
+
 ZIMONON = true;
 ///////////////////Player/////////////////////////////////
 class Player extends Person {

@@ -5,6 +5,13 @@ import { DiffTree, TrafficLight } from "./objects.js";
 ZIMONON = true;
 
 
+
+//code visualizing board
+//viisualizing player 1
+
+//what functions relates to player getting created
+
+
 const frame = new Frame({
   scaling: "full",
   // width: 1924,
