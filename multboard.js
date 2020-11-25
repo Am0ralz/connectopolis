@@ -176,6 +176,9 @@ frame.on("ready", () => {
   const stageW = frame.width;
   const stageH = frame.height;
 
+  const waiter = new Waiter({corner:5}).show();    
+
+
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
 
@@ -183,6 +186,14 @@ frame.on("ready", () => {
   // LOCATION AND BUDGET STARTUP CARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// zimSocketURL is a dynamic link to the ZIM Socket server in case it changes location 
+	// it is stored in one of the js files we have imported
+	// then we pass in the id that we set up at https://zimjs.com/request.html
+  const socket = new Socket(zimSocketURL, "connectopolis");    
+    socket.on("ready", () => {
+        console.log("socket connected")        
+        waiter.hide();
+      
   var lablabel = new Label({
     // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
     size: 20,
@@ -229,6 +240,7 @@ frame.on("ready", () => {
   // BOARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
   const board = new Board({
     // num: 20,
     rows: 25,
@@ -245,6 +257,8 @@ frame.on("ready", () => {
     .pos({
       index: 0,
     });
+
+  // console.log(board)
 
   var cvLabel = new Label({
     text: "Change View",
@@ -285,7 +299,7 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 1;
+  let numOfPlayers = 4;
   let listofPlayers = []
   let playerTurn = 0;
   if (parseInt(numOfPlayers)) {
@@ -412,6 +426,7 @@ frame.on("ready", () => {
 
 
   board.on("change", () => {
+    console.log("in on change")
     // change triggers when rolled over square changes
     if (listofPlayers[playerTurn].moving) return;
     getPath(); // just get path - don't go to path with the go parameter true
@@ -477,6 +492,9 @@ frame.on("ready", () => {
         //Where the score card get updated//
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
+        //update the socket
+        socket.setProperties({list: listofPlayers, playerTurn: playerTurn, path: path})
+
 
 
 
@@ -492,6 +510,51 @@ frame.on("ready", () => {
     }
     stage.update();
   });
+
+  socket.on("data", data=>{
+    console.log("socket received data")
+    if (data.board) board = board; // reset board
+    else {
+    let { listofPlayers, path } = data
+    // loop(playerList, (player)=>{
+        // update the board
+        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+
+        //Record path for Curveballs
+        listofPlayers[playerTurn].tracker(path);
+
+        //Where the score card get updated//
+        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
+          // lettersArray[n].loc(d[0], d[1], letters, d[2]);
+          stage.update();              
+    }
+    // });            
+});
+
+function addPlayer(){
+  console.log("should add player")
+    if (parseInt(numOfPlayers) >= 4) {
+    shuffleArray(loc);
+    shuffleArray(budget);
+    const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
+    board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
+    listofPlayers.push(newplayer)
+    socket.setProperty("board", board)
+  }
+}
+
+socket.on("otherjoin", addPlayer);
+// socket.on("otherleave", setDrag);
+
+// socket.on("data", function(data) {
+//   // note, this data is data sent by sender
+//   // so it directly holds their properties - no need to key by id
+//   if (data.board) board = board; // reset board
+//   else if (data.path){
+
+//   }
+// });
+
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2009,6 +2072,17 @@ font: "Alata",
 
 
   board.update();
-
   stage.update(); // this is needed to show any changes
 }); // end ready
+
+	// SOCKET
+		// if the socket can't connect it will try for a few seconds
+		// then dispatch an error message
+		// we can remove the example text as it will not work
+		socket.addEventListener("error", function() {
+			zog("error connecting");
+			// zss("multi").display = "none"; // hide example paragraph
+			// zss("nextParagraph").marginTop = "0px";
+		});
+
+	}); // end socket ready
