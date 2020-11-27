@@ -171,6 +171,7 @@ const frame = new Frame({
 
 TIME = "milliseconds";
 
+
 frame.on("ready", () => {
   const stage = frame.stage;
   const stageW = frame.width;
@@ -178,6 +179,15 @@ frame.on("ready", () => {
 
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
+
+  const waiter = new Waiter({
+      corner:5,
+      backgroundColor: "#2C57A0"
+    }).show();    
+
+  frame.on("complete", function() {
+    waiter.hide();   
+ });
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // LOCATION AND BUDGET STARTUP CARD
@@ -498,6 +508,8 @@ frame.on("ready", () => {
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
   function curveBall(md, plyr) {
     let card = Math.floor(Math.random() * 10) + 1;;
     console.log("This card was chosen: " + card)
@@ -509,13 +521,20 @@ frame.on("ready", () => {
       case 1:
         if (md == "Walk") {
           chance = "go back 1 steps";
-          alert(chance);
+          curveBallPane.label.text = cb1;
+          curveBallPane.show();
+
+        //   alert(chance);
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-        } else if (md == "Bike") {
+        } else if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
-          alert(chance);
+          curveBallPane.label.text = cb1;
+          curveBallPane.show();
+
+
+          //alert(chance);
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -530,18 +549,37 @@ frame.on("ready", () => {
       case 2:
         if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
+          //alert
+
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
+
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
         else if (md == "Bus") {
           chance = "go back 1 steps";
+          //alert
+
+
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
         else if (md == "Car") {
           chance = "go back 4 steps";
+          //alert
+
+
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
+
           tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -556,10 +594,23 @@ frame.on("ready", () => {
       case 3:
         if (md == "Car") {
           chance = "-$10";
+          //alert
+
+
+          curveBallPane.label.text = cb5;
+          curveBallPane.show();
+
           plyr.budget = plyr.budget - 10;
         }
         if (md == "Bus") {
           chance = "-$1";
+          //alert
+
+
+          curveBallPane.label.text = cb5;
+          curveBallPane.show();
+
+
           plyr.budget = plyr.budget - 1;
           playerTurn++;
         }
@@ -571,6 +622,15 @@ frame.on("ready", () => {
       case 4:
         if (md == "Bus") {
           chance = "go back 4 steps";
+          //logic missing
+          //alert
+
+          curveBallPane.label.text = cb8;
+          curveBallPane.show();
+
+          tmpPath = tmpPath.reverse().slice(0, 5)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
         }
         console.log(chance)
         break;
@@ -580,15 +640,34 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           chance = "go back 1 steps";
+          //alert
+
+
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+
+
           plyr.secondturn = true;
-        } else if (md == "Bike") {
+        } else if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
+          //alert
+
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+
+
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-        } else if (md == "Scooter") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3)
+        } else if (md == "Car") {
+          chance = "go back 4 steps";
+          //alert
+
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+
+
+          tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
@@ -598,11 +677,17 @@ frame.on("ready", () => {
         }
         console.log(chance)
         break;
+
       /// Traffic /////
       case 6:
-        if (md == "Walk" || "Bike") {
+        if (md == "Walk" || md == "Bike" || md == "Scooter") {
           chance = "go forward 1 steps";
-          alert("Move forward 1 step");
+        //   alert("Move forward 1 step");
+
+        curveBallPane.label.text = cb4;
+          curveBallPane.show();
+
+
           mode = "Walk"
 
           walkBtn.enabled = false;
@@ -617,7 +702,13 @@ frame.on("ready", () => {
 
         } else if (md == "Bus") {
           chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 4)
+          //alert
+
+          curveBallPane.label.text = cb4;
+          curveBallPane.show();
+
+
+          tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
@@ -632,11 +723,24 @@ frame.on("ready", () => {
       case 7:
         if (md == "Car") {
           chance = "go back 7 steps";
+          //alert
+
+
+          curveBallPane.label.text = cb6;
+          curveBallPane.show();
+
+
           tmpPath = tmpPath.reverse().slice(0, 9)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         } else if (md == "Bus") {
           chance = "go back 2 steps";
+
+          curveBallPane.label.text = cb6;
+          curveBallPane.show();
+
+
+          //alert
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -646,25 +750,17 @@ frame.on("ready", () => {
         }
         console.log(chance)
         break;
-      //////Flood /////////
-      case 8:
-        if (board.getColor(plyr.boardTile) == "#acd241"
-        ) {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3)
-          board.followPath(plyr, tmpPath, null, null,);
-          plyr.secondturn = true;
-        } else {
-          playerTurn = updateTurn(playerTurn, numOfPlayers);
-          setReady(playerTurn);
-        }
-        console.log(chance)
-        break;
+     
       /////Free Scooter/////
-      case 9:
+      case 8:
         if (md == "Scooter") {
             chance = "Move again with Scooter";
-            alert("Move forward 4 step");
+            // alert("Move forward 4 step");
+
+            curveBallPane.label.text = cb7;
+          curveBallPane.show();
+
+
             mode="Scooter"
             walkBtn.enabled = false;
             walkBtn.enabled = false;
@@ -682,9 +778,14 @@ frame.on("ready", () => {
         console.log(chance)
         break;
       ////Sunny Day////  
-      case 10:
+      case 9:
         chance = "go forward 5 steps";
-        alert("Move forward 4 step");
+        // alert("Move forward 4 step");
+
+        curveBallPane.label.text = cb9;
+          curveBallPane.show();
+
+
         mode = "Scooter"
         AI.setAcceptableTiles(tilesLimits["Special"]);
     
@@ -702,9 +803,13 @@ frame.on("ready", () => {
         break;
 
       ////Great Breakfast////  
-      case 11:
+      case 10:
         chance = "go forward 5 steps";
-        alert("Move forward 5 step");
+        // alert("Move forward 5 step");
+
+        curveBallPane.label.text = cb10;
+        curveBallPane.show();
+
         mode = "Car"
         AI.setAcceptableTiles(tilesLimits["Special"]);
 
@@ -719,6 +824,22 @@ frame.on("ready", () => {
         break;
 
     }
+
+    //  //////Flood /////////
+    //  case 11:
+    //     if (board.getColor(plyr.boardTile) == "#acd241"
+    //     ) {
+    //       chance = "go back 2 steps";
+    //       //alert
+    //       tmpPath = tmpPath.reverse().slice(0, 3)
+    //       board.followPath(plyr, tmpPath, null, null,);
+    //       plyr.secondturn = true;
+    //     } else {
+    //       playerTurn = updateTurn(playerTurn, numOfPlayers);
+    //       setReady(playerTurn);
+    //     }
+    //     console.log(chance)
+    //     break;
   }
 
   function UpdateScoreUI(plyr){
@@ -1572,139 +1693,71 @@ frame.on("ready", () => {
   // CURVE BALL UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  var cb1 = new Label({
-    text: `Heat 
+var cb1 = `Heat 
     Subtract spaces: 
     -2 for bike or scooter
-    -1 for walk`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-  });
+    -1 for walk`;
 
-  var cb2 = new Label({
-    text: `Snow
+  var cb2 = `Snow
     Subtract spaces: 
     -2 for bike or scooter
     -1 for bus
-    -4 for car`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+    -4 for car`;
 
-  });
-
-  var cb3 = new Label({
-    text: `Rain
+  var cb3 = `Rain
     Subtract spaces: 
     -2 for bike or scooter
     -1 for bus
-    -4 for car`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+    -4 for car`;
 
-  });
-
-  var cb4 = new Label({
-    text: `Traffic
+  var cb4 = `Traffic
     Subtract or add spaces: 
     +1 for walk
     +1 for bike or scooter
-    -3 for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+    -3 for bus`;
 
-  });
-
-  var cb5 = new Label({
-    text: `High Gas
+  var cb5 = `High Gas
     Subtract or add money: 
-   +$10 extra for car
-   +$1 extra for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+   -$10 extra for car
+   -$1 extra for bus`;
 
-  });
-
-  var cb6 = new Label({
-    text: `Flat Tire
+  var cb6 = `Flat Tire
     Subtract spaces: 
     -7 for car
-    -4 for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+    -4 for bus`;
 
-  });
-
-  var cb7 = new Label({
-    text: `Free Scooter Ride
+  var cb7 = `Free Scooter Ride
     Change mode to scooter
     & write $0 in cost for 
-    this turn`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
+    this turn`;
 
-  });
-
-  var cb8 = new Label({
-    text: `Late Bus
+  var cb8 = `Late Bus
     Subtract spaces: 
-    -4 for bus`,
-    size: 20,
+    -4 for bus`;
+
+var cb9 = `Sunny Day
+
+Add 4 spaces`;
+
+
+var cb10 = `Great Breakfast
+
+Add 5 spaces`;
+
+  var example = new Label({
+    text: "",
+    size: 18,
     font: "Alata",
     labelWidth: 250,
-    shiftVertical: -30,
+    shiftVertical: -80,
     align: "center",
     lineHeight: 25,
 
   });
 
-  var cb9 = new Label({
-    text: `Sunny Day
-    Add 4 spaces`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-
-  let cb = [cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9]
-
-  //random curve ball array
-  let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var curveBallPane = new Pane({
-    label: rCB,
+    label: example,
     width: 300,
     height: 240,
     corner: 15,
