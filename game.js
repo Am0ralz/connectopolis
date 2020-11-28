@@ -26,7 +26,18 @@ db.collection("games").add({
 const createGameBtn = document.getElementById("create-game-btn");
 createGameBtn.addEventListener('click', createGame);
 
-//add user to an open game
+//add users to firebase waiting room 
 function connectGame(){
 
 }
+
+
+/*
+Fetch players from Firebase
+*/
+
+
+/*
+Setup Board
+Add players to game board
+*/
