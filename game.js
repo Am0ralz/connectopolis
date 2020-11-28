@@ -3,6 +3,8 @@ import { data } from "./info.js";
 var db = firebase.firestore();
 // console.log(db);
 //create a new game reference in firebase
+
+
 function createGame(){
     // Add a new document with a generated id.
 db.collection("games").add({
@@ -13,6 +15,7 @@ db.collection("games").add({
     console.log("Document written with ID: ", docRef.id);
     //create new board and redirect user 
     localStorage.setItem("gameId", docRef.id);
+
     window.location.replace("/board.html")
 })
 .catch(function(error) {
@@ -23,7 +26,7 @@ db.collection("games").add({
 
 
 
-const createGameBtn = document.getElementById("create-game-btn");
+const createGameBtn = document.getElementById("cg-btn");
 createGameBtn.addEventListener('click', createGame);
 
 //add user to an open game
