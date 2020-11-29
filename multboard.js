@@ -515,7 +515,7 @@ frame.on("ready", () => {
     console.log("socket received data")
     console.log(data)
     if (data.board){
-      board = board; // reset board
+      board = data.board; // reset board
       stage.update()
     } 
     else {
