@@ -15,8 +15,9 @@ db.collection("games").add({
     console.log("Document written with ID: ", docRef.id);
     //create new board and redirect user 
     localStorage.setItem("gameId", docRef.id);
+    document.getElementById("create-game-id").value = docRef.id
+    document.getElementById("overlay").style.display = "block";
 
-    window.location.replace("/board.html")
 })
 .catch(function(error) {
     console.error("Error adding document: ", error);
@@ -26,10 +27,16 @@ db.collection("games").add({
 
 
 
-const createGameBtn = document.getElementById("cg-btn");
+const createGameBtn = document.getElementById("create-game-btn");
 createGameBtn.addEventListener('click', createGame);
+
 
 //add user to an open game
 function connectGame(){
+    window.location.replace("/board.html")
 
 }
+
+
+const connectGameBtn = document.getElementById("cg-btn");
+connectGameBtn.addEventListener('click', connectGame);
