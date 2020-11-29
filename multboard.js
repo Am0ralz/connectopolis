@@ -189,10 +189,16 @@ frame.on("ready", () => {
 // zimSocketURL is a dynamic link to the ZIM Socket server in case it changes location 
 	// it is stored in one of the js files we have imported
 	// then we pass in the id that we set up at https://zimjs.com/request.html
-  const socket = new Socket(zimSocketURL, "connectopolis");    
+  const socket = new Socket(zimSocketURL, "connectopolis", "Flo Room 1", 4, false);    
     socket.on("ready", () => {
-        console.log("socket connected")        
-        waiter.hide();
+      console.log("socket connected");
+      socket.appendToHistory("My test history");
+      console.log("room size:", socket.size);
+      console.log("my socekt id:", socket.id);
+
+      console.log("room data:", roomName);
+
+      waiter.hide();
       
   var lablabel = new Label({
     // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
@@ -324,7 +330,7 @@ frame.on("ready", () => {
 //   }
 
   for (let plyer of listofPlayers) {
-    console.log(plyer.budget);
+    console.log("Player budget: ", plyer.budget);
     
     plyer.on("moving", () => {
       if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
@@ -426,7 +432,9 @@ frame.on("ready", () => {
 
 
   board.on("change", () => {
-    console.log("in on change")
+    
+    //console.log("in on change")
+    
     // change triggers when rolled over square changes
     if (listofPlayers[playerTurn].moving) return;
     getPath(); // just get path - don't go to path with the go parameter true
@@ -493,7 +501,7 @@ frame.on("ready", () => {
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
         //update the socket
-        socket.setProperties({list: listofPlayers, playerTurn: playerTurn, path: path})
+        socket.setProperties({list: JSON.prune(this.listofPlayers), playerTurn: JSON.prune(this.playerTurn), path: JSON.prune(this.path)})
 
 
 
@@ -532,14 +540,25 @@ frame.on("ready", () => {
 });
 
 function addPlayer(){
-  console.log("should add player")
+  console.log("User joins server. ","Should add player")
     if (parseInt(numOfPlayers) >= 4) {
+      console.log("Add player condition met");
+
     shuffleArray(loc);
     shuffleArray(budget);
     const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
     board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
     listofPlayers.push(newplayer)
-    socket.setProperty("board", board)
+
+    //let JSONboard = JSON.stringify(board);
+   // console.log("JSON Board",JSONboard);
+    let pruneJSON = JSON.prune(board);
+    console.log("prune operation: ", pruneJSON);
+
+    //use JSON stringify to update
+    socket.setProperty("board", pruneJSON);
+    console.log("joiner socket id:", socket.lastJoinID);
+
   }
 }
 
