@@ -241,7 +241,7 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-  const board = new Board({
+  let board = new Board({
     // num: 20,
     rows: 25,
     cols: 25,
@@ -300,7 +300,7 @@ frame.on("ready", () => {
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
   let numOfPlayers = 4;
-  let listofPlayers = []
+  var listofPlayers = []
   let playerTurn = 0;
   if (parseInt(numOfPlayers)) {
     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
@@ -493,7 +493,7 @@ frame.on("ready", () => {
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
         //update the socket
-        socket.setProperties({list: listofPlayers, playerTurn: playerTurn, path: path})
+        socket.setProperties({list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
 
 
 
@@ -513,9 +513,13 @@ frame.on("ready", () => {
 
   socket.on("data", data=>{
     console.log("socket received data")
-    if (data.board) board = board; // reset board
+    console.log(data)
+    if (data.board){
+      board = board; // reset board
+      stage.update()
+    } 
     else {
-    let { listofPlayers, path } = data
+    var { listofPlayers, path } = data
     // loop(playerList, (player)=>{
         // update the board
         board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
@@ -539,7 +543,7 @@ function addPlayer(){
     const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
     board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
     listofPlayers.push(newplayer)
-    socket.setProperty("board", board)
+    socket.setProperty("board", JSON.prune(board))
   }
 }
 
