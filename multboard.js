@@ -295,28 +295,19 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  
-/*
-# TODO
-FETCH Players from Firebase
-*/
-
-  // let numOfPlayers = 1;
+  let numOfPlayers = 1;
   let listofPlayers = []
-  // let playerTurn = 0;
-  // if (parseInt(numOfPlayers)) {
-  //   const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
-   
+  let playerTurn = 0;
+  if (parseInt(numOfPlayers)) {
+    const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
     // const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
 
-    // board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
-    
+    board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
     // board.add(player2, player2.startPosition["x"], player2.startPosition["y"]);
 
-    // listofPlayers.push(player1)
-    
+    listofPlayers.push(player1)
     // listofPlayers.push(player2)
-  // }
+  }
 //   if (parseInt(numOfPlayers) >= 3) {
 //     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
 //     board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
@@ -328,7 +319,6 @@ FETCH Players from Firebase
 //     listofPlayers.push(player4)
 //   }
 
-if(listofPlayers.length != 0){
   for (let plyer of listofPlayers) {
     console.log(plyer.budget);
     
@@ -339,7 +329,7 @@ if(listofPlayers.length != 0){
       }
       
     });
-  
+
 
     plyer.on("movingdone", () => {
      
@@ -379,7 +369,6 @@ if(listofPlayers.length != 0){
       }
     });
   }
-}
 
   
 
@@ -1549,12 +1538,10 @@ Subtract spaces:
 -4 for bus`;
 
 var cb9 = `Sunny Day
-
 Add 4 spaces`;
 
 
 var cb10 = `Great Breakfast
-
 Add 5 spaces`;
 
   var cbLabel = new Label({
