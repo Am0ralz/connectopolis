@@ -518,19 +518,19 @@ frame.on("ready", () => {
 //     listofPlayers.push(player4)
 //   }
 
-  for (let plyer of listofPlayers) {
+  // for (let plyer of listofPlayers) {
     // console.log(plyer.budget);
     
-    plyer.on("moving", () => {
-      if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
-        plyer.hitCurveBall = true
+    myPlayer.on("moving", () => {
+      if (board.getItems(myPlayer.boardTile)[0].type == "TrafficLight" && !myPlayer.hitCurveBall && !myPlayer.secondturn) {
+        myPlayer.hitCurveBall = true
 
       }
       
     });
 
 
-    plyer.on("movingdone", () => {
+    myPlayer.on("movingdone", () => {
      
 
       if (walkBtn.enabled == false) {
@@ -542,9 +542,9 @@ frame.on("ready", () => {
 
       }
 
-      if (!plyer.hitCurveBall) {
-        if (!plyer.didWin()) {
-          plyer.secondturn = false;
+      if (!myPlayer.hitCurveBall) {
+        if (!myPlayer.didWin()) {
+          myPlayer.secondturn = false;
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
           UpdateScoreUI(listofPlayers[playerTurn]);
@@ -559,18 +559,18 @@ frame.on("ready", () => {
           carBtn.backgroundColor = "white";
 
         } else {
-          alert("player" + (plyer.id + 1) + " won!!!!! Congratulations I hope you play again!");
+          alert("player" + (myPlayer.id) + " won!!!!! Congratulations I hope you play again!");
         }
       } else {
 
-        curveBall(mode, plyer);
+        curveBall(mode, myPlayer);
 
 
       }
     });
-  }
+  // }
 
-  
+  // setPlayerEvents();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -738,6 +738,8 @@ frame.on("ready", () => {
           console.log("board should update...")
           stage.update()
         })
+        setPlayerEvents()
+        stage.update()
         // console.log("should see a healthy list", listofPlayers)
         // board.clearData("Player")
       }
