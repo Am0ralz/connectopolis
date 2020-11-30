@@ -97,6 +97,8 @@ frame.on("ready", function() {
                 currentPlayer = getNextPlayer(d.advance);
                 // if we are the new currentPlayer then add the button
                 if (playerNum == currentPlayer) {
+                  console.log("calling old socket")
+
                     button.addTo();
                     stage.update();
                 }
@@ -141,6 +143,7 @@ frame.on("ready", function() {
                     // this is like if the player who left pressed the button
                     socket.setProperty("advance", d.playerNum); 
                     // and then our button
+                    console.log("calling old socket")
                     button.addTo();
                     stage.update();
                 }
@@ -207,7 +210,9 @@ class Player extends Person {
     },
     ];
 
+    // static function fromObject(obj){
 
+    // }
 
   }
 
@@ -615,7 +620,6 @@ frame.on("ready", () => {
 
   function getPath(go) {
     // called from change (mouseover) and from tap
-    debugger;
     AI.setGrid(board.data); // a subset of the info array with only data values
     // cancel any previous path and ticker
     AI.cancelPath(pathID);
@@ -704,16 +708,22 @@ frame.on("ready", () => {
       var newList = JSON.parse(data.list)
       listofPlayers = listofPlayers.concat(newList)
       // listofPlayers.concat(newList);
+     
       console.log("my list is now:", listofPlayers)
 
 
       if(listofPlayers.length == socket.size+1){
-        board.clearData("Player")
-        listofPlayers.forEach((player) => {
-          board.add(player, player.startPosition["x"], player.startPosition["y"]);
+        console.log("received all connected users")
+        listofPlayers = listofPlayers.map((playerObj) => {
+          var player = Object.assign(new Player(),playerObj);
+          return player
+          // board.add(player, player.startPosition["x"], player.startPosition["y"]);
         })
+        console.log("should see a healthy list", listofPlayers)
+        // board.clearData("Player")
+        console.log("board should update...")
       }
-      console.log("board updating...")
+
       stage.update()
     } 
     // we sent data because a player is moving
