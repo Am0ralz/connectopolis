@@ -361,7 +361,7 @@ frame.on("ready", () => {
 	// then we pass in the id that we set up at https://zimjs.com/request.html
   const socket = new Socket(zimSocketURL, "cnctpls", "waiting");
 
-  var maxNum = 4;
+  var maxNum = 2;
   var connected = 0;
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
@@ -568,9 +568,8 @@ frame.on("ready", () => {
 
       }
     });
-  // }
 
-  // setPlayerEvents();
+  
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // PATH FINDING
@@ -738,8 +737,6 @@ frame.on("ready", () => {
           console.log("board should update...")
           stage.update()
         })
-        setPlayerEvents()
-        stage.update()
         // console.log("should see a healthy list", listofPlayers)
         // board.clearData("Player")
       }
@@ -756,11 +753,15 @@ frame.on("ready", () => {
 
         //Where the score card get updated//
         listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
-        // stage.update();              
+        stage.update();              
     }
 
     if (data.playerTurn){
+      console.log("playerTurn was:", playerTurn)
+      console.log("socket received new player turn", data.playerTurn)
       playerTurn = data.playerTurn
+      console.log("player turn should be:", playerTurn)
+
     }
     stage.update()
 
