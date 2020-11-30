@@ -33,7 +33,7 @@ frame.on("ready", function() {
 	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
-    var maxNum = 3;
+    var maxNum = 4;
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
     //     align:CENTER
@@ -75,7 +75,7 @@ frame.on("ready", function() {
             // and not fill in when someone leaves
             number.removeFrom()
 
-            socket.changeRoom(appName, "game", 3, false);
+            socket.changeRoom(appName, "game", 4, false);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
 
@@ -365,37 +365,7 @@ frame.on("ready", () => {
         console.log("socket connected")    
         console.log(socket.id)
         waiter.hide();
-        // the socket.size gives the number of others in the socket (not including you)    
-        // if we reach the number we want then it is game time!
-      //   if (socket.size+1 == maxNum) {
-      //     socket.setProperty("play", 1); // tell others it is time to play
-      //     // setGame() will be called in the data event for all the others 
-      //     // but for this player, they will not receive a data event 
-      //     // as they are the one that is sending the data 
-      //     // so we need to call the setGame() directly
-      //     setGame(); // set up our game
-      // } else {
-      //     setNum();  
-      // }
-
-    // function setNum() {
-    //     connected = socket.size + 1;
-    //     stage.update();
-    // } 
-    
-  //   function setGame() {            
-  //       // swap player to new room called game 
-  //       // this room will fill up three at a time 
-  //       // and not fill in when someone leaves
-  //       socket.changeRoom("cnctpls", gameId, 4, false);
-  //       // we need to wait until the player changes rooms 
-  //       // before continuing - so set a roomchange event
-  //       socket.on("roomchange", playGame); 
-  //   }  
-
-  // function playGame() {
-  //   console.log("should play game")
-  // }
+  
       
   var lablabel = new Label({
     // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
@@ -509,16 +479,20 @@ frame.on("ready", () => {
   let numOfPlayers = 4;
   var listofPlayers = []
   let playerTurn = 0;
-  if (parseInt(numOfPlayers)) {
-    const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
-    // const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
+  if (listofPlayers.length != parseInt(numOfPlayers)) {
+    console.log("creating my player")
+    const myPlayer = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
 
-    board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
-    // board.add(player2, player2.startPosition["x"], player2.startPosition["y"]);
+    board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
 
-    listofPlayers.push(player1)
+    listofPlayers.push(myPlayer)
+
+    socket.setProperty("list", JSON.prune(listofPlayers))
+    // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
+
     // listofPlayers.push(player2)
   }
+
 //   if (parseInt(numOfPlayers) >= 3) {
 //     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
 //     board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
@@ -641,6 +615,7 @@ frame.on("ready", () => {
 
   function getPath(go) {
     // called from change (mouseover) and from tap
+    debugger;
     AI.setGrid(board.data); // a subset of the info array with only data values
     // cancel any previous path and ticker
     AI.cancelPath(pathID);
@@ -700,7 +675,7 @@ frame.on("ready", () => {
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
         //update the socket
-        socket.setProperties({list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
+        socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
 
 
 
@@ -723,47 +698,65 @@ frame.on("ready", () => {
     console.log("socket size is ", socket.size)
     console.log(data)
     if (data.play) setGame(); // we have enough players!
-    if (data.board){
-      board = data.board; // reset board
+    if (data.list){
+      console.log("received player list:", data.list)
+      // board = data.board; // reset board
+      var newList = JSON.parse(data.list)
+      listofPlayers.join(newList)
+      // listofPlayers.concat(newList);
+      console.log("my list is now:", listofPlayers)
+
+
+      if(listofPlayers.length == socket.size+1){
+        board.clearData("Player")
+        listofPlayers.forEach((player) => {
+          board.add(player, player.startPosition["x"], player.startPosition["y"]);
+        })
+      }
+      console.log("board updating...")
       stage.update()
     } 
-    else {
-    var { listofPlayers, path } = data
-    // loop(playerList, (player)=>{
-        // update the board
-        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+    // we sent data because a player is moving
+    // else {
+    // var { listofPlayers, path } = data
+    // // loop(playerList, (player)=>{
+    //     // update the board
+    //     board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
 
-        //Record path for Curveballs
-        listofPlayers[playerTurn].tracker(path);
+    //     //Record path for Curveballs
+    //     listofPlayers[playerTurn].tracker(path);
 
-        //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
-          // lettersArray[n].loc(d[0], d[1], letters, d[2]);
-          stage.update();              
-    }
+    //     //Where the score card get updated//
+    //     listofPlayers[playerTurn].updatePlayerInfo(path, mode);
+    //       // lettersArray[n].loc(d[0], d[1], letters, d[2]);
+    //       stage.update();              
+    // }
     // });            
 });
 
 function addPlayer(data){
-  console.log(data)
-  console.log("should add player")
-  console.log(socket.senderID)
-  console.log(parseInt(numOfPlayers))
-  console.log("socket size is ", socket.size)
-    // setNum()
-    if (listofPlayers.length != parseInt(numOfPlayers)) {
-    console.log(socket)
-    shuffleArray(loc);
-    shuffleArray(budget);
-    const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-    board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
-    console.log(`there are ${listofPlayers.length} other players`)
-    listofPlayers.push(newplayer)
-    // socket.setProperty("board", JSON.prune(board))
-    socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
+  console.log("add player called")
+  var connectedUsers = socket.size + 1
+  console.log(connectedUsers + " connected users")
+  // console.log(data)
+  // console.log("should add player")
+  // console.log(socket.senderID)
+  // console.log(parseInt(numOfPlayers))
+  // console.log("socket size is ", socket.size)
+  //   // setNum()
+  //   if (listofPlayers.length != parseInt(numOfPlayers)) {
+  //   console.log(socket)
+  //   shuffleArray(loc);
+  //   shuffleArray(budget);
+  //   const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
+  //   board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
+  //   console.log(`there are ${listofPlayers.length} other players`)
+  //   listofPlayers.push(newplayer)
+  //   // socket.setProperty("board", JSON.prune(board))
+  //   socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
 
-    stage.update()
-  }
+  //   stage.update()
+  // }
 }
 
 socket.on("otherjoin", addPlayer);
@@ -2024,7 +2017,7 @@ socket.on("otherjoin", addPlayer);
   });
   playerInfo.pos({ x: 20, y: 110, vertical: "bottom" });
 
-  var player1Label = new Label({
+  var playerLabel = new Label({
     text: "Player 1",
     size: 12,
     font: "Alata",
@@ -2072,7 +2065,7 @@ socket.on("otherjoin", addPlayer);
 //   listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
-  player1Label.center(playerInfo).pos(40, 48);
+  playerLabel.center(playerInfo).pos(40, 48);
 //   player2Label.center(playerInfo).pos(40, 78);
 //   player3Label.center(playerInfo).pos(40, 108);
 //   player4Label.center(playerInfo).pos(40, 138);
