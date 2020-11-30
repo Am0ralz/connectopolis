@@ -33,7 +33,8 @@ frame.on("ready", function() {
 	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
-    var maxNum = 3;
+    var maxNum = 2;
+    // var minNum =
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
     //     align:CENTER
@@ -75,7 +76,7 @@ frame.on("ready", function() {
             // and not fill in when someone leaves
             number.removeFrom()
 
-            socket.changeRoom(appName, "game", 3, false);
+            socket.changeRoom(appName, "game", 2, false);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
 
@@ -486,13 +487,14 @@ frame.on("ready", () => {
   let playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
+    var playerDetails = {player_location: locPos[loc.pop()], player_budget: budget.pop()}
     const myPlayer = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
 
     board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
 
     listofPlayers.push(myPlayer)
 
-    socket.setProperty("list", JSON.prune(listofPlayers))
+    socket.setProperty("newPlayerInfo", playerDetails)
     // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
 
     // listofPlayers.push(player2)
@@ -702,12 +704,15 @@ frame.on("ready", () => {
     console.log("socket size is ", socket.size)
     console.log(data)
     if (data.play) setGame(); // we have enough players!
-    if (data.list){
-      console.log("received player list:", data.list)
+    if (data.newPlayerInfo){
+      console.log("received new player info:", data.newPlayerInfo)
       // board = data.board; // reset board
-      var newList = JSON.parse(data.list)
+      // var newList = JSON.parse(data.list)
+      let {player_location, player_budget} = data.newPlayerInfo
+      const newplayer = new Player(player_location, player_budget, socket.data.id).sca(0.6).top();
+
       if(listofPlayers.length < socket.size+1){
-        listofPlayers = listofPlayers.concat(newList)
+        listofPlayers = listofPlayers.push(newplayer)
         console.log("my list is now:", listofPlayers)      
       }
       // listofPlayers.concat(newList);
@@ -716,14 +721,12 @@ frame.on("ready", () => {
 
       if(listofPlayers.length == socket.size+1){
         console.log("received all connected users")
-        listofPlayers = listofPlayers.map((playerObj) => {
-          var player = Object.assign(new Player(),playerObj);
-          board.add(player, player.startPosition["x"], player.startPosition["y"]);
+        listofPlayers.forEach((new_player) => {
+          board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
           console.log("board should update...")
           stage.update()
-          return player
         })
-        console.log("should see a healthy list", listofPlayers)
+        // console.log("should see a healthy list", listofPlayers)
         // board.clearData("Player")
       }
 
