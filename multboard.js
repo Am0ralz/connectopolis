@@ -2134,13 +2134,13 @@ socket.on("otherjoin", addPlayer);
 
   //player avatars
   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
-  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
+  // listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
   // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
   // listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
   playerLabel.center(playerInfo).pos(40, 48);
-  player2Label.center(playerInfo).pos(40, 78);
+  // player2Label.center(playerInfo).pos(40, 78);
   // player3Label.center(playerInfo).pos(40, 108);
   // player4Label.center(playerInfo).pos(40, 138);
 
