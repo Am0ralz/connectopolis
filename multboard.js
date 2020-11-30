@@ -33,7 +33,7 @@ frame.on("ready", function() {
 	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
-    var maxNum = 4;
+    var maxNum = 3;
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
     //     align:CENTER
@@ -75,7 +75,7 @@ frame.on("ready", function() {
             // and not fill in when someone leaves
             number.removeFrom()
 
-            socket.changeRoom(appName, "game", 4, false);
+            socket.changeRoom(appName, "game", 3, false);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
 
@@ -706,22 +706,25 @@ frame.on("ready", () => {
       console.log("received player list:", data.list)
       // board = data.board; // reset board
       var newList = JSON.parse(data.list)
-      listofPlayers = listofPlayers.concat(newList)
+      if(listofPlayers.length < socket.size+1){
+        listofPlayers = listofPlayers.concat(newList)
+        console.log("my list is now:", listofPlayers)      
+      }
       // listofPlayers.concat(newList);
      
-      console.log("my list is now:", listofPlayers)
 
 
       if(listofPlayers.length == socket.size+1){
         console.log("received all connected users")
         listofPlayers = listofPlayers.map((playerObj) => {
           var player = Object.assign(new Player(),playerObj);
+          board.add(player, player.startPosition["x"], player.startPosition["y"]);
+          console.log("board should update...")
+          stage.update()
           return player
-          // board.add(player, player.startPosition["x"], player.startPosition["y"]);
         })
         console.log("should see a healthy list", listofPlayers)
         // board.clearData("Player")
-        console.log("board should update...")
       }
 
       stage.update()
