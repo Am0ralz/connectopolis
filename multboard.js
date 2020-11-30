@@ -3,13 +3,13 @@ import { DiffTree, TrafficLight } from "./objects.js";
 
 
 // code from Zim dude's turn.html
-var scaling = "fit"; 
-var width = 1024;
-var height = 768;
+var scaling = "full"; 
+// var width = 1024;
+// var height = 768;
 var color = light;
 var outerColor = darker;
 
-var frame = new Frame(scaling, width, height, color, outerColor);
+var frame = new Frame(scaling, color, outerColor);
 frame.on("ready", function() {
     zog("ready from ZIM Frame");
 
@@ -29,7 +29,7 @@ frame.on("ready", function() {
     // Then switch the three people to the game room - that has a max of 3 with no fill
 
     // get the app name here: https://zimjs.com/request.html
-    var appName = "connectopolis";
+    var appName = "cnctpls";
 	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
@@ -786,12 +786,6 @@ frame.on("ready", () => {
       console.log("socket received new player turn", data.playerTurn)
       playerTurn = data.playerTurn
       console.log("player turn should be:", playerTurn)
-
-      // check if it's our turn & add event listeners
-      listofPlayers.findIndex((player)=>{
-        my = socket.getMyData
-        return(my.id == player.id)
-      })
 
     }
     stage.update()
