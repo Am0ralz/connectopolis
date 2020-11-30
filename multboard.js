@@ -702,7 +702,7 @@ frame.on("ready", () => {
       console.log("received player list:", data.list)
       // board = data.board; // reset board
       var newList = JSON.parse(data.list)
-      listofPlayers.join(newList)
+      listofPlayers = listofPlayers.concat(newList)
       // listofPlayers.concat(newList);
       console.log("my list is now:", listofPlayers)
 
