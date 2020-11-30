@@ -284,6 +284,7 @@ function shuffleArray(array) {
   }
 }
 function updateTurn(turn, num) {
+  console.log("should update turn")
   let playerTurn = turn;
   playerTurn++;
   if (playerTurn === num) {
@@ -482,19 +483,25 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 4;
+  let numOfPlayers = 2;
   var listofPlayers = []
   let playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
-    var playerDetails = {player_location: locPos[loc.pop()], player_budget: budget.pop()}
-    const myPlayer = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
+    var player_location = locPos[loc.pop()]
+    var player_budget = budget.pop()
+    let myPlayer = new Player(player_location, player_budget, 0).sca(0.6).top();
+
+    var my = socket.getMyData()
+    console.log("my data is...", my)
+
+    myPlayer.id = my.id
 
     board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
 
     listofPlayers.push(myPlayer)
 
-    socket.setProperty("newPlayerInfo", playerDetails)
+    socket.setProperty("newPlayerInfo", {player_location, player_budget})
     // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
 
     // listofPlayers.push(player2)
@@ -541,6 +548,7 @@ frame.on("ready", () => {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
           UpdateScoreUI(listofPlayers[playerTurn]);
+          socket.setProperty("playerTurn", playerTurn)
 
           mode = "Walk"
           AI.setAcceptableTiles(tilesLimits["Walk"]);
@@ -681,7 +689,7 @@ frame.on("ready", () => {
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
         //update the socket
-        socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
+        socket.setProperties({path,mode})
 
 
 
@@ -709,18 +717,22 @@ frame.on("ready", () => {
       // board = data.board; // reset board
       // var newList = JSON.parse(data.list)
       let {player_location, player_budget} = data.newPlayerInfo
-      const newplayer = new Player(player_location, player_budget, socket.data.id).sca(0.6).top();
+      const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
 
       if(listofPlayers.length < socket.size+1){
-        listofPlayers = listofPlayers.push(newplayer)
-        console.log("my list is now:", listofPlayers)      
-      }
+        listofPlayers.push(newplayer)
+        console.log("my list is now:", listofPlayers)
+        console.log(listofPlayers)     
+        console.log(socket.size + 1) 
+      
       // listofPlayers.concat(newList);
      
-
+      }
 
       if(listofPlayers.length == socket.size+1){
         console.log("received all connected users")
+        listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+        console.log("sorted array:", listofPlayers)
         listofPlayers.forEach((new_player) => {
           board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
           console.log("board should update...")
@@ -729,24 +741,27 @@ frame.on("ready", () => {
         // console.log("should see a healthy list", listofPlayers)
         // board.clearData("Player")
       }
-
-      stage.update()
+    
+      // stage.update()
     } 
     // we sent data because a player is moving
-    // else {
-    // var { listofPlayers, path } = data
-    // // loop(playerList, (player)=>{
-    //     // update the board
-    //     board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+    if (data.path && data.mode) {
+      console.log("someone made a move!")
+    board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
 
-    //     //Record path for Curveballs
-    //     listofPlayers[playerTurn].tracker(path);
+        //Record path for Curveballs
+        listofPlayers[playerTurn].tracker(data.path);
 
-    //     //Where the score card get updated//
-    //     listofPlayers[playerTurn].updatePlayerInfo(path, mode);
-    //       // lettersArray[n].loc(d[0], d[1], letters, d[2]);
-    //       stage.update();              
-    // }
+        //Where the score card get updated//
+        listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
+        // stage.update();              
+    }
+
+    if (data.playerTurn){
+      playerTurn = data.playerTurn
+    }
+    stage.update()
+
     // });            
 });
 
@@ -817,6 +832,8 @@ socket.on("otherjoin", addPlayer);
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
+
         }
         console.log(chance)
 
@@ -844,6 +861,7 @@ socket.on("otherjoin", addPlayer);
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
         console.log(chance)
         break;
@@ -860,6 +878,7 @@ socket.on("otherjoin", addPlayer);
         }
         playerTurn = updateTurn(playerTurn, numOfPlayers);
         setReady(playerTurn);
+        socket.setProperty("playerTurn", playerTurn)
         console.log("$" + plyr.budget);
         break;
       ///Late Bus///////
@@ -890,6 +909,7 @@ socket.on("otherjoin", addPlayer);
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
         console.log(chance)
         break;
@@ -919,6 +939,7 @@ socket.on("otherjoin", addPlayer);
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
 
         console.log(chance)
@@ -938,6 +959,7 @@ socket.on("otherjoin", addPlayer);
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
         console.log(chance)
         break;
@@ -952,6 +974,7 @@ socket.on("otherjoin", addPlayer);
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
         console.log(chance)
         break;
@@ -959,7 +982,7 @@ socket.on("otherjoin", addPlayer);
       case 9:
         if (md == "Scooter") {
             chance = "Move again with Scooter";
-            alert("Move forward 4 step");
+            alert("Move forward 4 steps");
             mode="Scooter"
             walkBtn.enabled = false;
             walkBtn.enabled = false;
@@ -972,6 +995,7 @@ socket.on("otherjoin", addPlayer);
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
+          socket.setProperty("playerTurn", playerTurn)
         }
 
         console.log(chance)
@@ -979,7 +1003,7 @@ socket.on("otherjoin", addPlayer);
       ////Sunny Day////  
       case 10:
         chance = "go forward 5 steps";
-        alert("Move forward 4 step");
+        alert("Move forward 4 steps");
         mode = "Scooter"
         AI.setAcceptableTiles(tilesLimits["Special"]);
     
@@ -999,7 +1023,7 @@ socket.on("otherjoin", addPlayer);
       ////Great Breakfast////  
       case 11:
         chance = "go forward 5 steps";
-        alert("Move forward 5 step");
+        alert("Move forward 5 steps");
         mode = "Car"
         AI.setAcceptableTiles(tilesLimits["Special"]);
 
@@ -2034,7 +2058,7 @@ socket.on("otherjoin", addPlayer);
   playerInfo.pos({ x: 20, y: 110, vertical: "bottom" });
 
   var playerLabel = new Label({
-    text: "Player 1",
+    text: "My Player",
     size: 12,
     font: "Alata",
     labelWidth: 250,
