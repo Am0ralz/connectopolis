@@ -1,169 +1,6 @@
 import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
 
-
-// code from Zim dude's turn.html
-var scaling = "fit"; 
-var width = 1024;
-var height = 768;
-var color = light;
-var outerColor = darker;
-
-var frame = new Frame(scaling, width, height, color, outerColor);
-frame.on("ready", function() {
-    zog("ready from ZIM Frame");
-
-    var stage = frame.stage;
-    var stageW = frame.width;
-    var stageH = frame.height;
-    
-    // make Socket Logo
-    // frame.makeCircles().sca(.6).pos(-24,100,CENTER).cache().alp(.9);
-    // frame.makeCircles().sca(.6).pos(24,100,CENTER).cache().alp(.9).ble("darken");
-    
-    // In this case, we are going to auto start the game when there are three people 
-    // We want the players to only play with the players who were there at the start of the game 
-    // Normally, this is accomplished by setting the maxNum param to three and the fill param to false 
-    // But then if someone leaves before we reach three people we will not start with a three person game 
-    // The answer is to create a waiting room and let it fill until there are three people 
-    // Then switch the three people to the game room - that has a max of 3 with no fill
-
-    // get the app name here: https://zimjs.com/request.html
-    var appName = "turns";
-	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
-    // as this room fills with people they are sent to the game room when there are three
-    
-    var maxNum = 3;
-    // var instructions = new Label({
-    //     text:"Waiting: play will begin when there are " + maxNum + " players",
-    //     align:CENTER
-    // }).alp(.7).pos(0,280,CENTER);    
-    
-    
-    socket.on("ready", function() {
-        
-        zogg("connected");
-        
-        // we will adjust this in the setNum() function
-        var number = new Label({        
-            text:"Connections",
-            backgroundColor:yellow,
-            align:CENTER
-        }).pos(0,380,CENTER);
-        
-        // the socket.size gives the number of others in the socket (not including you)    
-        // if we reach the number we want then it is game time!
-        if (socket.size+1 == maxNum) {
-            socket.setProperty("play", 1); // tell others it is time to play
-            // setGame() will be called in the data event for all the others 
-            // but for this player, they will not receive a data event 
-            // as they are the one that is sending the data 
-            // so we need to call the setGame() directly
-            setGame(); // set up our game
-        } else {
-            setNum();  
-        }
-                
-        function setNum() {
-            number.text = "Connections = " + (socket.size + 1);
-            stage.update();
-        } 
-        
-        function setGame() {            
-            // swap player to new room called game 
-            // this room will fill up three at a time 
-            // and not fill in when someone leaves
-            number.removeFrom()
-
-            socket.changeRoom(appName, "game", 3, false);
-            // we need to wait until the player changes rooms 
-            // before continuing - so set a roomchange event
-
-            socket.on("roomchange", showGameBoard);
-        }     
-        
-        // this button is shown for the current player 
-        // so make and position it but then remove it
-        // until we know if we are the current player inside the game function
-        
-        // the currentPlayer is whose turn it is - start with 1    
-        var currentPlayer = 1;
-        // this event gets called every time another player sets a property
-        // we receive the property (or properties) as a parameter (collected as d)
-        socket.on("data", function (d) {
-            if (d.play) setGame(); // we have enough players!
-            if (d.advance) { // someone is pressing the button
-                // get the new currentPlayer
-                currentPlayer = getNextPlayer(d.advance);
-                // if we are the new currentPlayer then add the button
-                if (playerNum == currentPlayer) {
-                    button.addTo();
-                    stage.update();
-                }
-            }
-        });
-        
-        function getNextPlayer(lastPlayer) {
-            // This would be easy if nobody leaves the room 
-            // We would return (lastPlayer-1+1)%maxNum+1 
-            // or simplifying return lastPlayer%maxNum+1
-            // more clear if 0 based but we are 1 based
-            
-            // BUT people may leave so that would leave missing numbers 
-            // so use the playerNum properties that are currently in the socket 
-            // this does not return our data - as we know our data 
-            // so we need to add our data to the resulting array of playerNum properties
-            var players = socket.getProperties("playerNum"); // not you and maybe not all here anymore
-            players = copy(players); // I don't think we need this but just to be sure - work with a copy
-            players.push(playerNum); // add our playerNum to the players array
-            players.sort(); // and sort the numbers
-            var ind = players.indexOf(lastPlayer); // find out the index of the last currentPlayer 
-            if (ind == players.length-1) return players[0]; // if we are at the end - start at the beginning
-            else return players[ind+1]; // otherwise return the next player in the players array
-        }
-        
-        socket.on("otherjoin", function (d) { 
-            setNum(); // adjust our connections number when someone arrives   
-        });
-        
-        socket.on("otherleave", function (d) {
-            // we temporarily keep socket data so can know who left
-            // so wait until they are removed before setNum()
-            timeout(.05, setNum);
-            
-            // our d parameter gives us the properties of the player who left
-            // see if player leaving is the player with the button (it is their turn)
-            if (d.playerNum == currentPlayer) {
-                // check if you are next player
-                currentPlayer = getNextPlayer(d.playerNum);                
-                if (currentPlayer == playerNum) { // we are the new currentPlayer!
-                    // if we are then tell the others that we have advanced 
-                    // this is like if the player who left pressed the button
-                    socket.setProperty("advance", d.playerNum); 
-                    // and then our button
-                    button.addTo();
-                    stage.update();
-                }
-            }            
-        });
-        
-        stage.update();
-    });
-    
-    socket.on("error", function () {
-        instructions.text = "Sorry, error connecting";
-        stage.update();
-    });
-
-    stage.update(); // this is needed to show any changes
-
-}); // end of ready
-
-
-
-// Create a function to render and play Connectopolis board game
-const showGameBoard = () => {
-
 console.log(firebase);
 
 
@@ -302,10 +139,10 @@ let tilesLimits = {
 let mode = "Walk";
 
 /////////////////// //Different Modes and their properties////////////////////
-// document.getElementById("myCanvas").remove()
 
- frame = new Frame({
-  scaling: "test",
+
+const frame = new Frame({
+  scaling: "full",
   // width: 1924,
   // height: 968,
   color: "#ddd",
@@ -334,69 +171,28 @@ let mode = "Walk";
 
 TIME = "milliseconds";
 
+
 frame.on("ready", () => {
   const stage = frame.stage;
   const stageW = frame.width;
   const stageH = frame.height;
 
-  const waiter = new Waiter({corner:5}).show();    
-
-
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
+
+  const waiter = new Waiter({
+      corner:5,
+      backgroundColor: "#2C57A0"
+    }).show();    
+
+  frame.on("complete", function() {
+    waiter.hide();   
+ });
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // LOCATION AND BUDGET STARTUP CARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// zimSocketURL is a dynamic link to the ZIM Socket server in case it changes location 
-	// it is stored in one of the js files we have imported
-	// then we pass in the id that we set up at https://zimjs.com/request.html
-  const socket = new Socket(zimSocketURL, "cnctpls", "waiting");
-
-  var maxNum = 4;
-  var connected = 0;
-    // var instructions = new Label({
-    //     text:"Waiting: play will begin when there are " + maxNum + " players",
-    //     align:CENTER
-    // }).alp(.7).pos(0,280,CENTER);  
-
-    socket.on("ready", () => {
-        console.log("socket connected")    
-        console.log(socket.id)
-        waiter.hide();
-        // the socket.size gives the number of others in the socket (not including you)    
-        // if we reach the number we want then it is game time!
-      //   if (socket.size+1 == maxNum) {
-      //     socket.setProperty("play", 1); // tell others it is time to play
-      //     // setGame() will be called in the data event for all the others 
-      //     // but for this player, they will not receive a data event 
-      //     // as they are the one that is sending the data 
-      //     // so we need to call the setGame() directly
-      //     setGame(); // set up our game
-      // } else {
-      //     setNum();  
-      // }
-
-    // function setNum() {
-    //     connected = socket.size + 1;
-    //     stage.update();
-    // } 
-    
-  //   function setGame() {            
-  //       // swap player to new room called game 
-  //       // this room will fill up three at a time 
-  //       // and not fill in when someone leaves
-  //       socket.changeRoom("cnctpls", gameId, 4, false);
-  //       // we need to wait until the player changes rooms 
-  //       // before continuing - so set a roomchange event
-  //       socket.on("roomchange", playGame); 
-  //   }  
-
-  // function playGame() {
-  //   console.log("should play game")
-  // }
-      
   var lablabel = new Label({
     // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
     size: 20,
@@ -443,12 +239,7 @@ frame.on("ready", () => {
   // BOARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  if(socket.getProperties("board")){
-    console.log("conditionalllll")
-    console.log(socket.getProperties("board"))
-  }
-
-  let board = new Board({
+  const board = new Board({
     // num: 20,
     rows: 25,
     cols: 25,
@@ -464,8 +255,6 @@ frame.on("ready", () => {
     .pos({
       index: 0,
     });
-
-  // console.log(board)
 
   var cvLabel = new Label({
     text: "Change View",
@@ -506,80 +295,80 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 4;
-  var listofPlayers = []
+  let numOfPlayers = 0;
+//   let listofPlayers = []
   let playerTurn = 0;
-  if (parseInt(numOfPlayers)) {
-    const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
-    // const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
+//   if (parseInt(numOfPlayers)) {
+//     const player1 = new Player(locPos[loc.pop()], budget.pop(), 0).sca(0.6).top();
+//     // const player2 = new Player(locPos[loc.pop()], budget.pop(), 1).sca(0.6).top();
 
-    board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
-    // board.add(player2, player2.startPosition["x"], player2.startPosition["y"]);
+//     board.add(player1, player1.startPosition["x"], player1.startPosition["y"]);
+//     // board.add(player2, player2.startPosition["x"], player2.startPosition["y"]);
 
-    listofPlayers.push(player1)
-    // listofPlayers.push(player2)
-  }
-//   if (parseInt(numOfPlayers) >= 3) {
-//     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
-//     board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
-//     listofPlayers.push(player3)
+//     listofPlayers.push(player1)
+//     // listofPlayers.push(player2)
 //   }
-//   if (parseInt(numOfPlayers) >= 4) {
-//     const player4 = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-//     board.add(player4, player4.startPosition["x"], player4.startPosition["y"]);
-//     listofPlayers.push(player4)
-//   }
+// //   if (parseInt(numOfPlayers) >= 3) {
+// //     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
+// //     board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
+// //     listofPlayers.push(player3)
+// //   }
+// //   if (parseInt(numOfPlayers) >= 4) {
+// //     const player4 = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
+// //     board.add(player4, player4.startPosition["x"], player4.startPosition["y"]);
+// //     listofPlayers.push(player4)
+// //   }
 
-  for (let plyer of listofPlayers) {
-    // console.log(plyer.budget);
+//   for (let plyer of listofPlayers) {
+//     console.log(plyer.budget);
     
-    plyer.on("moving", () => {
-      if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
-        plyer.hitCurveBall = true
+//     plyer.on("moving", () => {
+//       if (board.getItems(plyer.boardTile)[0].type == "TrafficLight" && !plyer.hitCurveBall && !plyer.secondturn) {
+//         plyer.hitCurveBall = true
 
-      }
+//       }
       
-    });
+//     });
 
 
-    plyer.on("movingdone", () => {
+//     plyer.on("movingdone", () => {
      
 
-      if (walkBtn.enabled == false) {
-        walkBtn.enabled = true;
-        bikeBtn.enabled = true;
-        busBtn.enabled = true;
-        scooterBtn.enabled = true;
-        carBtn.enabled = true;
+//       if (walkBtn.enabled == false) {
+//         walkBtn.enabled = true;
+//         bikeBtn.enabled = true;
+//         busBtn.enabled = true;
+//         scooterBtn.enabled = true;
+//         carBtn.enabled = true;
 
-      }
+//       }
 
-      if (!plyer.hitCurveBall) {
-        if (!plyer.didWin()) {
-          plyer.secondturn = false;
-          playerTurn = updateTurn(playerTurn, numOfPlayers);
-          setReady(playerTurn);
-          UpdateScoreUI(listofPlayers[playerTurn]);
+//       if (!plyer.hitCurveBall) {
+//         if (!plyer.didWin()) {
+//           plyer.secondturn = false;
+//           playerTurn = updateTurn(playerTurn, numOfPlayers);
+//           setReady(playerTurn);
+//           UpdateScoreUI(listofPlayers[playerTurn]);
 
-          mode = "Walk"
-          AI.setAcceptableTiles(tilesLimits["Walk"]);
-          walkBtn.backgroundColor = "#ccc";
-          bikeBtn.backgroundColor = "white";
-          busBtn.backgroundColor = "white";
-          scooterBtn.backgroundColor = "white";
-          carBtn.backgroundColor = "white";
+//           mode = "Walk"
+//           AI.setAcceptableTiles(tilesLimits["Walk"]);
+//           walkBtn.backgroundColor = "#ccc";
+//           bikeBtn.backgroundColor = "white";
+//           busBtn.backgroundColor = "white";
+//           scooterBtn.backgroundColor = "white";
+//           carBtn.backgroundColor = "white";
 
-        } else {
-          alert("player" + (plyer.id + 1) + " won!!!!! Congratulations I hope you play again!");
-        }
-      } else {
+//         } else {
+//           alert("player" + (plyer.id + 1) + " won!!!!! Congratulations I hope you play again!");
+//         }
+//       } else {
 
-        curveBall(mode, plyer);
+//         curveBall(mode, plyer);
 
 
-      }
-    });
-  }
+//       }
+//     });
+//   }
 
   
 
@@ -632,176 +421,119 @@ frame.on("ready", () => {
   }
 
 
-  board.on("change", () => {
-    console.log("in on change")
-    // change triggers when rolled over square changes
-    if (listofPlayers[playerTurn].moving) return;
-    getPath(); // just get path - don't go to path with the go parameter true
-  });
+//   board.on("change", () => {
+//     // change triggers when rolled over square changes
+//     if (listofPlayers[playerTurn].moving) return;
+//     getPath(); // just get path - don't go to path with the go parameter true
+//   });
 
-  function getPath(go) {
-    // called from change (mouseover) and from tap
-    AI.setGrid(board.data); // a subset of the info array with only data values
-    // cancel any previous path and ticker
-    AI.cancelPath(pathID);
-    if (ticker) Ticker.remove(ticker);
-    // if no currentTile then mouse is outside board
-    if (!board.currentTile) {
-      board.clearPath();
-      path = null;
-      return;
-    }
+//   function getPath(go) {
+//     // called from change (mouseover) and from tap
+//     AI.setGrid(board.data); // a subset of the info array with only data values
+//     // cancel any previous path and ticker
+//     AI.cancelPath(pathID);
+//     if (ticker) Ticker.remove(ticker);
+//     // if no currentTile then mouse is outside board
+//     if (!board.currentTile) {
+//       board.clearPath();
+//       path = null;
+//       return;
+//     }
 
     // get a path from the player to the currentTile
     // currentTile is the selected or highlighted tile
-    pathID = AI.findPath(
-      listofPlayers[playerTurn].boardCol, // any board item has a boardCol prop
-      listofPlayers[playerTurn].boardRow,
-      board.currentTile.boardCol, // any tile has a boardColo prop
-      board.currentTile.boardRow,
-      function (thePath) {
-        // the callback function when path is found
-        if (thePath) {
-          ////// This where we set the path according to the Mode/////
-          path = thePath.slice(0, listofPlayers[playerTurn].modes[mode].spaces + 1);
+//     pathID = AI.findPath(
+//       listofPlayers[playerTurn].boardCol, // any board item has a boardCol prop
+//       listofPlayers[playerTurn].boardRow,
+//       board.currentTile.boardCol, // any tile has a boardColo prop
+//       board.currentTile.boardRow,
+//       function (thePath) {
+//         // the callback function when path is found
+//         if (thePath) {
+//           ////// This where we set the path according to the Mode/////
+//           path = thePath.slice(0, listofPlayers[playerTurn].modes[mode].spaces + 1);
 
-          Ticker.remove(ticker);
-          board.showPath(path);
-          // this how to get move character by clicking on the screen might omit later//
-          if (go) {
-            // from a press on the tile
-            // board.followPath(listofPlayers[playerTurn], path, null, null, 2); // nudge camera 2
-            path = null;
-          }
-        }
-      }
-    );
-    // must calculate the path in a Ticker
-    ticker = Ticker.add(() => {
-      AI.calculate();
-    });
-  }
+//           Ticker.remove(ticker);
+//           board.showPath(path);
+//           // this how to get move character by clicking on the screen might omit later//
+//           if (go) {
+//             // from a press on the tile
+//             // board.followPath(listofPlayers[playerTurn], path, null, null, 2); // nudge camera 2
+//             path = null;
+//           }
+//         }
+//       }
+//     );
+//     // must calculate the path in a Ticker
+//     ticker = Ticker.add(() => {
+//       AI.calculate();
+//     });
+//   }
 
   /////Player Moves /////////////////////////////////////////////////////////
 
-  board.tiles.tap((e) => {
-    if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
-    if (path) {
-      if (listofPlayers[playerTurn].moneyMove(mode)) {
+//   board.tiles.tap((e) => {
+//     if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
+//     if (path) {
+//       if (listofPlayers[playerTurn].moneyMove(mode)) {
 
 
 
-        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+//         board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
 
-        //Record path for Curveballs
-        listofPlayers[playerTurn].tracker(path);
+//         //Record path for Curveballs
+//         listofPlayers[playerTurn].tracker(path);
 
-        //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
-
-        //update the socket
-        socket.setProperties({list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
+//         //Where the score card get updated//
+//         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
 
 
 
 
 
-      } else {
-        alert("not enough money!! Pick a different Mode")
-      }
-      path = null;
-    } else {
-      // could be tapping or on mobile with no rollover
-      getPath(true);
-    }
-    stage.update();
-  });
-
-  socket.on("data", data=>{
-    console.log("socket received data")
-    console.log("socket size is ", socket.size)
-    console.log(data)
-    if (data.play) setGame(); // we have enough players!
-    if (data.board){
-      board = data.board; // reset board
-      stage.update()
-    } 
-    else {
-    var { listofPlayers, path } = data
-    // loop(playerList, (player)=>{
-        // update the board
-        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
-
-        //Record path for Curveballs
-        listofPlayers[playerTurn].tracker(path);
-
-        //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
-          // lettersArray[n].loc(d[0], d[1], letters, d[2]);
-          stage.update();              
-    }
-    // });            
-});
-
-function addPlayer(data){
-  console.log(data)
-  console.log("should add player")
-  console.log(socket.senderID)
-  console.log(parseInt(numOfPlayers))
-  console.log("socket size is ", socket.size)
-    // setNum()
-    if (listofPlayers.length != parseInt(numOfPlayers)) {
-    console.log(socket)
-    shuffleArray(loc);
-    shuffleArray(budget);
-    const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-    board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
-    console.log(`there are ${listofPlayers.length} other players`)
-    listofPlayers.push(newplayer)
-    // socket.setProperty("board", JSON.prune(board))
-    socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
-
-    stage.update()
-  }
-}
-
-socket.on("otherjoin", addPlayer);
-// socket.on("otherleave", setDrag);
-
-// socket.on("data", function(data) {
-//   // note, this data is data sent by sender
-//   // so it directly holds their properties - no need to key by id
-//   if (data.board) board = board; // reset board
-//   else if (data.path){
-
-//   }
-// });
-
+//       } else {
+//         alert("You don't have enough money! Pick a different mode")
+//       }
+//       path = null;
+//     } else {
+//       // could be tapping or on mobile with no rollover
+//       getPath(true);
+//     }
+//     stage.update();
+//   });
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // CURVE BALL
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
   function curveBall(md, plyr) {
     let card = Math.floor(Math.random() * 10) + 1;;
-    console.log("This card was chosen: " + card)
+
     plyr.hitCurveBall = false;
     let tmpPath = plyr.pathHist.slice(0)
     let chance = "";
     switch (card) {
+     
       ///Heat/////
       case 1:
         if (md == "Walk") {
           chance = "go back 1 steps";
-          alert(chance);
+          curveBallPane.label.text = cb1;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-        } else if (md == "Bike") {
+
+        } else if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
-          alert(chance);
+          curveBallPane.label.text = cb1;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -812,22 +544,108 @@ socket.on("otherjoin", addPlayer);
         console.log(chance)
 
         break;
+
       ///Rain///////
       case 2:
         if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
+
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
         else if (md == "Bus") {
           chance = "go back 1 steps";
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
+
         else if (md == "Car") {
           chance = "go back 4 steps";
+          curveBallPane.label.text = cb3;
+          curveBallPane.show();
+
+          tmpPath = tmpPath.reverse().slice(0, 5)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+
+        else {
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+        }
+        console.log(chance)
+        break;
+
+      ///High gas///////
+      case 3:
+        if (md == "Car") {
+          chance = "-$10";
+          curveBallPane.label.text = cb5;
+          curveBallPane.show();
+
+          plyr.budget = plyr.budget - 10;
+        }
+
+        if (md == "Bus") {
+          chance = "-$1";
+          curveBallPane.label.text = cb5;
+          curveBallPane.show();
+
+
+          plyr.budget = plyr.budget - 1;
+          playerTurn++;
+        }
+        playerTurn = updateTurn(playerTurn, numOfPlayers);
+        setReady(playerTurn);
+        console.log("$" + plyr.budget);
+        break;
+
+      ///Late Bus///////
+      case 4:
+        if (md == "Bus") {
+          chance = "go back 4 steps";
+          curveBallPane.label.text = cb8;
+          curveBallPane.show();
+
+          tmpPath = tmpPath.reverse().slice(0, 5)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+        }
+        break;
+
+      ///Snow////////
+      case 5:
+        if (md == "Bus") {
+          tmpPath = tmpPath.reverse().slice(0, 2)
+          board.followPath(plyr, tmpPath, null, null,);
+          chance = "go back 1 steps";
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+          plyr.secondturn = true;
+
+        } else if (md == "Bike" || md == "Scooter") {
+          chance = "go back 2 steps";
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+
+
+          tmpPath = tmpPath.reverse().slice(0, 3)
+          board.followPath(plyr, tmpPath, null, null,);
+          plyr.secondturn = true;
+
+        } else if (md == "Car") {
+          chance = "go back 4 steps";
+          curveBallPane.label.text = cb2;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
@@ -836,74 +654,35 @@ socket.on("otherjoin", addPlayer);
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
         }
-        console.log(chance)
         break;
-      ///High gas///////
-      case 3:
-        if (md == "Car") {
-          chance = "-$10";
-          plyr.budget = plyr.budget - 10;
-        }
-        if (md == "Bus") {
-          chance = "-$1";
-          plyr.budget = plyr.budget - 1;
-          playerTurn++;
-        }
-        playerTurn = updateTurn(playerTurn, numOfPlayers);
-        setReady(playerTurn);
-        console.log("$" + plyr.budget);
-        break;
-      ///Late Bus///////
-      case 4:
-        if (md == "Bus") {
-          chance = "go back 4 steps";
-        }
-        console.log(chance)
-        break;
-      ///Snow////////
-      case 5:
-        if (md == "Bus") {
-          tmpPath = tmpPath.reverse().slice(0, 2)
-          board.followPath(plyr, tmpPath, null, null,);
-          chance = "go back 1 steps";
-          plyr.secondturn = true;
-        } else if (md == "Bike") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3)
-          board.followPath(plyr, tmpPath, null, null,);
-          plyr.secondturn = true;
-        } else if (md == "Scooter") {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3)
-          board.followPath(plyr, tmpPath, null, null,);
-          plyr.secondturn = true;
-        }
-        else {
-          playerTurn = updateTurn(playerTurn, numOfPlayers);
-          setReady(playerTurn);
-        }
-        console.log(chance)
-        break;
+
       /// Traffic /////
       case 6:
-        if (md == "Walk" || "Bike") {
-          chance = "go forward 1 steps";
-          alert("Move forward 1 step");
-          mode = "Walk"
+        if (md == "Walk" || md == "Bike" || md == "Scooter") {
+            chance = "go forward 1 steps";
+            curveBallPane.label.text = cb4;
+            curveBallPane.show();
+            mode = "Walk"
 
-          walkBtn.enabled = false;
-          walkBtn.enabled = false;
-          bikeBtn.enabled = false;
-          busBtn.enabled = false;
-          scooterBtn.enabled = false;
-          carBtn.enabled = false;
+            walkBtn.enabled = false;
+            walkBtn.enabled = false;
+            bikeBtn.enabled = false;
+            busBtn.enabled = false;
+            scooterBtn.enabled = false;
+            carBtn.enabled = false;
 
-          plyr.secondturn = true;
-          // return mode
+            plyr.secondturn = true;
+            // return mode
 
         } else if (md == "Bus") {
           chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 4)
+          //alert
+
+          curveBallPane.label.text = cb4;
+          curveBallPane.show();
+
+
+          tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
         }
@@ -912,47 +691,42 @@ socket.on("otherjoin", addPlayer);
           setReady(playerTurn);
         }
 
-        console.log(chance)
         break;
+
       ///Flat Tire ////////
       case 7:
         if (md == "Car") {
           chance = "go back 7 steps";
+          curveBallPane.label.text = cb6;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 9)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+
         } else if (md == "Bus") {
           chance = "go back 2 steps";
+          curveBallPane.label.text = cb6;
+          curveBallPane.show();
+
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
         }
-        console.log(chance)
         break;
-      //////Flood /////////
-      case 8:
-        if (board.getColor(plyr.boardTile) == "#acd241"
-        ) {
-          chance = "go back 2 steps";
-          tmpPath = tmpPath.reverse().slice(0, 3)
-          board.followPath(plyr, tmpPath, null, null,);
-          plyr.secondturn = true;
-        } else {
-          playerTurn = updateTurn(playerTurn, numOfPlayers);
-          setReady(playerTurn);
-        }
-        console.log(chance)
-        break;
+     
       /////Free Scooter/////
-      case 9:
+      case 8:
         if (md == "Scooter") {
             chance = "Move again with Scooter";
-            alert("Move forward 4 step");
+            curveBallPane.label.text = cb7;
+            curveBallPane.show();
+
             mode="Scooter"
-            walkBtn.enabled = false;
             walkBtn.enabled = false;
             bikeBtn.enabled = false;
             busBtn.enabled = false;
@@ -965,33 +739,34 @@ socket.on("otherjoin", addPlayer);
           setReady(playerTurn);
         }
 
-        console.log(chance)
         break;
-      ////Sunny Day////  
-      case 10:
-        chance = "go forward 5 steps";
-        alert("Move forward 4 step");
-        mode = "Scooter"
-        AI.setAcceptableTiles(tilesLimits["Special"]);
-    
 
-        walkBtn.enabled = false;
+      ////Sunny Day////  
+      case 9:
+        chance = "go forward 5 steps";
+        curveBallPane.label.text = cb9;
+        curveBallPane.show();
+        mode = "Scooter"
+        plyr.budget = plyr.budget + 3; 
+        AI.setAcceptableTiles(tilesLimits["Special"]);   
+
         walkBtn.enabled = false;
         bikeBtn.enabled = false;
         busBtn.enabled = false;
         scooterBtn.enabled = false;
         carBtn.enabled = false;
-
         plyr.secondturn = true;
-
-
         break;
 
       ////Great Breakfast////  
-      case 11:
+      case 10:
         chance = "go forward 5 steps";
-        alert("Move forward 5 step");
+        curveBallPane.label.text = cb10;
+        curveBallPane.show();
+
         mode = "Car"
+        plyr.budget = plyr.budget + 8;
+
         AI.setAcceptableTiles(tilesLimits["Special"]);
 
         walkBtn.enabled = false;
@@ -1005,6 +780,22 @@ socket.on("otherjoin", addPlayer);
         break;
 
     }
+
+    //  //////Flood /////////
+    //  case 11:
+    //     if (board.getColor(plyr.boardTile) == "#acd241"
+    //     ) {
+    //       chance = "go back 2 steps";
+    //       //alert
+    //       tmpPath = tmpPath.reverse().slice(0, 3)
+    //       board.followPath(plyr, tmpPath, null, null,);
+    //       plyr.secondturn = true;
+    //     } else {
+    //       playerTurn = updateTurn(playerTurn, numOfPlayers);
+    //       setReady(playerTurn);
+    //     }
+    //     console.log(chance)
+    //     break;
   }
 
   function UpdateScoreUI(plyr){
@@ -1045,162 +836,8 @@ socket.on("otherjoin", addPlayer);
     
   }
   }
+
   
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // CURVE BALL
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  // function curveBall(card, md, pth) {
-  //   let tmpPath = pth.slice(0)
-  //   let chance = "";
-  //   switch (card) {
-  //     ///Heat/////
-  //     case 1:
-  //       if(md == "Walk"){
-  //         chance = "go back 1 steps";
-
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         return tmpPath;
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         return tmpPath;
-  //       }
-  //       console.log(chance)
-
-  //       break;
-  //     ///Rain///////
-  //     case 2:
-  //       if(md == "Bike" || md == "Scooter"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         }
-  //       if(md == "Bus"){
-  //         chance = "go back 1 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Car"){
-  //         chance = "go back 4 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,5)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //      ///High gas///////
-  //     case 3:
-  //       if(md == "Car"){
-  //         chance = "-$10";
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "-$1";
-  //       }
-  //       chance = "go 2 steps left";
-  //       console.log(chance)
-  //       break;
-  //      ///Late Bus///////
-  //      case 4:
-  //       if(md == "Bus"){
-  //         chance = "go back 4 steps";
-  //       }
-  //       break;
-  //     ///Snow////////
-  //     case 5:
-  //       if(md == "Bus"){
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         chance = "go back 1 steps";
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Scooter"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     /// Traffic /////
-  //     case 6:
-  //       if(md == "Walk"){
-  //         chance = "go forward 1 steps";
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go forward 1 steps";
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,4)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-
-  //       console.log(chance)
-  //       break;
-  //     ///Flat Tire ////////
-  //      case 7:
-  //       if(md == "Car"){
-  //         chance = "go back 7 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,9)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     //////Flood /////////
-  //     case 8:
-  //       if(true){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     /////Free Scooter/////
-  //     case 9:
-  //       if(md == "Scooter"){
-  //         chance = "Move again with Scooter";
-  //       }
-
-  //       console.log(chance)
-  //       break;
-
-  //   }
-
-  //   // document.getElementById("text").innerHTML = chance;
-  // }
-
-  // //displays curveBall card
-  // function displayCard() {
-  //   curveBall();
-  //   document.getElementById("screen").style.display = "block";
-  // }
-
-  // //when player hits traffic light shows curveball card
-  // player.moveEvent = player.on("moving", () =>
-  //   // {timeout(50, () =>
-  //   {
-  //     if (player.boardTile == trafficLight.boardTile) {
-  //       player.off("moving", player.moveEvent);
-
-  //       displayCard();
-  //     }
-  //     // });
-  //   }
-  // );
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR SCORECARD
@@ -1725,7 +1362,7 @@ socket.on("otherjoin", addPlayer);
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "#ccc";
   });
-  UpdateScoreUI(listofPlayers[0]);
+//   UpdateScoreUI(listofPlayers[0]);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD ITEMS
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1858,139 +1495,69 @@ socket.on("otherjoin", addPlayer);
   // CURVE BALL UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  var cb1 = new Label({
-    text: `Heat 
-    Subtract spaces: 
-    -2 for bike or scooter
-    -1 for walk`,
-    size: 20,
+var cb1 = `Heat 
+Subtract spaces: 
+-2 for bike or scooter
+-1 for walk`;
+
+var cb2 = `Snow
+Subtract spaces: 
+-2 for bike or scooter
+-1 for bus
+-4 for car`;
+
+var cb3 = `Rain
+Subtract spaces: 
+-2 for bike or scooter
+-1 for bus
+-4 for car`;
+
+var cb4 = `Traffic
+Subtract or add spaces: 
++1 for walk
++1 for bike or scooter
+-3 for bus`;
+
+var cb5 = `High Gas
+Subtract or add money: 
+-$10 extra for car
+-$1 extra for bus`;
+
+var cb6 = `Flat Tire
+Subtract spaces: 
+-7 for car
+-4 for bus`;
+
+var cb7 = `Free Scooter Ride
+Change mode to scooter
+& write $0 in cost for 
+this turn`;
+
+var cb8 = `Late Bus
+Subtract spaces: 
+-4 for bus`;
+
+var cb9 = `Sunny Day
+Add 4 spaces`;
+
+
+var cb10 = `Great Breakfast
+Add 5 spaces`;
+
+  var cbLabel = new Label({
+    text: "",
+    size: 18,
     font: "Alata",
     labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-  });
-
-  var cb2 = new Label({
-    text: `Snow
-    Subtract spaces: 
-    -2 for bike or scooter
-    -1 for bus
-    -4 for car`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb3 = new Label({
-    text: `Rain
-    Subtract spaces: 
-    -2 for bike or scooter
-    -1 for bus
-    -4 for car`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb4 = new Label({
-    text: `Traffic
-    Subtract or add spaces: 
-    +1 for walk
-    +1 for bike or scooter
-    -3 for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb5 = new Label({
-    text: `High Gas
-    Subtract or add money: 
-   +$10 extra for car
-   +$1 extra for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
+    shiftVertical: -80,
     align: "center",
     lineHeight: 25,
 
   });
 
-  var cb6 = new Label({
-    text: `Flat Tire
-    Subtract spaces: 
-    -7 for car
-    -4 for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb7 = new Label({
-    text: `Free Scooter Ride
-    Change mode to scooter
-    & write $0 in cost for 
-    this turn`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb8 = new Label({
-    text: `Late Bus
-    Subtract spaces: 
-    -4 for bus`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-  var cb9 = new Label({
-    text: `Sunny Day
-    Add 4 spaces`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-    lineHeight: 25,
-
-  });
-
-
-  let cb = [cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9]
-
-  //random curve ball array
-  let rCB = cb[Math.floor(Math.random() * cb.length)];
 
   var curveBallPane = new Pane({
-    label: rCB,
+    label: cbLabel,
     width: 300,
     height: 240,
     corner: 15,
@@ -2066,13 +1633,13 @@ socket.on("otherjoin", addPlayer);
   });
 
   //player avatars
-  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
+//   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
 //   listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
 //   listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
 //   listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
-  player1Label.center(playerInfo).pos(40, 48);
+//   player1Label.center(playerInfo).pos(40, 48);
 //   player2Label.center(playerInfo).pos(40, 78);
 //   player3Label.center(playerInfo).pos(40, 108);
 //   player4Label.center(playerInfo).pos(40, 138);
@@ -2295,18 +1862,6 @@ font: "Alata",
 
 
   board.update();
+
   stage.update(); // this is needed to show any changes
 }); // end ready
-
-	// SOCKET
-		// if the socket can't connect it will try for a few seconds
-		// then dispatch an error message
-		// we can remove the example text as it will not work
-		socket.addEventListener("error", function() {
-			zog("error connecting");
-			// zss("multi").display = "none"; // hide example paragraph
-			// zss("nextParagraph").marginTop = "0px";
-		});
-
-	}); // end socket ready
-}
