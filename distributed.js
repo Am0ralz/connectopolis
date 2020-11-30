@@ -71,22 +71,7 @@ const locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Ur
 
 /*----- app's state (variables) -----*/
 let listofPlayers = [];
-let board  = new Board({
-    // num: 20,
-    rows: 25,
-    cols: 25,
-    size: 17,
-    info: JSON.stringify(data), // these are the paths from info.js
-    borderWidth: 0.2,
-    borderColor: "#555555",
-    arrows: false,
-    indicatorBorderColor: "white",
-    indicatorBorderWidth: 1,
-  })
-    .center()
-    .pos({
-      index: 0,
-    });;
+let board;
 let playerTurn = 0;
 let win;
 let mode = "Walk";
@@ -477,7 +462,7 @@ function shuffleArray(array) {
 /*----- event listeners -----*/
 frame.on("ready", () => {
     
-// init()
+init()
     
 
 board.on("change", () => {
@@ -578,8 +563,25 @@ function init(){
     
     extend(TrafficLight, Container);
     extend(DiffTree, Container);
+
+    board = new Board({
+      // num: 20,
+      rows: 25,
+      cols: 25,
+      size: 17,
+      info: JSON.stringify(data), // these are the paths from info.js
+      borderWidth: 0.2,
+      borderColor: "#555555",
+      arrows: false,
+      indicatorBorderColor: "white",
+      indicatorBorderWidth: 1,
+    })
+      .center()
+      .pos({
+        index: 0,
+      });;
     
-    setupGameUI(frame, board, AI, UpdateScoreUI, mode)
+    setupGameUI(frame, board, AI, UpdateScoreUI, mode, listofPlayers)
 
     setReady(playerTurn);
 

@@ -1,4 +1,4 @@
-export const setupGameUI = (frame, board, AI, UpdateScoreUI, mode) => {
+export const setupGameUI = (frame, board, AI, UpdateScoreUI, mode, listofPlayers) => {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // LOCATION AND BUDGET STARTUP CARD
