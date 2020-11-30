@@ -211,9 +211,9 @@ frame.on("ready", () => {
     corner: 15,
   });
 
-  // onstart.show().pos({
-  //   index: 1000,
-  // })
+//   onstart.show().pos({
+//     index: 1000,
+//   })
 
   var btnlabel = new Label({
     text: "GOT IT",

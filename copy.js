@@ -189,52 +189,7 @@ frame.on("ready", () => {
     waiter.hide();   
  });
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // LOCATION AND BUDGET STARTUP CARD
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  var lablabel = new Label({
-    // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
-    size: 20,
-    font: "Alata",
-    labelWidth: 250,
-    shiftVertical: -30,
-    align: "center",
-  });
-
-  var onstart = new Pane({
-    label: lablabel,
-    width: 300,
-    height: 200,
-    backdropClose: false,
-    displayClose: false,
-    corner: 15,
-  });
-
-  // onstart.show().pos({
-  //   index: 1000,
-  // })
-
-  var btnlabel = new Label({
-    text: "GOT IT",
-    size: 20,
-    font: "Alata",
-    color: "white",
-  });
-
-  var closebtn = new Button({
-    label: btnlabel,
-    width: 100,
-    height: 50,
-    backgroundColor: "#2C57A0",
-    rollBackgroundColor: "#244682",
-    corner: 10,
-  }).tap(function () {
-    onstart.hide();
-  });
-
-  closebtn.center(onstart).pos(null, 120);
-
+ 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -279,6 +234,9 @@ frame.on("ready", () => {
 
   changeView.pos({ x: 20, y: 50, vertical: "bottom", index: 0 })
 
+
+  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Player Creation 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,6 +245,61 @@ frame.on("ready", () => {
   let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
   let budget = [5, 15, 25, 50];
   let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
+
+
+ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // LOCATION AND BUDGET STARTUP CARD
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+  var lablabel = new Label({
+    text: `Your location is __ and budget is $____`,
+    size: 20,
+    font: "Alata",
+    labelWidth: 250,
+    shiftVertical: -30,
+    align: "center",
+  });
+
+  var onstart = new Pane({
+    label: lablabel,
+    width: 300,
+    height: 200,
+    backdropClose: false,
+    displayClose: false,
+    corner: 15,
+  });
+
+  onstart.show().pos({
+    index: 1000,
+  })
+
+  var btnlabel = new Label({
+    text: "GOT IT",
+    size: 20,
+    font: "Alata",
+    color: "white",
+  });
+
+  var closebtn = new Button({
+    label: btnlabel,
+    width: 100,
+    height: 50,
+    backgroundColor: "#2C57A0",
+    rollBackgroundColor: "#244682",
+    corner: 10,
+  }).tap(function () {
+    onstart.hide();
+  });
+
+  closebtn.center(onstart).pos(null, 120);
+
+
+
+
+
+
 
   //////////////Shuffle loc cards and budget cards so it can be random////////////
   shuffleArray(loc);
@@ -1568,7 +1581,7 @@ Add 5 spaces`;
   });
 
   var closeCB = new Button({
-    label: btnlabel,
+    label: btnlabel.clone(),
     width: 100,
     height: 50,
     backgroundColor: "#2C57A0",
