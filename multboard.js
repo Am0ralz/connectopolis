@@ -29,7 +29,7 @@ frame.on("ready", function() {
     // Then switch the three people to the game room - that has a max of 3 with no fill
 
     // get the app name here: https://zimjs.com/request.html
-    var appName = "turns";
+    var appName = "connectopolis";
 	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
@@ -359,7 +359,7 @@ frame.on("ready", () => {
 // zimSocketURL is a dynamic link to the ZIM Socket server in case it changes location 
 	// it is stored in one of the js files we have imported
 	// then we pass in the id that we set up at https://zimjs.com/request.html
-  const socket = new Socket(zimSocketURL, "cnctpls", "waiting");
+  const socket = new Socket(zimSocketURL, "connectopolis_dev", "waiting");
 
   var maxNum = 2;
   var connected = 0;
@@ -501,7 +501,7 @@ frame.on("ready", () => {
 
     listofPlayers.push(myPlayer)
 
-    // socket.setProperty("newPlayerInfo", {player_location, player_budget})
+    socket.setProperty("newPlayerInfo", {player_location, player_budget})
     // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
 
     // listofPlayers.push(player2)
@@ -733,8 +733,12 @@ frame.on("ready", () => {
       if(listofPlayers.length == socket.size+1){
         console.log("received all connected users")
         listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+
         console.log("sorted array:", listofPlayers)
-        listofPlayers.forEach((new_player) => {
+        listofPlayers.forEach((new_player, index) => {
+          new_player.budget = budget[index]
+          var player_loc = loc[index]
+          new_player.startPosition = locPos[player_loc]
           board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
           console.log("board should update...")
           stage.update()
