@@ -477,8 +477,8 @@ frame.on("ready", () => {
   let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
 
   //////////////Shuffle loc cards and budget cards so it can be random////////////
-  shuffleArray(loc);
-  shuffleArray(budget);
+  // shuffleArray(loc);
+  // shuffleArray(budget);
 
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
