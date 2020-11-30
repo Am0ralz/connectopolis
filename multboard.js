@@ -626,6 +626,9 @@ frame.on("ready", () => {
     console.log("in on change")
     // change triggers when rolled over square changes
     if (listofPlayers[playerTurn].moving) return;
+    // if(playerTurn == )
+    // get the index of our player
+
     getPath(); // just get path - don't go to path with the go parameter true
   });
 
@@ -675,6 +678,7 @@ frame.on("ready", () => {
   /////Player Moves /////////////////////////////////////////////////////////
 
   board.tiles.tap((e) => {
+    if(!checkIfMyTurn) return;
     if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
     if (path) {
       if (listofPlayers[playerTurn].moneyMove(mode)) {
@@ -707,6 +711,21 @@ frame.on("ready", () => {
     }
     stage.update();
   });
+
+  function checkIfMyTurn(){
+   myIndex = listofPlayers.findIndex((player)=>{
+      my = socket.getMyData
+      return(my.id == player.id)
+    })
+    
+    if(playerTurn == myIndex ){
+
+      return true;
+    } else{
+      return false;
+    }
+
+  }
 
   socket.on("data", data=>{
     console.log("socket received data")
@@ -767,6 +786,12 @@ frame.on("ready", () => {
       console.log("socket received new player turn", data.playerTurn)
       playerTurn = data.playerTurn
       console.log("player turn should be:", playerTurn)
+
+      // check if it's our turn & add event listeners
+      listofPlayers.findIndex((player)=>{
+        my = socket.getMyData
+        return(my.id == player.id)
+      })
 
     }
     stage.update()
@@ -2109,15 +2134,15 @@ socket.on("otherjoin", addPlayer);
 
   //player avatars
   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
-//   listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
-//   listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
-//   listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
+  listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
+  // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
+  // listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
   playerLabel.center(playerInfo).pos(40, 48);
-//   player2Label.center(playerInfo).pos(40, 78);
-//   player3Label.center(playerInfo).pos(40, 108);
-//   player4Label.center(playerInfo).pos(40, 138);
+  player2Label.center(playerInfo).pos(40, 78);
+  // player3Label.center(playerInfo).pos(40, 108);
+  // player4Label.center(playerInfo).pos(40, 138);
 
 
   var circle1 = new Circle(5, "white");
