@@ -107,6 +107,7 @@ class Player extends Person {
     return this.pathHist;
   }
 }
+
 ///function to shuffle arrays arround///
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
