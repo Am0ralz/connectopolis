@@ -490,7 +490,7 @@ frame.on("ready", () => {
     console.log("creating my player")
     var player_location = locPos[loc.pop()]
     var player_budget = budget.pop()
-    let myPlayer = new Player(player_location, player_budget, 0).sca(0.6).top();
+    var myPlayer = new Player(player_location, player_budget, 0).sca(0.6).top();
 
     var my = socket.getMyData()
     console.log("my data is...", my)
@@ -501,7 +501,7 @@ frame.on("ready", () => {
 
     listofPlayers.push(myPlayer)
 
-    socket.setProperty("newPlayerInfo", {player_location, player_budget})
+    // socket.setProperty("newPlayerInfo", {player_location, player_budget})
     // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
 
     // listofPlayers.push(player2)
@@ -520,6 +520,8 @@ frame.on("ready", () => {
 
   // for (let plyer of listofPlayers) {
     // console.log(plyer.budget);
+
+    console.log("my player is!!!!!", myPlayer)
     
     myPlayer.on("moving", () => {
       if (board.getItems(myPlayer.boardTile)[0].type == "TrafficLight" && !myPlayer.hitCurveBall && !myPlayer.secondturn) {
