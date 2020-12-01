@@ -624,6 +624,7 @@ frame.on("ready", () => {
   board.on("change", () => {
     console.log("in on change")
     // change triggers when rolled over square changes
+    // if(!checkIfMyTurn())
     if (myPlayer.moving) return;
     // if(playerTurn == )
     // get the index of our player
@@ -678,7 +679,7 @@ frame.on("ready", () => {
 // TODO: change listofplayers to myPlayer, play with playerIds idea 
 
   board.tiles.tap((e) => {
-    if(!checkIfMyTurn) return;
+    if(!checkIfMyTurn()) return;
     if (myPlayer.moving) return; // moving pieces given moving property
     if (path) {
       if (myPlayer.moneyMove(mode)) {
@@ -710,10 +711,7 @@ frame.on("ready", () => {
   });
 
   function checkIfMyTurn(){
-   myIndex = listofPlayers.findIndex((player)=>{
-      my = socket.getMyData()
-      return(my.id == player.id)
-    })
+   var myIndex = findMyIndex()
     
     if(playerTurn == myIndex ){
 
@@ -723,120 +721,6 @@ frame.on("ready", () => {
     }
 
   }
-
-  // socket.on("data", data=>{
-    function handleGameData(data) {
-  //   console.log("socket received data")
-  //   console.log("socket size is ", socket.size)
-  //   console.log(data)
-  //   if (data.play) setGame(); // we have enough players!
-  //   if (data.newPlayerInfo){
-  //     console.log("received new player info:", data.newPlayerInfo)
-  //     // board = data.board; // reset board
-  //     // var newList = JSON.parse(data.list)
-  //     let {player_location, player_budget} = data.newPlayerInfo
-  //     const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
-
-  //     if(listofPlayers.length < socket.size+1){
-  //       listofPlayers.push(newplayer)
-  //       console.log("my list is now:", listofPlayers)
-  //       console.log(listofPlayers)     
-  //       console.log(socket.size + 1) 
-      
-  //     // listofPlayers.concat(newList);
-     
-  //     }
-
-//       if(listofPlayers.length == socket.size+1){
-//         console.log("received all connected users")
-//         listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
-
-//         console.log("sorted array:", listofPlayers)
-//         listofPlayers.forEach((new_player, index) => {
-//           new_player.budget = budget[index]
-//           var player_loc = loc[index]
-//           new_player.startPosition = locPos[player_loc]
-//           board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
-//           console.log("board should update...")
-//           stage.update()
-//         })
-//         // console.log("should see a healthy list", listofPlayers)
-//         // board.clearData("Player")
-//       }
-    
-//       // stage.update()
-//     } 
-//     // we sent data because a player is moving
-//     if (data.path && data.mode) {
-//       console.log("someone made a move!")
-//       board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
-
-//         //Record path for Curveballs
-//         listofPlayers[playerTurn].tracker(data.path);
-
-//         //Where the score card get updated//
-//         listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
-
-//         playerTurn = updateTurn(playerTurn, numOfPlayers);
-//         setReady(playerTurn);
-//         // socket.setProperty("playerTurn", playerTurn)
-
-//         stage.update();              
-//     }
-
-//     if (data.playerTurn){
-//       console.log("playerTurn was:", playerTurn)
-//       console.log("socket received new player turn", data.playerTurn)
-//       playerTurn = data.playerTurn
-//       setReady(playerTurn);
-//       console.log("player turn should be:", playerTurn)
-
-//     }
-//     stage.update()
-
-//     // });            
-// });
-}
-
-function addPlayer(data){
-  console.log("add player called")
-  var connectedUsers = socket.size + 1
-  console.log(connectedUsers + " connected users")
-  // console.log(data)
-  // console.log("should add player")
-  // console.log(socket.senderID)
-  // console.log(parseInt(numOfPlayers))
-  // console.log("socket size is ", socket.size)
-  //   // setNum()
-  //   if (listofPlayers.length != parseInt(numOfPlayers)) {
-  //   console.log(socket)
-  //   shuffleArray(loc);
-  //   shuffleArray(budget);
-  //   const newplayer = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-  //   board.add(newplayer, newplayer.startPosition["x"], newplayer.startPosition["y"]);
-  //   console.log(`there are ${listofPlayers.length} other players`)
-  //   listofPlayers.push(newplayer)
-  //   // socket.setProperty("board", JSON.prune(board))
-  //   socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn), path: JSON.prune(path)})
-
-  //   stage.update()
-  // }
-}
-
-//socket.on("otherjoin", addPlayer);
-
-
-// socket.on("otherleave", setDrag);
-
-// socket.on("data", function(data) {
-//   // note, this data is data sent by sender
-//   // so it directly holds their properties - no need to key by id
-//   if (data.board) board = board; // reset board
-//   else if (data.path){
-
-//   }
-// });
-
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
