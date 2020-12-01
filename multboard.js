@@ -8,6 +8,18 @@ var scaling = "full";
 // var height = 768;
 var color = light;
 var outerColor = darker;
+var socket;
+var waiter;
+var board;
+var listofPlayers;
+let numOfPlayers = 2;
+
+
+// Characters placement cards and Budget Cards setup 
+let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let budget = [5, 15, 25, 50];
+let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
+
 
 var frame = new Frame(scaling, color, outerColor);
 frame.on("ready", function() {
@@ -16,10 +28,6 @@ frame.on("ready", function() {
     var stage = frame.stage;
     var stageW = frame.width;
     var stageH = frame.height;
-    
-    // make Socket Logo
-    // frame.makeCircles().sca(.6).pos(-24,100,CENTER).cache().alp(.9);
-    // frame.makeCircles().sca(.6).pos(24,100,CENTER).cache().alp(.9).ble("darken");
     
     // In this case, we are going to auto start the game when there are three people 
     // We want the players to only play with the players who were there at the start of the game 
@@ -30,7 +38,7 @@ frame.on("ready", function() {
 
     // get the app name here: https://zimjs.com/request.html
     var appName = "cnctpls";
-	var socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
+	  socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
     // as this room fills with people they are sent to the game room when there are three
     
     var maxNum = 2;
@@ -42,7 +50,8 @@ frame.on("ready", function() {
     
     
     socket.on("ready", function() {
-        
+      console.log("in first socket ready")
+
         zogg("connected");
         
         // we will adjust this in the setNum() function
@@ -76,9 +85,12 @@ frame.on("ready", function() {
             // and not fill in when someone leaves
             number.removeFrom()
 
-            socket.changeRoom(appName, "game", 2, false);
+            // setTimeout(()=>{
+            socket.changeRoom(appName, "game", 2, false)
+            // }, 10000);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
+            waiter = new Waiter({corner:5}).show();    
 
             socket.on("roomchange", showGameBoard);
         }     
@@ -91,68 +103,89 @@ frame.on("ready", function() {
         var currentPlayer = 1;
         // this event gets called every time another player sets a property
         // we receive the property (or properties) as a parameter (collected as d)
-        socket.on("data", function (d) {
-            if (d.play) setGame(); // we have enough players!
-            if (d.advance) { // someone is pressing the button
-                // get the new currentPlayer
-                currentPlayer = getNextPlayer(d.advance);
-                // if we are the new currentPlayer then add the button
-                if (playerNum == currentPlayer) {
-                  console.log("calling old socket")
+        socket.on("data", function (data) {
+          console.log("in first socket onData")
 
-                    button.addTo();
-                    stage.update();
-                }
-            }
-        });
+          if (data.play) setGame(); // we have enough players!
+
+          if (data.newPlayerInfo){
+            console.log("received new player info:", data.newPlayerInfo)
+            // board = data.board; // reset board
+            // var newList = JSON.parse(data.list)
+            let {player_location, player_budget} = data.newPlayerInfo
+            const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
+
+          if(listofPlayers.length < socket.size+1){
+            listofPlayers.push(newplayer)
+            console.log("my list is now:", listofPlayers)
+            console.log(listofPlayers)     
+            console.log(socket.size + 1) 
+      
+      // listofPlayers.concat(newList);
+          }
+
+          if(listofPlayers.length == socket.size+1){
+            console.log("received all connected users")
+            listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+
+            console.log("sorted array:", listofPlayers)
+            listofPlayers.forEach((new_player, index) => {
+              new_player.budget = budget[index]
+              var player_loc = loc[index]
+              new_player.startPosition = locPos[player_loc]
+              board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
+              console.log("board should update...")
+              stage.update()
+            })
+            // console.log("should see a healthy list", listofPlayers)
+            // board.clearData("Player")
+          }
+    
+           stage.update()
+        } 
         
-        function getNextPlayer(lastPlayer) {
-            // This would be easy if nobody leaves the room 
-            // We would return (lastPlayer-1+1)%maxNum+1 
-            // or simplifying return lastPlayer%maxNum+1
-            // more clear if 0 based but we are 1 based
-            
-            // BUT people may leave so that would leave missing numbers 
-            // so use the playerNum properties that are currently in the socket 
-            // this does not return our data - as we know our data 
-            // so we need to add our data to the resulting array of playerNum properties
-            var players = socket.getProperties("playerNum"); // not you and maybe not all here anymore
-            players = copy(players); // I don't think we need this but just to be sure - work with a copy
-            players.push(playerNum); // add our playerNum to the players array
-            players.sort(); // and sort the numbers
-            var ind = players.indexOf(lastPlayer); // find out the index of the last currentPlayer 
-            if (ind == players.length-1) return players[0]; // if we are at the end - start at the beginning
-            else return players[ind+1]; // otherwise return the next player in the players array
-        }
+      });
+
+
+//     // we sent data because a player is moving
+//     if (data.path && data.mode) {
+//       console.log("someone made a move!")
+//       board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
+
+//         //Record path for Curveballs
+//         listofPlayers[playerTurn].tracker(data.path);
+
+//         //Where the score card get updated//
+//         listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
+
+//         playerTurn = updateTurn(playerTurn, numOfPlayers);
+//         setReady(playerTurn);
+//         // socket.setProperty("playerTurn", playerTurn)
+
+//         stage.update();              
+//     }
+
+//     if (data.playerTurn){
+//       console.log("playerTurn was:", playerTurn)
+//       console.log("socket received new player turn", data.playerTurn)
+//       playerTurn = data.playerTurn
+//       setReady(playerTurn);
+//       console.log("player turn should be:", playerTurn)
+
+//     }
+//     stage.update()
+
+//     // });            
+// });
         
-        socket.on("otherjoin", function (d) { 
-            setNum(); // adjust our connections number when someone arrives   
-        });
-        
-        socket.on("otherleave", function (d) {
-            // we temporarily keep socket data so can know who left
-            // so wait until they are removed before setNum()
-            timeout(.05, setNum);
-            
-            // our d parameter gives us the properties of the player who left
-            // see if player leaving is the player with the button (it is their turn)
-            if (d.playerNum == currentPlayer) {
-                // check if you are next player
-                currentPlayer = getNextPlayer(d.playerNum);                
-                if (currentPlayer == playerNum) { // we are the new currentPlayer!
-                    // if we are then tell the others that we have advanced 
-                    // this is like if the player who left pressed the button
-                    socket.setProperty("advance", d.playerNum); 
-                    // and then our button
-                    console.log("calling old socket")
-                    button.addTo();
-                    stage.update();
-                }
-            }            
-        });
-        
-        stage.update();
+    
+    
+    socket.on("otherjoin", function (d) { 
+      console.log("in first socket otherjoin")
+
+      setNum(); // adjust our connections number when someone arrives   
     });
+        
     
     socket.on("error", function () {
         instructions.text = "Sorry, error connecting";
@@ -176,106 +209,7 @@ console.log(gameId)
 
 
 ZIMONON = true;
-///////////////////Player/////////////////////////////////
-class Player extends Person {
 
-  modes = {
-    Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-    Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-    Bus: { cost: 4, spaces: 3, cImpact: 6, calories: 1.6 },
-    Scooter: { cost: 3, spaces: 4, cImpact: 0, calories: 1.8 },
-    Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
-  };
-  constructor(startPosition, budget, id) {
-    super();
-    this.startPosition = startPosition;
-    this.budget = budget;
-    this.cO2 = 0;
-    this.calories = 0;
-    this.hitCurveBall = false;
-    this.secondturn = false;
-
-    this.id = id;
-    this.landmarks = [false, false];
-    this.pathHist = [];
-    // this.mode;
-
-    this.scores = [{
-      Destination: startPosition,
-      TransitMode: "",
-      CurveBall: "",
-      Budget: budget,
-      Cost: 0,
-      CO2: 0,
-      Calories: 0,
-    },
-    ];
-
-    // static function fromObject(obj){
-
-    // }
-
-  }
-
-
-  moneyMove(mode) {
-    if (this.budget >= this.modes[mode].cost) {
-      return true;
-    }
-    return false;
-  }
-
-
-  updatePlayerInfo(path, mode) {
-    this.budget = this.budget - this.modes[mode].cost;
-    this.cO2 = this.cO2 + this.modes[mode].cImpact;
-    this.calories = this.calories + this.modes[mode].calories;
-    this.scores.push({
-      Destination: path[path.length - 1],
-      TransitMode: mode,
-      CurveBall: "",
-      Budget: this.budget,
-      Cost: this.modes[mode].cost,
-      CO2: this.cO2,
-      Calories: this.calories,
-    })
-
-
-  }
-  didWin() {
-    if (this.square == "20-13") {
-      this.landmarks[0] = true;
-    }
-    if (this.square == "8-1" && this.landmarks[0]) {
-      this.landmarks[1] = true;
-    }
-    if (this.square == "2-7" && this.landmarks.every(Boolean)) {
-      return true;
-    }
-
-    return false;
-    
-  }
-
-
-  tracker(nw) {
-    let newspots = nw.length - 1;
-    let leftover = 10 - this.pathHist.length;
-
-    if (this.pathHist.length == 10) {
-      this.pathHist.splice(0, newspots);
-      this.pathHist.push.apply(this.pathHist, nw.slice(1));
-    } else if (this.pathHist.length > 0 && leftover < newspots) {
-      this.pathHist.splice(0, newspots - leftover);
-      this.pathHist.push.apply(this.pathHist, nw.slice(1));
-    } else if (this.pathHist.length == 0) {
-      this.pathHist.push.apply(this.pathHist, nw);
-    } else {
-      this.pathHist.push.apply(this.pathHist, nw.slice(1));
-    }
-    return this.pathHist;
-  }
-}
 ///function to shuffle arrays arround///
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -346,7 +280,6 @@ frame.on("ready", () => {
   const stageW = frame.width;
   const stageH = frame.height;
 
-  const waiter = new Waiter({corner:5}).show();    
 
 
   extend(TrafficLight, Container);
@@ -359,19 +292,20 @@ frame.on("ready", () => {
 // zimSocketURL is a dynamic link to the ZIM Socket server in case it changes location 
 	// it is stored in one of the js files we have imported
 	// then we pass in the id that we set up at https://zimjs.com/request.html
-  const socket = new Socket(zimSocketURL, "connectopolis_dev", "waiting");
+  
+  // const socket = new Socket(zimSocketURL, "connectopolis", "waiting");
 
-  var maxNum = 2;
-  var connected = 0;
+  // var maxNum = 2;
+  // var connected = 0;
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
     //     align:CENTER
     // }).alp(.7).pos(0,280,CENTER);  
 
-    socket.on("ready", () => {
-        console.log("socket connected")    
-        console.log(socket.id)
-        waiter.hide();
+    // socket.on("ready", () => {
+    //     console.log("socket connected")    
+    //     console.log(socket.id)
+  waiter.hide();
   
       
   var lablabel = new Label({
@@ -425,7 +359,7 @@ frame.on("ready", () => {
     console.log(socket.getProperties("board"))
   }
 
-  let board = new Board({
+  board = new Board({
     // num: 20,
     rows: 25,
     cols: 25,
@@ -471,10 +405,6 @@ frame.on("ready", () => {
   // Player Creation 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // Characters placement cards and Budget Cards setup 
-  let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
-  let budget = [5, 15, 25, 50];
-  let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
 
   //////////////Shuffle loc cards and budget cards so it can be random////////////
   // shuffleArray(loc);
@@ -483,8 +413,7 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  let numOfPlayers = 2;
-  var listofPlayers = []
+  listofPlayers = []
   let playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
@@ -727,71 +656,79 @@ frame.on("ready", () => {
 
   }
 
-  socket.on("data", data=>{
-    console.log("socket received data")
-    console.log("socket size is ", socket.size)
-    console.log(data)
-    if (data.play) setGame(); // we have enough players!
-    if (data.newPlayerInfo){
-      console.log("received new player info:", data.newPlayerInfo)
-      // board = data.board; // reset board
-      // var newList = JSON.parse(data.list)
-      let {player_location, player_budget} = data.newPlayerInfo
-      const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
+  // socket.on("data", data=>{
+    function handleGameData(data) {
+  //   console.log("socket received data")
+  //   console.log("socket size is ", socket.size)
+  //   console.log(data)
+  //   if (data.play) setGame(); // we have enough players!
+  //   if (data.newPlayerInfo){
+  //     console.log("received new player info:", data.newPlayerInfo)
+  //     // board = data.board; // reset board
+  //     // var newList = JSON.parse(data.list)
+  //     let {player_location, player_budget} = data.newPlayerInfo
+  //     const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
 
-      if(listofPlayers.length < socket.size+1){
-        listofPlayers.push(newplayer)
-        console.log("my list is now:", listofPlayers)
-        console.log(listofPlayers)     
-        console.log(socket.size + 1) 
+  //     if(listofPlayers.length < socket.size+1){
+  //       listofPlayers.push(newplayer)
+  //       console.log("my list is now:", listofPlayers)
+  //       console.log(listofPlayers)     
+  //       console.log(socket.size + 1) 
       
-      // listofPlayers.concat(newList);
+  //     // listofPlayers.concat(newList);
      
-      }
+  //     }
 
-      if(listofPlayers.length == socket.size+1){
-        console.log("received all connected users")
-        listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+//       if(listofPlayers.length == socket.size+1){
+//         console.log("received all connected users")
+//         listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
 
-        console.log("sorted array:", listofPlayers)
-        listofPlayers.forEach((new_player, index) => {
-          new_player.budget = budget[index]
-          var player_loc = loc[index]
-          new_player.startPosition = locPos[player_loc]
-          board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
-          console.log("board should update...")
-          stage.update()
-        })
-        // console.log("should see a healthy list", listofPlayers)
-        // board.clearData("Player")
-      }
+//         console.log("sorted array:", listofPlayers)
+//         listofPlayers.forEach((new_player, index) => {
+//           new_player.budget = budget[index]
+//           var player_loc = loc[index]
+//           new_player.startPosition = locPos[player_loc]
+//           board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
+//           console.log("board should update...")
+//           stage.update()
+//         })
+//         // console.log("should see a healthy list", listofPlayers)
+//         // board.clearData("Player")
+//       }
     
-      // stage.update()
-    } 
-    // we sent data because a player is moving
-    if (data.path && data.mode) {
-      console.log("someone made a move!")
-    board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
+//       // stage.update()
+//     } 
+//     // we sent data because a player is moving
+//     if (data.path && data.mode) {
+//       console.log("someone made a move!")
+//       board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
 
-        //Record path for Curveballs
-        listofPlayers[playerTurn].tracker(data.path);
+//         //Record path for Curveballs
+//         listofPlayers[playerTurn].tracker(data.path);
 
-        //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
-        stage.update();              
-    }
+//         //Where the score card get updated//
+//         listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
 
-    if (data.playerTurn){
-      console.log("playerTurn was:", playerTurn)
-      console.log("socket received new player turn", data.playerTurn)
-      playerTurn = data.playerTurn
-      console.log("player turn should be:", playerTurn)
+//         playerTurn = updateTurn(playerTurn, numOfPlayers);
+//         setReady(playerTurn);
+//         // socket.setProperty("playerTurn", playerTurn)
 
-    }
-    stage.update()
+//         stage.update();              
+//     }
 
-    // });            
-});
+//     if (data.playerTurn){
+//       console.log("playerTurn was:", playerTurn)
+//       console.log("socket received new player turn", data.playerTurn)
+//       playerTurn = data.playerTurn
+//       setReady(playerTurn);
+//       console.log("player turn should be:", playerTurn)
+
+//     }
+//     stage.update()
+
+//     // });            
+// });
+}
 
 function addPlayer(data){
   console.log("add player called")
@@ -818,7 +755,9 @@ function addPlayer(data){
   // }
 }
 
-socket.on("otherjoin", addPlayer);
+//socket.on("otherjoin", addPlayer);
+
+
 // socket.on("otherleave", setDrag);
 
 // socket.on("data", function(data) {
@@ -1107,161 +1046,7 @@ socket.on("otherjoin", addPlayer);
   }
   }
   
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // CURVE BALL
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  // function curveBall(card, md, pth) {
-  //   let tmpPath = pth.slice(0)
-  //   let chance = "";
-  //   switch (card) {
-  //     ///Heat/////
-  //     case 1:
-  //       if(md == "Walk"){
-  //         chance = "go back 1 steps";
-
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         return tmpPath;
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         return tmpPath;
-  //       }
-  //       console.log(chance)
-
-  //       break;
-  //     ///Rain///////
-  //     case 2:
-  //       if(md == "Bike" || md == "Scooter"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         }
-  //       if(md == "Bus"){
-  //         chance = "go back 1 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Car"){
-  //         chance = "go back 4 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,5)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //      ///High gas///////
-  //     case 3:
-  //       if(md == "Car"){
-  //         chance = "-$10";
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "-$1";
-  //       }
-  //       chance = "go 2 steps left";
-  //       console.log(chance)
-  //       break;
-  //      ///Late Bus///////
-  //      case 4:
-  //       if(md == "Bus"){
-  //         chance = "go back 4 steps";
-  //       }
-  //       break;
-  //     ///Snow////////
-  //     case 5:
-  //       if(md == "Bus"){
-  //         tmpPath = tmpPath.reverse().slice(0,2)
-  //         console.log(tmpPath)
-  //         board.followPath(player, tmpPath, null, null, );
-  //         chance = "go back 1 steps";
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Scooter"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     /// Traffic /////
-  //     case 6:
-  //       if(md == "Walk"){
-  //         chance = "go forward 1 steps";
-  //       }
-  //       if(md == "Bike"){
-  //         chance = "go forward 1 steps";
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,4)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-
-  //       console.log(chance)
-  //       break;
-  //     ///Flat Tire ////////
-  //      case 7:
-  //       if(md == "Car"){
-  //         chance = "go back 7 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,9)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       if(md == "Bus"){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     //////Flood /////////
-  //     case 8:
-  //       if(true){
-  //         chance = "go back 2 steps";
-  //         tmpPath = tmpPath.reverse().slice(0,3)
-  //         board.followPath(player, tmpPath, null, null, );
-  //       }
-  //       console.log(chance)
-  //       break;
-  //     /////Free Scooter/////
-  //     case 9:
-  //       if(md == "Scooter"){
-  //         chance = "Move again with Scooter";
-  //       }
-
-  //       console.log(chance)
-  //       break;
-
-  //   }
-
-  //   // document.getElementById("text").innerHTML = chance;
-  // }
-
-  // //displays curveBall card
-  // function displayCard() {
-  //   curveBall();
-  //   document.getElementById("screen").style.display = "block";
-  // }
-
-  // //when player hits traffic light shows curveball card
-  // player.moveEvent = player.on("moving", () =>
-  //   // {timeout(50, () =>
-  //   {
-  //     if (player.boardTile == trafficLight.boardTile) {
-  //       player.off("moving", player.moveEvent);
-
-  //       displayCard();
-  //     }
-  //     // });
-  //   }
-  // );
+  
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR SCORECARD
@@ -2363,12 +2148,11 @@ font: "Alata",
 		// if the socket can't connect it will try for a few seconds
 		// then dispatch an error message
 		// we can remove the example text as it will not work
-		socket.addEventListener("error", function() {
-			zog("error connecting");
-			// zss("multi").display = "none"; // hide example paragraph
-			// zss("nextParagraph").marginTop = "0px";
-		});
+		// socket.addEventListener("error", function() {
+		// 	zog("error connecting");
+		// 	// zss("multi").display = "none"; // hide example paragraph
+		// 	// zss("nextParagraph").marginTop = "0px";
+		// });
 
-	}); // end socket ready
-}
-
+	// }); // end socket ready
+ }
