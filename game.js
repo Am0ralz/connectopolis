@@ -68,10 +68,6 @@ function copyCode(){
   copyText.select();
   copyText.setSelectionRange(0, 99999); /*For mobile devices*/
   document.execCommand("copy");
-
-  document.getElementById("copy-code-div")
-
-
 }
 
 const copyGameBtn = document.getElementById("cg-btn");
