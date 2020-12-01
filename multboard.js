@@ -126,10 +126,11 @@ frame.on("ready", function() {
         
         // we will adjust this in the setNum() function
         var number = new Label({        
-            text:"Connections",
-            backgroundColor:yellow,
-            align:CENTER
-        }).pos(0,380,CENTER);
+            text:"Waiting for players to connect...",
+            align:"center",
+            font: "Alata",
+
+        }).center();
         
         // the socket.size gives the number of others in the socket (not including you)    
         // if we reach the number we want then it is game time!
@@ -144,10 +145,12 @@ frame.on("ready", function() {
             setNum();  
         }
                 
-        function setNum() {
-            number.text = "Connections = " + (socket.size + 1);
-            stage.update();
-        } 
+    function setNum() {
+    number.text = `Waiting for players to connect...
+   
+Players connected : ${socket.size + 1}`;
+    stage.update();
+    } 
         
         function setGame() {            
             // swap player to new room called game 
@@ -160,7 +163,11 @@ frame.on("ready", function() {
             // }, 10000);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
-            waiter = new Waiter({corner:5}).show();    
+            waiter = new Waiter({
+              corner:5,
+              backgroundColor: "#2C57A0"
+            }).show();    
+        
 
             socket.on("roomchange", showGameBoard);
         }     
