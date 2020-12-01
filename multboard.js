@@ -13,12 +13,61 @@ var waiter;
 var board;
 var listofPlayers;
 let numOfPlayers = 2;
+var playerTurn = 0;
 
 
 // Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
 let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
+
+
+function updateTurn(turn, num) {
+  console.log("should update turn")
+  let playerTurn = turn;
+  playerTurn++;
+  if (playerTurn === num) {
+    playerTurn = 0;
+  }
+
+  // setReady(playerTurn);
+  return playerTurn;
+}
+
+var circle1 = new Circle(5, "white");
+var circle2 = new Circle(5, "white");
+var circle3 = new Circle(5, "white");
+var circle4 = new Circle(5, "white");
+  //sets color of circle of player turn green
+  function setReady(n) {
+    switch (n) {
+      case 0:
+        circle1.color = "green";
+        circle2.color = "white";
+        circle3.color = "white";
+        circle4.color = "white";
+        break;
+      case 1:
+        circle1.color = "white";
+        circle2.color = "green";
+        circle3.color = "white";
+        circle4.color = "white";
+        break;
+      case 2:
+        circle1.color = "white";
+        circle2.color = "white";
+        circle3.color = "green";
+        circle4.color = "white";
+        break;
+      case 3:
+        circle1.color = "white";
+        circle2.color = "white";
+        circle3.color = "white";
+        circle4.color = "green";
+        break;
+    }
+    stage.update();
+  }
 
 
 var frame = new Frame(scaling, color, outerColor);
@@ -85,7 +134,7 @@ frame.on("ready", function() {
             // and not fill in when someone leaves
             number.removeFrom()
 
-            // setTimeout(()=>{
+            // (()=>{
             socket.changeRoom(appName, "game", 2, false)
             // }, 10000);
             // we need to wait until the player changes rooms 
@@ -105,6 +154,7 @@ frame.on("ready", function() {
         // we receive the property (or properties) as a parameter (collected as d)
         socket.on("data", function (data) {
           console.log("in first socket onData")
+          console.log(data)
 
           if (data.play) setGame(); // we have enough players!
 
@@ -140,8 +190,36 @@ frame.on("ready", function() {
             // console.log("should see a healthy list", listofPlayers)
             // board.clearData("Player")
           }
+
+           //we sent data because a player is moving
     
            stage.update()
+        }
+
+        if (data.path && data.mode) {
+          console.log("someone made a move!")
+          board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
+
+            //Record path for Curveballs
+            listofPlayers[playerTurn].tracker(data.path);
+
+            //Where the score card get updated//
+            listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
+
+            playerTurn = updateTurn(playerTurn, numOfPlayers);
+            setReady(playerTurn);
+            // socket.setProperty("playerTurn", playerTurn)
+
+            stage.update();              
+        }
+
+        if (data.playerTurn){
+          console.log("playerTurn was:", playerTurn)
+          console.log("socket received new player turn", data.playerTurn)
+          playerTurn = data.playerTurn
+          setReady(playerTurn);
+          console.log("player turn should be:", playerTurn)
+
         }
         
       });
@@ -217,19 +295,6 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
-function updateTurn(turn, num) {
-  console.log("should update turn")
-  let playerTurn = turn;
-  playerTurn++;
-  if (playerTurn === num) {
-    playerTurn = 0;
-  }
-
-  // setReady(playerTurn);
-  return playerTurn;
-}
-
-
 
 //Mode selecters. Option are  Walk, Bike Bus Scooter or Car. Walk be default.
 let tilesLimits = {
@@ -414,7 +479,7 @@ frame.on("ready", () => {
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
   listofPlayers = []
-  let playerTurn = 0;
+  playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
     var player_location = locPos[loc.pop()]
@@ -519,36 +584,6 @@ frame.on("ready", () => {
   let path;
 
 
-  //sets color of circle of player turn green
-  function setReady(n) {
-    switch (n) {
-      case 0:
-        circle1.color = "green";
-        circle2.color = "white";
-        circle3.color = "white";
-        circle4.color = "white";
-        break;
-      case 1:
-        circle1.color = "white";
-        circle2.color = "green";
-        circle3.color = "white";
-        circle4.color = "white";
-        break;
-      case 2:
-        circle1.color = "white";
-        circle2.color = "white";
-        circle3.color = "green";
-        circle4.color = "white";
-        break;
-      case 3:
-        circle1.color = "white";
-        circle2.color = "white";
-        circle3.color = "white";
-        circle4.color = "green";
-        break;
-    }
-    stage.update();
-  }
 
 
   board.on("change", () => {
@@ -613,7 +648,6 @@ frame.on("ready", () => {
       if (listofPlayers[playerTurn].moneyMove(mode)) {
 
 
-
         board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
 
         //Record path for Curveballs
@@ -623,6 +657,8 @@ frame.on("ready", () => {
         listofPlayers[playerTurn].updatePlayerInfo(path, mode);
 
         //update the socket
+        console.log("should send movement data to socket")
+
         socket.setProperties({path,mode})
 
 
@@ -643,7 +679,7 @@ frame.on("ready", () => {
 
   function checkIfMyTurn(){
    myIndex = listofPlayers.findIndex((player)=>{
-      my = socket.getMyData
+      my = socket.getMyData()
       return(my.id == player.id)
     })
     
@@ -1924,16 +1960,13 @@ function addPlayer(data){
   // player4Label.center(playerInfo).pos(40, 138);
 
 
-  var circle1 = new Circle(5, "white");
+
   circle1.center(playerInfo).pos(110, 30);
 
-  var circle2 = new Circle(5, "white");
   circle2.center(playerInfo).pos(110, 60);
 
-  var circle3 = new Circle(5, "white");
   circle3.center(playerInfo).pos(110, 90);
 
-  var circle4 = new Circle(5, "white");
   circle4.center(playerInfo).pos(110, 120);
 
 
