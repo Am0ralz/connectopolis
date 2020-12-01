@@ -1,6 +1,7 @@
 import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
-
+var gameId = localStorage.getItem("gameId");
+console.log(gameId)
 
 // code from Zim dude's turn.html
 var scaling = "full"; 
@@ -106,7 +107,8 @@ frame.on("ready", function() {
 
     // get the app name here: https://zimjs.com/request.html
     var appName = "cnctpls";
-	  socket = new zim.Socket(zimSocketURL, appName, "waiting"); 
+    var roomName = gameId ? gameId:"waiting"
+	  socket = new zim.Socket(zimSocketURL, appName, roomName); 
     // as this room fills with people they are sent to the game room when there are three
     
     var maxNum = 2;
@@ -327,8 +329,7 @@ const showGameBoard = () => {
 console.log(firebase);
 
 
-var gameId = localStorage.getItem("gameId");
-console.log(gameId)
+
 
 
 ZIMONON = true;

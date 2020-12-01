@@ -3,13 +3,34 @@ import { data } from "./info.js";
 var db = firebase.firestore();
 // console.log(db);
 //create a new game reference in firebase
+function validateToken(){
+    var token = document.getElementById("join-game-id").value 
+    const gameRef = db.collection("games").doc(token);
+    console.log(token);
+    console.log(gameRef);
+    const increment = firebase.firestore.FieldValue.increment(1)
+    gameRef.get()
+    .then((docSnapshot)=>{
+        if(docSnapshot.exists){
+           gameRef.update({students_joined: increment})
+           localStorage.setItem("gameId", token);
+           window.location.replace("/board.html")
+        }
+        else{
+            //Tell them that token didnt match
+            alert("Token didnt match")
+        }
+    }).catch((error)=>{
+            console.error(error);
+    })
 
+}
 
 function createGame(){
     // Add a new document with a generated id.
 db.collection("games").add({
-    players: ["Jasmin"],
-    board: JSON.stringify(data)
+    students_joined: 0,
+    
 })
 .then(function(docRef) {
     console.log("Document written with ID: ", docRef.id);
@@ -58,4 +79,4 @@ copyGameBtn.addEventListener('click', copyCode);
 
 
 const connectGameBtn = document.getElementById("jg-btn");
-connectGameBtn.addEventListener('click', connectGame);
+connectGameBtn.addEventListener('click', validateToken);
