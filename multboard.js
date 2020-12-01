@@ -15,6 +15,7 @@ var listofPlayers = [];
 let numOfPlayers = 2;
 var playerTurn = 0;
 var playerIds = [];
+var myId;
 
 // Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
@@ -32,6 +33,12 @@ function updateTurn(turn, num) {
 
   // setReady(playerTurn);
   return playerTurn;
+}
+
+function findMyIndex(){
+  var my_index = playerIds.findIndex((element)=>element === myId)
+  // console.log(myId)
+  return my_index;
 }
 
   var circle1 = new Circle(5, "white");
@@ -165,6 +172,7 @@ frame.on("ready", function() {
             let {player_location, player_budget} = data.newPlayerInfo
             const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
             playerIds = listofPlayers.map((player)=> player.id)
+            findMyIndex()
           if(listofPlayers.length < socket.size+1){
             if(!playerIds.includes(data.id)){
               listofPlayers.push(newplayer)
@@ -179,6 +187,8 @@ frame.on("ready", function() {
             console.log("received all connected users")
             listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
             playerIds = listofPlayers.map((player)=> player.id)
+            console.log("my index is:", findMyIndex())
+
             console.log("sorted array:", listofPlayers)
             listofPlayers.forEach((new_player, index) => {
               new_player.budget = budget[index]
@@ -199,6 +209,7 @@ frame.on("ready", function() {
 
         if (data.path && data.mode) {
           console.log("someone made a move!")
+          // playerIds.findIndex()
           board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
 
             //Record path for Curveballs
@@ -215,12 +226,12 @@ frame.on("ready", function() {
         }
 
         if (data.playerTurn){
-          console.log("playerTurn was:", playerTurn)
+          console.log("playerTurn is:", playerTurn)
           console.log("socket received new player turn", data.playerTurn)
-          playerTurn = data.playerTurn
-          setReady(playerTurn);
-          playerTurn = updateTurn(playerTurn, numOfPlayers)
-          console.log("player turn should be:", playerTurn)
+          // playerTurn = data.playerTurn
+          // playerTurn = updateTurn(playerTurn, numOfPlayers)
+          // console.log("player turn should be:", playerTurn)
+          // setReady(playerTurn);
 
         }
         
@@ -492,6 +503,8 @@ frame.on("ready", () => {
     console.log("my data is...", my)
 
     myPlayer.id = my.id
+    myId = my.id
+    console.log("my index is:", findMyIndex())
 
     board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
 
@@ -1969,6 +1982,9 @@ function addPlayer(data){
   });
 
   //player avatars
+  var myID = myPlayer.id
+  var my_index = playerIds.findIndex((id)=> id == myID)
+
   listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
   // listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
   // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
