@@ -142,11 +142,11 @@ frame.on("ready", function() {
           }
     
            stage.update()
-        } 
+        }
         
       });
 
-
+   
 //     // we sent data because a player is moving
 //     if (data.path && data.mode) {
 //       console.log("someone made a move!")
@@ -195,7 +195,7 @@ frame.on("ready", function() {
     stage.update(); // this is needed to show any changes
 
 }); // end of ready
-
+});
 
 
 // Create a function to render and play Connectopolis board game
@@ -2155,4 +2155,4 @@ font: "Alata",
 		// });
 
 	// }); // end socket ready
- }
+}
