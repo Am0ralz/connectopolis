@@ -17,6 +17,18 @@ var playerTurn = 0;
 var playerIds = [];
 var myId;
 
+
+
+var playerInfo = new Rectangle({
+  width: 150,
+  height: 150,
+  color: "white",
+  corner: 10,
+});
+
+
+var newPlayerLabel;
+
 // Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
@@ -195,6 +207,26 @@ frame.on("ready", function() {
               var player_loc = loc[index]
               new_player.startPosition = locPos[player_loc]
               board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
+
+              var yPosition = 20 + (30 * index)
+              new_player.clone().sca(.45).center(playerInfo).pos(20, yPosition);
+
+
+              newPlayerLabel = new Label({
+                text: findMyIndex() == index ? "My Player" : `Player ${index + 1}`,
+                size: 12,
+                font: "Alata",
+                labelWidth: 250,
+                shiftVertical: -30,
+                align: "center",
+                lineHeight: 25,
+  
+              });
+
+             yPosition = 48 + (30 * index)
+
+              newPlayerLabel.center(playerInfo).pos(40, yPosition);
+
               console.log("board should update...")
               stage.update()
             })
@@ -364,15 +396,6 @@ frame.on("ready", () => {
   extend(TrafficLight, Container);
   extend(DiffTree, Container);
 
-  const waiter = new Waiter({
-      corner:5,
-      backgroundColor: "#2C57A0"
-    }).show();    
-
-  frame.on("complete", function() {
-    waiter.hide();   
- });
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // LOCATION AND BUDGET STARTUP CARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -529,6 +552,27 @@ frame.on("ready", () => {
         new_player.budget = budget[index]
         var player_loc = loc[index]
         new_player.startPosition = locPos[player_loc]
+
+
+        var yPosition = 20 + (30 * index)
+        new_player.clone().sca(.45).center(playerInfo).pos(20, yPosition);
+
+
+        newPlayerLabel = new Label({
+          text: findMyIndex() == index ? "My Player" : `Player ${index + 1}`,
+          size: 12,
+          font: "Alata",
+          labelWidth: 250,
+          shiftVertical: -30,
+          align: "center",
+          lineHeight: 25,
+
+        });
+
+       yPosition = 48 + (30 * index)
+
+        newPlayerLabel.center(playerInfo).pos(40, yPosition);
+
         board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
         console.log("board should update...")
         stage.update()
@@ -1600,7 +1644,7 @@ frame.on("ready", () => {
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "#ccc";
   });
-  UpdateScoreUI(listofPlayers[0]);
+  // UpdateScoreUI(listofPlayers[0]);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD ITEMS
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1823,12 +1867,12 @@ Add 5 spaces`;
   // PLAYER INFO UI
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  var playerInfo = new Rectangle({
-    width: 150,
-    height: 150,
-    color: "white",
-    corner: 10,
-  });
+  // var playerInfo = new Rectangle({
+  //   width: 150,
+  //   height: 150,
+  //   color: "white",
+  //   corner: 10,
+  // });
   playerInfo.pos({ x: 20, y: 110, vertical: "bottom" });
 
   var playerLabel = new Label({
@@ -1876,13 +1920,19 @@ Add 5 spaces`;
   var myID = myPlayer.id
   var my_index = playerIds.findIndex((id)=> id == myID)
 
-  listofPlayers[0].clone().sca(.45).center(playerInfo).pos(20, 20);
+
+
+
+
+
+  
+  // listofPlayers[0].sca(.45).center(playerInfo).pos(20, 20);
   // listofPlayers[1].clone().sca(.45).center(playerInfo).pos(20, 50);
   // listofPlayers[2].clone().sca(.45).center(playerInfo).pos(20,80);
   // listofPlayers[3].clone().sca(.45).center(playerInfo).pos(20,110);
 
   //labels for player numbers
-  playerLabel.center(playerInfo).pos(40, 48);
+  // playerLabel.center(playerInfo).pos(40, 48);
   // player2Label.center(playerInfo).pos(40, 78);
   // player3Label.center(playerInfo).pos(40, 108);
   // player4Label.center(playerInfo).pos(40, 138);
