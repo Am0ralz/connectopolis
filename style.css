@@ -98,6 +98,11 @@ body {
   border-radius: 10px;
 }
 
+#copy-code-div{
+  display: none;
+  width: 100px;
+  height: 30px;
+}
 .overlay input{
   text-align: center;
   border-radius: 8px;

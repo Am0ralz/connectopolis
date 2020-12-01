@@ -35,8 +35,27 @@ createGameBtn.addEventListener('click', createGame);
 function connectGame(){
     window.location.replace("/board.html")
 
+    
+
 }
 
 
-const connectGameBtn = document.getElementById("cg-btn");
+
+function copyCode(){
+    /* Get the text field */
+  var copyText = document.getElementById("create-game-id");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+  document.execCommand("copy");
+
+  document.getElementById("copy-code-div")
+
+
+}
+
+const copyGameBtn = document.getElementById("cg-btn");
+copyGameBtn.addEventListener('click', copyCode);
+
+
+const connectGameBtn = document.getElementById("jg-btn");
 connectGameBtn.addEventListener('click', connectGame);
