@@ -11,10 +11,10 @@ var outerColor = darker;
 var socket;
 var waiter;
 var board;
-var listofPlayers;
+var listofPlayers = [];
 let numOfPlayers = 2;
 var playerTurn = 0;
-
+var playerIds = [];
 
 // Characters placement cards and Budget Cards setup 
 let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
@@ -34,10 +34,10 @@ function updateTurn(turn, num) {
   return playerTurn;
 }
 
-var circle1 = new Circle(5, "white");
-var circle2 = new Circle(5, "white");
-var circle3 = new Circle(5, "white");
-var circle4 = new Circle(5, "white");
+  var circle1 = new Circle(5, "white");
+  var circle2 = new Circle(5, "white");
+  var circle3 = new Circle(5, "white");
+  var circle4 = new Circle(5, "white");
   //sets color of circle of player turn green
   function setReady(n) {
     switch (n) {
@@ -66,7 +66,7 @@ var circle4 = new Circle(5, "white");
         circle4.color = "green";
         break;
     }
-    stage.update();
+    // stage.update();
   }
 
 
@@ -164,20 +164,21 @@ frame.on("ready", function() {
             // var newList = JSON.parse(data.list)
             let {player_location, player_budget} = data.newPlayerInfo
             const newplayer = new Player(player_location, player_budget, data.id).sca(0.6).top();
-
+            playerIds = listofPlayers.map((player)=> player.id)
           if(listofPlayers.length < socket.size+1){
-            listofPlayers.push(newplayer)
-            console.log("my list is now:", listofPlayers)
-            console.log(listofPlayers)     
-            console.log(socket.size + 1) 
-      
+            if(!playerIds.includes(data.id)){
+              listofPlayers.push(newplayer)
+              console.log("my list is now:", listofPlayers)
+              console.log(listofPlayers)     
+              console.log(socket.size + 1) 
+            }
       // listofPlayers.concat(newList);
           }
 
           if(listofPlayers.length == socket.size+1){
             console.log("received all connected users")
             listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
-
+            playerIds = listofPlayers.map((player)=> player.id)
             console.log("sorted array:", listofPlayers)
             listofPlayers.forEach((new_player, index) => {
               new_player.budget = budget[index]
@@ -218,6 +219,7 @@ frame.on("ready", function() {
           console.log("socket received new player turn", data.playerTurn)
           playerTurn = data.playerTurn
           setReady(playerTurn);
+          playerTurn = updateTurn(playerTurn, numOfPlayers)
           console.log("player turn should be:", playerTurn)
 
         }
@@ -419,10 +421,10 @@ frame.on("ready", () => {
   // BOARD
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  if(socket.getProperties("board")){
-    console.log("conditionalllll")
-    console.log(socket.getProperties("board"))
-  }
+  // if(socket.getProperties("board")){
+  //   console.log("conditionalllll")
+  //   console.log(socket.getProperties("board"))
+  // }
 
   board = new Board({
     // num: 20,
@@ -478,7 +480,7 @@ frame.on("ready", () => {
   /////////////Number of players playing the game////////////////////////
   // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
   // numOfPlayers = parseInt(numOfPlayers);
-  listofPlayers = []
+  // listofPlayers = []
   playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
@@ -495,7 +497,25 @@ frame.on("ready", () => {
 
     listofPlayers.push(myPlayer)
 
-    socket.setProperty("newPlayerInfo", {player_location, player_budget})
+    if(listofPlayers.length == socket.size+1){
+      console.log("received all connected users")
+      listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+      playerIds = listofPlayers.map((player)=> player.id)
+      console.log("sorted array:", listofPlayers)
+      listofPlayers.forEach((new_player, index) => {
+        new_player.budget = budget[index]
+        var player_loc = loc[index]
+        new_player.startPosition = locPos[player_loc]
+        board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
+        console.log("board should update...")
+        stage.update()
+      })
+      // console.log("should see a healthy list", listofPlayers)
+      // board.clearData("Player")
+    }
+      socket.setProperty("newPlayerInfo", {player_location, player_budget})
+
+
     // socket.setProperties({board: JSON.prune(board), list: JSON.prune(listofPlayers), playerTurn: JSON.prune(playerTurn)})
 
     // listofPlayers.push(player2)
@@ -518,6 +538,7 @@ frame.on("ready", () => {
     console.log("my player is!!!!!", myPlayer)
     
     myPlayer.on("moving", () => {
+      console.log("my player is moving")
       if (board.getItems(myPlayer.boardTile)[0].type == "TrafficLight" && !myPlayer.hitCurveBall && !myPlayer.secondturn) {
         myPlayer.hitCurveBall = true
 
@@ -528,6 +549,7 @@ frame.on("ready", () => {
 
     myPlayer.on("movingdone", () => {
      
+      console.log("my player stopped moving")
 
       if (walkBtn.enabled == false) {
         walkBtn.enabled = true;
@@ -543,7 +565,7 @@ frame.on("ready", () => {
           myPlayer.secondturn = false;
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          UpdateScoreUI(listofPlayers[playerTurn]);
+          UpdateScoreUI(myPlayer);
           socket.setProperty("playerTurn", playerTurn)
 
           mode = "Walk"
@@ -589,7 +611,7 @@ frame.on("ready", () => {
   board.on("change", () => {
     console.log("in on change")
     // change triggers when rolled over square changes
-    if (listofPlayers[playerTurn].moving) return;
+    if (myPlayer.moving) return;
     // if(playerTurn == )
     // get the index of our player
 
@@ -612,15 +634,15 @@ frame.on("ready", () => {
     // get a path from the player to the currentTile
     // currentTile is the selected or highlighted tile
     pathID = AI.findPath(
-      listofPlayers[playerTurn].boardCol, // any board item has a boardCol prop
-      listofPlayers[playerTurn].boardRow,
+      myPlayer.boardCol, // any board item has a boardCol prop
+      myPlayer.boardRow,
       board.currentTile.boardCol, // any tile has a boardColo prop
       board.currentTile.boardRow,
       function (thePath) {
         // the callback function when path is found
         if (thePath) {
           ////// This where we set the path according to the Mode/////
-          path = thePath.slice(0, listofPlayers[playerTurn].modes[mode].spaces + 1);
+          path = thePath.slice(0, myPlayer.modes[mode].spaces + 1);
 
           Ticker.remove(ticker);
           board.showPath(path);
@@ -640,31 +662,28 @@ frame.on("ready", () => {
   }
 
   /////Player Moves /////////////////////////////////////////////////////////
+// TODO: change listofplayers to myPlayer, play with playerIds idea 
 
   board.tiles.tap((e) => {
     if(!checkIfMyTurn) return;
-    if (listofPlayers[playerTurn].moving) return; // moving pieces given moving property
+    if (myPlayer.moving) return; // moving pieces given moving property
     if (path) {
-      if (listofPlayers[playerTurn].moneyMove(mode)) {
+      if (myPlayer.moneyMove(mode)) {
+        console.log("board was tapped and player is moving", myPlayer)
 
 
-        board.followPath(listofPlayers[playerTurn], path, null, null); // nudge camera 2
+        board.followPath(myPlayer, path, null, null); // nudge camera 2
 
         //Record path for Curveballs
-        listofPlayers[playerTurn].tracker(path);
+        myPlayer.tracker(path);
 
         //Where the score card get updated//
-        listofPlayers[playerTurn].updatePlayerInfo(path, mode);
+        myPlayer.updatePlayerInfo(path, mode);
 
         //update the socket
         console.log("should send movement data to socket")
 
         socket.setProperties({path,mode})
-
-
-
-
-
 
       } else {
         alert("not enough money!! Pick a different Mode")
@@ -812,6 +831,8 @@ function addPlayer(data){
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   function curveBall(md, plyr) {
+    console.log("inside curveballs")
+
     let card = Math.floor(Math.random() * 10) + 1;;
     console.log("This card was chosen: " + card)
     plyr.hitCurveBall = false;
