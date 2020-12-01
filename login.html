@@ -15,17 +15,76 @@
       <div class="container">
         <h1 class="first-heading">Connect'opolis</h1>
         <h3 class="second-heading">The connectivity game</h3>
-        <button class="create-game-btn" id="create-game-btn">
+        <button
+          class="create-game-btn"
+          id="create-game-btn"
+         
+        >
           CREATE A GAME
         </button>
-        <button class="join-game-btn">JOIN A GAME</button>
+        <button class="join-game-btn"
+        onclick="showJoinGame()"
+        >JOIN A GAME</button>
       </div>
+
+
+      <!-- create game card -->
+      <div class="overlay" id="overlay">
+        <div class="wrapper">
+          <div class="create-game-card">
+            <img src="./assets/close.png" class="close-icon" onclick="hideCreateGame()"/>
+            <p>Invite others with this code</p>
+            <input type="text" id="create-game-id" value="1233456" readonly />
+            <button class="cg-btn" id="cg-btn">Create Game</button>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- join game card -->
+      <div class="overlay" id="overlay-join">
+        <div class="wrapper">
+          <div class="create-game-card">
+            <img src="./assets/close.png" class="close-icon" onclick="hideJoinGame()"/>
+            <p>Enter code to join game</p>
+            <input type="text" id="join-game-id" value=" "/>
+            <button class="cg-btn" id="jg-btn">Join Game</button>
+          </div>
+        </div>
+      </div>
+
+
+
+
     </div>
+
+   
 
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-firestore.js"></script>
     <script src="./firebase.js" type="module"></script>
     <script src="./game.js" type="module"></script>
+
+    <script>
+      function showCreateGame() {
+        // createGame();
+        // document.getElementById("overlay").style.display = "block";
+      }
+
+      function hideCreateGame(){
+        document.getElementById("overlay").style.display = "none"
+      }
+
+
+      function showJoinGame() {
+        document.getElementById("overlay-join").style.display = "block";
+      }
+
+      function hideJoinGame(){
+        document.getElementById("overlay-join").style.display = "none"
+      }
+    </script>
   </body>
 </html>
