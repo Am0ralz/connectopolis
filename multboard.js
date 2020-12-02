@@ -334,16 +334,18 @@ Players connected : ${socket.size + 1}`;
             //Where the score card get updated//
             listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
 
-            playerTurn = updateTurn(playerTurn, numOfPlayers);
-            setReady(playerTurn);
+            
             // socket.setProperty("playerTurn", playerTurn)
 
             stage.update();              
         }
 
         if (data.playerTurn){
-          console.log("playerTurn is:", playerTurn)
-          console.log("socket received new player turn", data.playerTurn)
+          // console.log("playerTurn is:", playerTurn)
+          // console.log("socket received new player turn", data.playerTurn)
+          playerTurn = updateTurn(playerTurn, numOfPlayers);
+          setReady(playerTurn);
+          stage.update();
           // playerTurn = data.playerTurn
           // playerTurn = updateTurn(playerTurn, numOfPlayers)
           // console.log("player turn should be:", playerTurn)
@@ -913,7 +915,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         //update the socket
         console.log("should send movement data to socket")
 
-        socket.setProperties({path,mode})
+        socket.setProperties({path,mode, playerTurn})
 
       } else {
         alert("You don't have enough money! Pick a different mode")
