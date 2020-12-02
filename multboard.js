@@ -146,7 +146,17 @@ function findMyIndex(){
   }
 
 
-var frame = new Frame(scaling, color, outerColor);
+var frame = new Frame({
+  scaling: scaling,
+  color: color,
+  outerColor: outerColor,
+  assets: [
+    { src: "https://fonts.googleapis.com/css2?family=Alata" },
+    
+  ],
+});
+
+
 frame.on("ready", function() {
     zog("ready from ZIM Frame");
 
