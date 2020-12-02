@@ -1,5 +1,6 @@
 import { data } from "./info.js";
 import { DiffTree, TrafficLight } from "./objects.js";
+import setupScorecardUI from "./setupScorecardUI.js";
 var gameId = localStorage.getItem("gameId");
 console.log(gameId)
 
@@ -495,6 +496,47 @@ frame.on("ready", () => {
       index: 0,
     });
 
+      // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // UI FOR SCORECARD
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
+
+  //label for scorecard button
+  var scorecardLabel = new Label({
+    text: "View Scorecard",
+    size: 20,
+    font: "Alata",
+  });
+
+  //button for scorecard button
+  var scoreCardBtn = new Button({
+    label: scorecardLabel,
+    width: 210,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: gridIcon,
+    indent: 50,
+    align: "left",
+  }).tap(function () {
+    scoreCardPane.show();
+  });
+
+  scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
+
+  //scorecard pane that will show the players score
+  var scoreCardPane = new Pane({
+    width: 500,
+    height: 600,
+    backgroundColor: "white",
+    corner: 0,
+  });
+
+  setupScorecardUI(scoreCardPane)
+
+
   // console.log(board)
 
   var cvLabel = new Label({
@@ -585,6 +627,8 @@ frame.on("ready", () => {
         console.log("board should update...")
         stage.update()
       })
+        UpdateScoreUI(myPlayer)
+
       // console.log("should see a healthy list", listofPlayers)
       // board.clearData("Player")
     }
@@ -1129,387 +1173,387 @@ frame.on("ready", () => {
   }
   
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // UI FOR SCORECARD
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // // UI FOR SCORECARD
+  // // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
+  // let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
 
-  //label for scorecard button
-  var scorecardLabel = new Label({
-    text: "View Scorecard",
-    size: 20,
-    font: "Alata",
-  });
+  // //label for scorecard button
+  // var scorecardLabel = new Label({
+  //   text: "View Scorecard",
+  //   size: 20,
+  //   font: "Alata",
+  // });
 
-  //button for scorecard button
-  var scoreCardBtn = new Button({
-    label: scorecardLabel,
-    width: 210,
-    height: 50,
-    backgroundColor: "white",
-    rollBackgroundColor: "#f5f5f5",
-    corner: 10,
-    icon: gridIcon,
-    indent: 50,
-    align: "left",
-  }).tap(function () {
-    scoreCardPane.show();
-  });
+  // //button for scorecard button
+  // var scoreCardBtn = new Button({
+  //   label: scorecardLabel,
+  //   width: 210,
+  //   height: 50,
+  //   backgroundColor: "white",
+  //   rollBackgroundColor: "#f5f5f5",
+  //   corner: 10,
+  //   icon: gridIcon,
+  //   indent: 50,
+  //   align: "left",
+  // }).tap(function () {
+  //   scoreCardPane.show();
+  // });
 
-  scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
+  // scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
 
-  //scorecard pane that will show the players score
-  var scoreCardPane = new Pane({
-    width: 500,
-    height: 600,
-    backgroundColor: "white",
-    corner: 0,
-  });
+  // //scorecard pane that will show the players score
+  // var scoreCardPane = new Pane({
+  //   width: 500,
+  //   height: 600,
+  //   backgroundColor: "white",
+  //   corner: 0,
+  // });
 
-  ///////////////////Labels for scorecard////////////////////////////////////
+  // ///////////////////Labels for scorecard////////////////////////////////////
 
-  //title of scorecard
-  new Label({
-    text: "SCORECARD",
-    size: 30,
-    font: "Alata",
-    align: "center",
-    color: "white",
-    lineHeight: 50,
-    backing: new Rectangle(500, 80, "#2C57A0"),
-  })
-    .center(scoreCardPane)
-    .pos(null, 0);
+  // //title of scorecard
+  // new Label({
+  //   text: "SCORECARD",
+  //   size: 30,
+  //   font: "Alata",
+  //   align: "center",
+  //   color: "white",
+  //   lineHeight: 50,
+  //   backing: new Rectangle(500, 80, "#2C57A0"),
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(null, 0);
 
-  ///////////labels for destination
-  new Label({
-    text: "Destination",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 100);
+  // ///////////labels for destination
+  // new Label({
+  //   text: "Destination",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 100);
 
-  //first label for destination
-  var des1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 100);
+  // //first label for destination
+  // var des1 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 100);
 
-  //second label for destination
-  var des2 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 100);
+  // //second label for destination
+  // var des2 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 100);
 
-  //third label for destination
-  var des3 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 100);
+  // //third label for destination
+  // var des3 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 100);
 
-  ///////////////labels for transit
-  new Label({
-    text: "Transit Mode",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 150);
+  // ///////////////labels for transit
+  // new Label({
+  //   text: "Transit Mode",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 150);
 
-  //first label for transit mode
-  var transit1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 150);
+  // //first label for transit mode
+  // var transit1 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 150);
 
-  //second label for transit mode
-  var transit2 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 150);
+  // //second label for transit mode
+  // var transit2 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 150);
 
-  //third label for transit mode
-  var transit3 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 150);
+  // //third label for transit mode
+  // var transit3 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 150);
 
-  ///////////////labels for curve ball
-  new Label({
-    text: "Curve Ball",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 200);
+  // ///////////////labels for curve ball
+  // new Label({
+  //   text: "Curve Ball",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 200);
 
-  //first label for curve ball
-  var curve1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 200);
+  // //first label for curve ball
+  // var curve1 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 200);
 
-  //second label for curve ball
-  var curve2 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 200);
+  // //second label for curve ball
+  // var curve2 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 200);
 
-  //third label for curve ball
-  var curve3 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 200);
+  // //third label for curve ball
+  // var curve3 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 200);
 
-  /////labels for cost
+  // /////labels for cost
 
-  new Label({
-    text: "Cost",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 250);
+  // new Label({
+  //   text: "Cost",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 250);
 
-  //first label for cost
-  var cost1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 250);
+  // //first label for cost
+  // var cost1 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 250);
 
-  //second label for cost
-  var cost2 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 250);
+  // //second label for cost
+  // var cost2 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 250);
 
-  //third label for cost
-  var cost3 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 250);
+  // //third label for cost
+  // var cost3 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 250);
 
-  /////labels for CO2 Impact
+  // /////labels for CO2 Impact
 
-  new Label({
-    text: "CO2 Impact",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 300);
+  // new Label({
+  //   text: "CO2 Impact",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 300);
 
-  //first label for CO2 impact
-  var cimpact1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 300);
+  // //first label for CO2 impact
+  // var cimpact1 = new Label({
+  //   text: " ",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 300);
 
-  //second label for CO2 impact
-  var cimpact2 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 300);
+  // //second label for CO2 impact
+  // var cimpact2 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 300);
 
-  //third label for CO2 impact
-  var cimpact3 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 300);
+  // //third label for CO2 impact
+  // var cimpact3 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 300);
 
-  //////labels for calories
+  // //////labels for calories
 
-  new Label({
-    text: "Calories",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 350);
+  // new Label({
+  //   text: "Calories",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 350);
 
-  //first label for calories
-  var calories1 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 350);
+  // //first label for calories
+  // var calories1 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 350);
 
-  //second label for calories
-  var calories2 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 350);
+  // //second label for calories
+  // var calories2 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 350);
 
-  //third label for calories
-  var calories3 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 350);
+  // //third label for calories
+  // var calories3 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 350);
 
-  //////labels for budget
+  // //////labels for budget
 
-  new Label({
-    text: "Budget",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 400);
+  // new Label({
+  //   text: "Budget",
+  //   size: 14,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(35, 400);
 
-  //first label for budget
-  var budget1 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 400);
+  // //first label for budget
+  // var budget1 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(145, 400);
 
-  //second label for budget
-  var budget2 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 400);
-
-
-  //third label for budget
-  var budget3 = new Label({
-    text: "",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 400);
-
-  //////label indicating which is the current
-
-  new Label({
-    text: "Current",
-    size: 18,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-    align: "center"
+  // //second label for budget
+  // var budget2 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(255, 400);
 
 
+  // //third label for budget
+  // var budget3 = new Label({
+  //   text: "",
+  //   size: 18,
+  //   backing: new Rectangle(100, 40, "#f0f0f0"),
+  //   font: "Alata",
+  //   align: "center"
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 400);
 
-  })
-    .center(scoreCardPane)
-    .pos(365, 450);
+  // //////label indicating which is the current
+
+  // new Label({
+  //   text: "Current",
+  //   size: 18,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  //   align: "center"
+
+
+
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 450);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT
