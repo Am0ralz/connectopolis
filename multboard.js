@@ -14,7 +14,7 @@ var socket;
 var waiter;
 var board;
 var listofPlayers = [];
-let numOfPlayers = 2;
+let numOfPlayers = 4;
 var playerTurn = 0;
 var playerIds = [];
 var myPlayer;
@@ -200,21 +200,33 @@ frame.on("ready", function() {
             setNum();  
         }
 
-      const timer = new Timer({
-          time:60,
-          borderColor:dark,
-          isometric:"left"
-      }).loc(27, 231, stage, 0); // .place();
-      timer.on("complete",()=>{
-          timer.backing.color = red;
-          timer.color = white;
-          if(socket.size+1 >= 2){
-            socket.setProperty("play", 1)
-            setGame();
-          }
-          stage.update();
-      });
-                
+      // var timer = new Timer({
+      //     time:60,
+      //     borderColor:dark,
+      //     isometric:"left"
+      // }).loc(27, 231, stage, 0); // .place();
+      // timer.on("complete",()=>{
+      //   if(socket.size+1 >= 3){
+      //         // maxNum = socket.size + 1
+      //         socket.setProperty("play", 1)
+      //         setGame();
+      //   }
+      //     stage.update();
+      // });
+      // function timedText() {
+      //   setTimeout(myTimeout1, 20000) 
+      // // }
+      // function myTimeout1() {
+      //   if(socket.size+1 >= 2){
+      //     socket.setProperty("play", 1)
+      //     setGame();
+      //   }
+      //   else{
+      //     console.log("ehhhhhhhhhhhh")
+      //   }
+      // }
+
+    
     function setNum() {
     number.text = `Waiting for players to connect...
    
@@ -227,9 +239,9 @@ Players connected : ${socket.size + 1}`;
             // this room will fill up three at a time 
             // and not fill in when someone leaves
             number.removeFrom()
-            timer.removeFrom()
+            // timer.removeFrom()
             // (()=>{
-            socket.changeRoom(appName, "game", socket.size+1, false)
+            socket.changeRoom(appName, "game", maxNum, false)
             // }, 10000);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
@@ -246,8 +258,7 @@ Players connected : ${socket.size + 1}`;
         // so make and position it but then remove it
         // until we know if we are the current player inside the game function
         
-        // the currentPlayer is whose turn it is - start with 1    
-        var currentPlayer = 1;
+    
         // this event gets called every time another player sets a property
         // we receive the property (or properties) as a parameter (collected as d)
         socket.on("data", function (data) {
@@ -365,46 +376,11 @@ Players connected : ${socket.size + 1}`;
           playerTurn = data.playerTurn;
           setReady(data.playerTurn);
           stage.update();
-          // playerTurn = data.playerTurn
-          // playerTurn = updateTurn(playerTurn, numOfPlayers)
-          // console.log("player turn should be:", playerTurn)
-          // setReady(playerTurn);
+  
 
         }
         
       });
-
-   
-//     // we sent data because a player is moving
-//     if (data.path && data.mode) {
-//       console.log("someone made a move!")
-//       board.followPath(listofPlayers[playerTurn], data.path, null, null); // nudge camera 2
-
-//         //Record path for Curveballs
-//         listofPlayers[playerTurn].tracker(data.path);
-
-//         //Where the score card get updated//
-//         listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
-
-//         playerTurn = updateTurn(playerTurn, numOfPlayers);
-//         setReady(playerTurn);
-        // socket.setProperty("playerTurn", playerTurn)
-
-//         stage.update();              
-//     }
-
-//     if (data.playerTurn){
-//       console.log("playerTurn was:", playerTurn)
-//       console.log("socket received new player turn", data.playerTurn)
-//       playerTurn = data.playerTurn
-//       setReady(playerTurn);
-//       console.log("player turn should be:", playerTurn)
-
-//     }
-//     stage.update()
-
-//     // });            
-// });
         
     
     
@@ -510,16 +486,7 @@ frame.on("ready", () => {
   
   // const socket = new Socket(zimSocketURL, "connectopolis", "waiting");
 
-  // var maxNum = 2;
-  // var connected = 0;
-    // var instructions = new Label({
-    //     text:"Waiting: play will begin when there are " + maxNum + " players",
-    //     align:CENTER
-    // }).alp(.7).pos(0,280,CENTER);  
-
-    // socket.on("ready", () => {
-    //     console.log("socket connected")    
-    //     console.log(socket.id)
+  
   waiter.hide();
   
       
@@ -670,23 +637,7 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Player Creation 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/*
 
-
-let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
-let budget = [5, 15, 25, 50];
-let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
-
-*/
-
-  //////////////Shuffle loc cards and budget cards so it can be random////////////
-  // shuffleArray(loc);
-  // shuffleArray(budget);
-
-  /////////////Number of players playing the game////////////////////////
-  // let numOfPlayers = prompt("Please number of players: 2, 3 or 4", "");
-  // numOfPlayers = parseInt(numOfPlayers);
-  // listofPlayers = []
   playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
@@ -770,20 +721,6 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
 
     // listofPlayers.push(player2)
   }
-
-//   if (parseInt(numOfPlayers) >= 3) {
-//     const player3 = new Player(locPos[loc.pop()], budget.pop(), 2).sca(0.6).top();
-//     board.add(player3, player3.startPosition["x"], player3.startPosition["y"]);
-//     listofPlayers.push(player3)
-//   }
-//   if (parseInt(numOfPlayers) >= 4) {
-//     const player4 = new Player(locPos[loc.pop()], budget.pop(), 3).sca(0.6).top();
-//     board.add(player4, player4.startPosition["x"], player4.startPosition["y"]);
-//     listofPlayers.push(player4)
-//   }
-
-  // for (let plyer of listofPlayers) {
-    // console.log(plyer.budget);
 
     console.log("my player is!!!!!", myPlayer)
     
@@ -1264,390 +1201,6 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
     //     break;
   }
 
-  
-  
-
-  // // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // // UI FOR SCORECARD
-  // // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  // let gridIcon = frame.asset("assets/grid.png").pos(15, 15).sca(0.6);
-
-  // //label for scorecard button
-  // var scorecardLabel = new Label({
-  //   text: "View Scorecard",
-  //   size: 20,
-  //   font: "Alata",
-  // });
-
-  // //button for scorecard button
-  // var scoreCardBtn = new Button({
-  //   label: scorecardLabel,
-  //   width: 210,
-  //   height: 50,
-  //   backgroundColor: "white",
-  //   rollBackgroundColor: "#f5f5f5",
-  //   corner: 10,
-  //   icon: gridIcon,
-  //   indent: 50,
-  //   align: "left",
-  // }).tap(function () {
-  //   scoreCardPane.show();
-  // });
-
-  // scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
-
-  // //scorecard pane that will show the players score
-  // var scoreCardPane = new Pane({
-  //   width: 500,
-  //   height: 600,
-  //   backgroundColor: "white",
-  //   corner: 0,
-  // });
-
-  // ///////////////////Labels for scorecard////////////////////////////////////
-
-  // //title of scorecard
-  // new Label({
-  //   text: "SCORECARD",
-  //   size: 30,
-  //   font: "Alata",
-  //   align: "center",
-  //   color: "white",
-  //   lineHeight: 50,
-  //   backing: new Rectangle(500, 80, "#2C57A0"),
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(null, 0);
-
-  // ///////////labels for destination
-  // new Label({
-  //   text: "Destination",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 100);
-
-  // //first label for destination
-  // var des1 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 100);
-
-  // //second label for destination
-  // var des2 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 100);
-
-  // //third label for destination
-  // var des3 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 100);
-
-  // ///////////////labels for transit
-  // new Label({
-  //   text: "Transit Mode",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 150);
-
-  // //first label for transit mode
-  // var transit1 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 150);
-
-  // //second label for transit mode
-  // var transit2 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 150);
-
-  // //third label for transit mode
-  // var transit3 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 150);
-
-  // ///////////////labels for curve ball
-  // new Label({
-  //   text: "Curve Ball",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 200);
-
-  // //first label for curve ball
-  // var curve1 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 200);
-
-  // //second label for curve ball
-  // var curve2 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 200);
-
-  // //third label for curve ball
-  // var curve3 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 200);
-
-  // /////labels for cost
-
-  // new Label({
-  //   text: "Cost",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 250);
-
-  // //first label for cost
-  // var cost1 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 250);
-
-  // //second label for cost
-  // var cost2 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 250);
-
-  // //third label for cost
-  // var cost3 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 250);
-
-  // /////labels for CO2 Impact
-
-  // new Label({
-  //   text: "CO2 Impact",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 300);
-
-  // //first label for CO2 impact
-  // var cimpact1 = new Label({
-  //   text: " ",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 300);
-
-  // //second label for CO2 impact
-  // var cimpact2 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 300);
-
-  // //third label for CO2 impact
-  // var cimpact3 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 300);
-
-  // //////labels for calories
-
-  // new Label({
-  //   text: "Calories",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 350);
-
-  // //first label for calories
-  // var calories1 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 350);
-
-  // //second label for calories
-  // var calories2 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 350);
-
-  // //third label for calories
-  // var calories3 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 350);
-
-  // //////labels for budget
-
-  // new Label({
-  //   text: "Budget",
-  //   size: 14,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(35, 400);
-
-  // //first label for budget
-  // var budget1 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(145, 400);
-
-  // //second label for budget
-  // var budget2 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(255, 400);
-
-
-  // //third label for budget
-  // var budget3 = new Label({
-  //   text: "",
-  //   size: 18,
-  //   backing: new Rectangle(100, 40, "#f0f0f0"),
-  //   font: "Alata",
-  //   align: "center"
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 400);
-
-  // //////label indicating which is the current
-
-  // new Label({
-  //   text: "Current",
-  //   size: 18,
-  //   color: "white",
-  //   backing: new Rectangle(100, 40, "#383838"),
-  //   font: "Alata",
-  //   align: "center"
-
-
-
-  // })
-  //   .center(scoreCardPane)
-  //   .pos(365, 450);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // UI FOR BUTTONS FOR MODE OF TRANSPORT
@@ -2301,15 +1854,4 @@ font: "Alata",
   stage.update(); // this is needed to show any changes
 }); // end ready
 
-	// SOCKET
-		// if the socket can't connect it will try for a few seconds
-		// then dispatch an error message
-		// we can remove the example text as it will not work
-		// socket.addEventListener("error", function() {
-		// 	zog("error connecting");
-		// 	// zss("multi").display = "none"; // hide example paragraph
-		// 	// zss("nextParagraph").marginTop = "0px";
-		// });
-
-	// }); // end socket ready
 }
