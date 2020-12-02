@@ -38,6 +38,10 @@ class Player extends Person {
       // }
   
     }
+
+    setBudget(budget){
+      this.budget = budget;
+    }
   
   
     moneyMove(mode) {

@@ -1,7 +1,7 @@
 
 export default function setUpScoreboardUI(scoreCardPane){
 
-
+console.log("setting up scorecard")
  ///////////////////Labels for scorecard////////////////////////////////////
 
   //title of scorecard
@@ -347,4 +347,12 @@ export default function setUpScoreboardUI(scoreCardPane){
     .pos(365, 450);
 
 
+    return ({des1, des2, des3, 
+            budget1, budget2, budget3, 
+            calories1, calories2, calories3, 
+            cimpact1, cimpact2, cimpact3,
+            cost1, cost2, cost3,
+            transit1, transit2, transit3,
+            curve1, curve2, curve3
+            })
 }

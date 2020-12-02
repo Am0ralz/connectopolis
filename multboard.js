@@ -17,9 +17,8 @@ var listofPlayers = [];
 let numOfPlayers = 2;
 var playerTurn = 0;
 var playerIds = [];
+var myPlayer;
 var myId;
-
-
 
 var playerInfo = new Rectangle({
   width: 150,
@@ -36,6 +35,58 @@ let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
 let budget = [5, 15, 25, 50];
 let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
 
+var scoreCardPane;
+
+let des1, des2, des3, 
+  budget1, budget2, budget3, 
+  calories1, calories2, calories3, 
+  cimpact1, cimpact2, cimpact3,
+  cost1, cost2, cost3,
+  transit1, transit2, transit3,
+  curve1, curve2, curve3
+  
+
+
+  function UpdateScoreUI(plyr){
+    console.log("should update score UI")
+    console.log("player scores are", plyr.scores)
+    let tmpScores;
+    if (plyr.scores.length > 3){
+      tmpScores = plyr.scores.slice(plyr.scores.length - 3);
+      console.log(tmpScores);
+    }
+  else{
+    tmpScores = plyr.scores.slice(0);
+    console.log(tmpScores);
+  }
+    des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
+    transit1.text = tmpScores[0].TransitMode;
+    curve1.text = tmpScores[0].CurveBall;
+    cost1.text = tmpScores[0].Cost
+    cimpact1.text = tmpScores[0].CO2
+    calories1.text = tmpScores[0].Calories
+    budget1.text = "$" + tmpScores[0].Budget
+    
+  if (plyr.scores.length > 1){
+    des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
+    transit2.text = tmpScores[1].TransitMode
+    curve2.text = tmpScores[1].CurveBall
+    cost2.text = tmpScores[1].Cost
+    cimpact2.text = tmpScores[1].CO2
+    calories2.text = tmpScores[1].Calories
+    budget2.text = "$" + tmpScores[1].Budget
+  }
+  if (plyr.scores.length > 2){
+    des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
+    transit3.text = tmpScores[2].TransitMode
+    curve3.text = tmpScores[2].CurveBall
+    cost3.text = tmpScores[2].Cost
+    cimpact3.text = tmpScores[2].CO2
+    calories3.text = tmpScores[2].Calories
+    budget3.text = "$" + tmpScores[2].Budget
+    
+  }
+  }
 
 function updateTurn(turn, num) {
   console.log("should update turn")
@@ -213,10 +264,34 @@ Players connected : ${socket.size + 1}`;
 
             console.log("sorted array:", listofPlayers)
             listofPlayers.forEach((new_player, index) => {
+          
               new_player.budget = budget[index]
               var player_loc = loc[index]
               new_player.startPosition = locPos[player_loc]
+
+
               board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
+
+                if (index == findMyIndex()){
+                  console.log("the socket is saying", index, findMyIndex())
+                  myPlayer.budget = budget[index]
+                  myPlayer.startPosition = locPos[player_loc]
+                  myPlayer.scores[0] = {
+                    Destination: locPos[player_loc],
+                    TransitMode: "",
+                    CurveBall: "",
+                    Budget: budget[index],
+                    Cost: 0,
+                    CO2: 0,
+                    Calories: 0,
+                  }
+
+                  console.log(myPlayer.budget, myPlayer.startPosition)
+                  console.log("I should have the right budget!")
+                  UpdateScoreUI(myPlayer)
+                  stage.update()
+               }
+
 
               var yPosition = 20 + (30 * index)
               new_player.clone().sca(.45).center(playerInfo).pos(20, yPosition);
@@ -233,10 +308,9 @@ Players connected : ${socket.size + 1}`;
   
               });
 
-             yPosition = 48 + (30 * index)
+              yPosition = 48 + (30 * index)
 
               newPlayerLabel.center(playerInfo).pos(40, yPosition);
-
               console.log("board should update...")
               stage.update()
             })
@@ -509,6 +583,14 @@ frame.on("ready", () => {
     font: "Alata",
   });
 
+    //scorecard pane that will show the players score
+    scoreCardPane = new Pane({
+      width: 500,
+      height: 600,
+      backgroundColor: "white",
+      corner: 0,
+    });
+
   //button for scorecard button
   var scoreCardBtn = new Button({
     label: scorecardLabel,
@@ -521,22 +603,24 @@ frame.on("ready", () => {
     indent: 50,
     align: "left",
   }).tap(function () {
+    console.log("should show")
+    console.log(scoreCardPane)
     scoreCardPane.show();
   });
 
   scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
 
-  //scorecard pane that will show the players score
-  var scoreCardPane = new Pane({
-    width: 500,
-    height: 600,
-    backgroundColor: "white",
-    corner: 0,
-  });
+  ({des1, des2, des3, 
+    budget1, budget2, budget3, 
+    calories1, calories2, calories3, 
+    cimpact1, cimpact2, cimpact3,
+    cost1, cost2, cost3,
+    transit1, transit2, transit3,
+    curve1, curve2, curve3}
+    = setupScorecardUI(scoreCardPane))
 
-  setupScorecardUI(scoreCardPane)
 
-
+// console.log(des1)
   // console.log(board)
 
   var cvLabel = new Label({
@@ -565,7 +649,14 @@ frame.on("ready", () => {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Player Creation 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
 
+
+let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let budget = [5, 15, 25, 50];
+let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
+
+*/
 
   //////////////Shuffle loc cards and budget cards so it can be random////////////
   // shuffleArray(loc);
@@ -578,9 +669,9 @@ frame.on("ready", () => {
   playerTurn = 0;
   if (listofPlayers.length != parseInt(numOfPlayers)) {
     console.log("creating my player")
-    var player_location = locPos[loc.pop()]
-    var player_budget = budget.pop()
-    var myPlayer = new Player(player_location, player_budget, 0).sca(0.6).top();
+    var player_location = locPos[loc[0]]
+    var player_budget = budget[0]
+    myPlayer = new Player(player_location, player_budget, 0).sca(0.6).top();
 
     var my = socket.getMyData()
     console.log("my data is...", my)
@@ -589,12 +680,12 @@ frame.on("ready", () => {
     myId = my.id
     console.log("my index is:", findMyIndex())
 
-    board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
+    // board.add(myPlayer, myPlayer.startPosition["x"], myPlayer.startPosition["y"]);
 
     listofPlayers.push(myPlayer)
 
     if(listofPlayers.length == socket.size+1){
-      console.log("received all connected users")
+      console.log("received all connected users after creation")
       listofPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
       playerIds = listofPlayers.map((player)=> player.id)
       console.log("sorted array:", listofPlayers)
@@ -603,6 +694,24 @@ frame.on("ready", () => {
         var player_loc = loc[index]
         new_player.startPosition = locPos[player_loc]
 
+        console.log("the indeces", index, findMyIndex())
+        if (index == findMyIndex()){
+          console.log("should be updating my player budget")
+          myPlayer.setBudget(budget[index])
+          myPlayer.startPosition = locPos[player_loc]
+          myPlayer.scores[0] = {
+            Destination: locPos[player_loc],
+            TransitMode: "",
+            CurveBall: "",
+            Budget: budget[index],
+            Cost: 0,
+            CO2: 0,
+            Calories: 0,
+          }
+          console.log(myPlayer.budget, myPlayer.startPosition)
+          UpdateScoreUI(myPlayer)
+
+       }
 
         var yPosition = 20 + (30 * index)
         new_player.clone().sca(.45).center(playerInfo).pos(20, yPosition);
@@ -627,11 +736,12 @@ frame.on("ready", () => {
         console.log("board should update...")
         stage.update()
       })
-        UpdateScoreUI(myPlayer)
 
       // console.log("should see a healthy list", listofPlayers)
       // board.clearData("Player")
     }
+      UpdateScoreUI(myPlayer)
+      stage.update()
       socket.setProperty("newPlayerInfo", {player_location, player_budget})
 
 
@@ -1133,44 +1243,7 @@ frame.on("ready", () => {
     //     break;
   }
 
-  function UpdateScoreUI(plyr){
-    let tmpScores;
-    if (plyr.scores.length > 3){
-      tmpScores = plyr.scores.slice(plyr.scores.length - 3);
-      console.log(tmpScores);
-    }
-  else{
-    tmpScores = plyr.scores.slice(0);
-    console.log(tmpScores);
-  }
-    des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
-    transit1.text = tmpScores[0].TransitMode;
-    curve1.text = tmpScores[0].CurveBall;
-    cost1.text = tmpScores[0].Cost
-    cimpact1.text = tmpScores[0].CO2
-    calories1.text = tmpScores[0].Calories
-    budget1.text = "$" + tmpScores[0].Budget
-    
-  if (plyr.scores.length > 1){
-    des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
-    transit2.text = tmpScores[1].TransitMode
-    curve2.text = tmpScores[1].CurveBall
-    cost2.text = tmpScores[1].Cost
-    cimpact2.text = tmpScores[1].CO2
-    calories2.text = tmpScores[1].Calories
-    budget2.text = "$" + tmpScores[1].Budget
-  }
-  if (plyr.scores.length > 2){
-    des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
-    transit3.text = tmpScores[2].TransitMode
-    curve3.text = tmpScores[2].CurveBall
-    cost3.text = tmpScores[2].Cost
-    cimpact3.text = tmpScores[2].CO2
-    calories3.text = tmpScores[2].Calories
-    budget3.text = "$" + tmpScores[2].Budget
-    
-  }
-  }
+  
   
 
   // // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1696,7 +1769,7 @@ frame.on("ready", () => {
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "#ccc";
   });
-  // UpdateScoreUI(listofPlayers[0]);
+  UpdateScoreUI(myPlayer);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // BOARD ITEMS
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
