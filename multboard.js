@@ -20,6 +20,9 @@ var playerIds = [];
 var myPlayer;
 var myId;
 
+var path;
+
+
 var playerInfo = new Rectangle({
   width: 150,
   height: 150,
@@ -95,7 +98,7 @@ function updateTurn(turn, num) {
   if (playerTurn === num) {
     playerTurn = 0;
   }
-
+   socket.setProperty("playerTurn", playerTurn)
   // setReady(playerTurn);
   return playerTurn;
 }
@@ -335,16 +338,17 @@ Players connected : ${socket.size + 1}`;
             listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
 
             
-            // socket.setProperty("playerTurn", playerTurn)
+            //socket.setProperty("playerTurn", playerTurn)
 
             stage.update();              
         }
 
-        if (data.playerTurn){
+        if (data.playerTurn != null){
           // console.log("playerTurn is:", playerTurn)
-          // console.log("socket received new player turn", data.playerTurn)
-          playerTurn = updateTurn(playerTurn, numOfPlayers);
-          setReady(playerTurn);
+          console.log(data)
+          console.log("socket received new player turn", data.playerTurn)
+          playerTurn = data.playerTurn;
+          setReady(data.playerTurn);
           stage.update();
           // playerTurn = data.playerTurn
           // playerTurn = updateTurn(playerTurn, numOfPlayers)
@@ -369,7 +373,7 @@ Players connected : ${socket.size + 1}`;
 
 //         playerTurn = updateTurn(playerTurn, numOfPlayers);
 //         setReady(playerTurn);
-//         // socket.setProperty("playerTurn", playerTurn)
+        // socket.setProperty("playerTurn", playerTurn)
 
 //         stage.update();              
 //     }
@@ -797,7 +801,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
           UpdateScoreUI(myPlayer);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
 
           mode = "Walk"
           AI.setAcceptableTiles(tilesLimits["Walk"]);
@@ -812,8 +816,9 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         }
       } else {
 
+        // socket.setProperties({mode, path})
         curveBall(mode, myPlayer);
-
+        
 
       }
     });
@@ -834,7 +839,6 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
    // default lighter grey tile
   let pathID;
   let ticker;
-  let path;
 
 
 
@@ -915,7 +919,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         //update the socket
         console.log("should send movement data to socket")
 
-        socket.setProperties({path,mode, playerTurn})
+        socket.setProperties({path,mode})
 
       } else {
         alert("You don't have enough money! Pick a different mode")
@@ -979,7 +983,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
 
         }
         console.log(chance)
@@ -1021,7 +1025,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
         }
         console.log(chance)
         break;
@@ -1047,7 +1051,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         }
         playerTurn = updateTurn(playerTurn, numOfPlayers);
         setReady(playerTurn);
-        socket.setProperty("playerTurn", playerTurn)
+        // socket.setProperty("playerTurn", playerTurn)
         console.log("$" + plyr.budget);
         break;
 
@@ -1096,7 +1100,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
         }
         break;
 
@@ -1133,7 +1137,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
         }
 
         break;
@@ -1161,7 +1165,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
         }
         break;
      
@@ -1183,7 +1187,7 @@ let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urba
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
-          socket.setProperty("playerTurn", playerTurn)
+          // socket.setProperty("playerTurn", playerTurn)
         }
 
         break;
