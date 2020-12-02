@@ -166,7 +166,7 @@ frame.on("ready", function() {
 	  socket = new zim.Socket(zimSocketURL, appName, roomName); 
     // as this room fills with people they are sent to the game room when there are three
     
-    var maxNum = 2;
+    var maxNum = 4;
     // var minNum =
     // var instructions = new Label({
     //     text:"Waiting: play will begin when there are " + maxNum + " players",
@@ -199,6 +199,21 @@ frame.on("ready", function() {
         } else {
             setNum();  
         }
+
+      const timer = new Timer({
+          time:60,
+          borderColor:dark,
+          isometric:"left"
+      }).loc(27, 231, stage, 0); // .place();
+      timer.on("complete",()=>{
+          timer.backing.color = red;
+          timer.color = white;
+          if(socket.size+1 >= 2){
+            socket.setProperty("play", 1)
+            setGame();
+          }
+          stage.update();
+      });
                 
     function setNum() {
     number.text = `Waiting for players to connect...
@@ -212,9 +227,9 @@ Players connected : ${socket.size + 1}`;
             // this room will fill up three at a time 
             // and not fill in when someone leaves
             number.removeFrom()
-
+            timer.removeFrom()
             // (()=>{
-            socket.changeRoom(appName, "game", 2, false)
+            socket.changeRoom(appName, "game", socket.size+1, false)
             // }, 10000);
             // we need to wait until the player changes rooms 
             // before continuing - so set a roomchange event
