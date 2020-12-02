@@ -19,7 +19,8 @@ var playerTurn = 0;
 var playerIds = [];
 var myPlayer;
 var myId;
-
+var lablabel;
+var onstart;
 var path;
 
 
@@ -34,9 +35,9 @@ var playerInfo = new Rectangle({
 var newPlayerLabel;
 
 // Characters placement cards and Budget Cards setup 
-let loc = ["Rural 1", "Suburban 2", "Urban 3", "Downtown 4"];
+let loc = ["Rural", "Suburban", "Urban", "Downtown"];
 let budget = [5, 15, 25, 50];
-let locPos = { "Rural 1": { x: 20, y: 0 }, "Suburban 2": { x: 21, y: 15 }, "Urban 3": { x: 3, y: 16 }, "Downtown 4": { x: 2, y: 1 } }
+let locPos = { "Rural": { x: 20, y: 0 }, "Suburban": { x: 21, y: 15 }, "Urban": { x: 3, y: 16 }, "Downtown": { x: 2, y: 1 } }
 
 var scoreCardPane;
 
@@ -299,6 +300,7 @@ Players connected : ${socket.size + 1}`;
               new_player.startPosition = locPos[player_loc]
 
 
+
               board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
 
                 if (index == findMyIndex()){
@@ -314,6 +316,13 @@ Players connected : ${socket.size + 1}`;
                     CO2: 0,
                     Calories: 0,
                   }
+
+
+                  lablabel.text = `Your location is ${loc[findMyIndex()]} and your budget is $${myPlayer.budget}`
+                  
+                  onstart.show().pos({
+                    index: 1000,
+                  })
 
                   console.log(myPlayer.budget, myPlayer.startPosition)
                   console.log("I should have the right budget!")
@@ -490,8 +499,8 @@ frame.on("ready", () => {
   waiter.hide();
   
       
-  var lablabel = new Label({
-    // text: `Your location is ${randomLocation} and budget is $${randomBudget}`,
+  lablabel = new Label({
+    text: "",
     size: 20,
     font: "Alata",
     labelWidth: 250,
@@ -499,7 +508,7 @@ frame.on("ready", () => {
     align: "center",
   });
 
-  var onstart = new Pane({
+ onstart = new Pane({
     label: lablabel,
     width: 300,
     height: 200,
@@ -508,9 +517,6 @@ frame.on("ready", () => {
     corner: 15,
   });
 
-//   onstart.show().pos({
-//     index: 1000,
-//   })
 
   var btnlabel = new Label({
     text: "GOT IT",
@@ -683,11 +689,16 @@ frame.on("ready", () => {
           console.log(myPlayer.budget, myPlayer.startPosition)
           UpdateScoreUI(myPlayer)
 
+
+          
+         
        }
 
         var yPosition = 20 + (30 * index)
         new_player.clone().sca(.45).center(playerInfo).pos(20, yPosition);
 
+
+      
 
         newPlayerLabel = new Label({
           text: findMyIndex() == index ? "My Player" : `Player ${index + 1}`,
@@ -703,7 +714,10 @@ frame.on("ready", () => {
        yPosition = 48 + (30 * index)
 
         newPlayerLabel.center(playerInfo).pos(40, yPosition);
+       
 
+      
+      
         board.add(new_player, new_player.startPosition["x"], new_player.startPosition["y"]);
         console.log("board should update...")
         stage.update()
@@ -1549,7 +1563,7 @@ Add 5 spaces`;
   });
 
   var closeCB = new Button({
-    label: btnlabel,
+    label: btnlabel.clone(),
     width: 100,
     height: 50,
     backgroundColor: "#2C57A0",
