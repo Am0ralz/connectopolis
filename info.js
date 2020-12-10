@@ -407,13 +407,13 @@ export const data = {
     ],
     [
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },/////
+      { data: "x", color: "#707070", icon: null, items: [] },//
+      { data: "x", color: "#707070", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },/////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
@@ -440,7 +440,7 @@ export const data = {
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, ////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
@@ -467,7 +467,7 @@ export const data = {
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },/////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -494,7 +494,7 @@ export const data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, //////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -521,7 +521,7 @@ export const data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },/////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -548,7 +548,7 @@ export const data = {
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, ///
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -575,7 +575,7 @@ export const data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] },/////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -602,7 +602,7 @@ export const data = {
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "0", color: "#333333", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, /////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -629,7 +629,7 @@ export const data = {
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, ////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
@@ -656,7 +656,7 @@ export const data = {
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
-      { data: "0", color: "#333333", icon: null, items: [] },
+      { data: "x", color: "#707070", icon: null, items: [] }, ////
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "x", color: "#707070", icon: null, items: [] },
       { data: "o", color: "#40E0D0", icon: null, items: [] },
