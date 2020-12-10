@@ -2,11 +2,11 @@
 class Player extends Person {
 
     modes = {
-      Walk: { cost: 0, spaces: 1, cImpact: 0, calories: 21 },
-      Bike: { cost: 1, spaces: 2, cImpact: 0, calories: 27 },
-      Bus: { cost: 4, spaces: 3, cImpact: 6, calories: 1.6 },
-      Scooter: { cost: 3, spaces: 4, cImpact: 0, calories: 1.8 },
-      Car: { cost: 8, spaces: 5, cImpact: 10, calories: 3 },
+      Walk: { cost: 0, spaces: 2, cImpact: 0, calories: 21 },
+      Bike: { cost: 1, spaces: 4, cImpact: 0, calories: 27 },
+      Bus: { cost: 4, spaces: 8, cImpact: 6, calories: 1.6 },
+      Scooter: { cost: 3, spaces: 6, cImpact: 0, calories: 1.8 },
+      Car: { cost: 8, spaces: 10, cImpact: 10, calories: 3 },
     };
     constructor(startPosition, budget, id) {
       super();

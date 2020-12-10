@@ -946,6 +946,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Heat";
 
         } else if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
@@ -955,6 +956,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Heat";
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
@@ -976,6 +978,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Rain";
         }
         else if (md == "Bus") {
           chance = "go back 1 steps";
@@ -985,6 +988,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 2)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Rain";
         }
 
         else if (md == "Car") {
@@ -995,6 +999,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Rain";
         }
 
         else {
@@ -1013,6 +1018,7 @@ frame.on("ready", () => {
           curveBallPane.show();
 
           plyr.budget = plyr.budget - 10;
+          plyr.scores[plyr.scores.length-1].CurveBall = "High Gas";
         }
 
         if (md == "Bus") {
@@ -1023,6 +1029,7 @@ frame.on("ready", () => {
 
           plyr.budget = plyr.budget - 1;
           playerTurn++;
+          plyr.scores[plyr.scores.length-1].CurveBall = "High Gas";
         }
         playerTurn = updateTurn(playerTurn, numOfPlayers);
         setReady(playerTurn);
@@ -1040,6 +1047,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Late Bus";
         }
         break;
 
@@ -1052,6 +1060,7 @@ frame.on("ready", () => {
           curveBallPane.label.text = cb2;
           curveBallPane.show();
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Snow";
 
         } else if (md == "Bike" || md == "Scooter") {
           chance = "go back 2 steps";
@@ -1062,7 +1071,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-
+          plyr.scores[plyr.scores.length-1].CurveBall = "Snow";
         } else if (md == "Car") {
           chance = "go back 4 steps";
           curveBallPane.label.text = cb2;
@@ -1071,6 +1080,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 5)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Snow";
         }
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
@@ -1096,7 +1106,7 @@ frame.on("ready", () => {
 
             plyr.secondturn = true;
             // return mode
-
+            plyr.scores[plyr.scores.length-1].CurveBall = "Traffic";
         } else if (md == "Bus") {
           chance = "go back 2 steps";
           //alert
@@ -1108,6 +1118,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
+          plyr.scores[plyr.scores.length-1].CurveBall = "Traffic";
         }
         else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
@@ -1127,7 +1138,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 9)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-
+          plyr.scores[plyr.scores.length-1].CurveBall = "Flat Tire";
         } else if (md == "Bus") {
           chance = "go back 2 steps";
           curveBallPane.label.text = cb6;
@@ -1136,7 +1147,7 @@ frame.on("ready", () => {
           tmpPath = tmpPath.reverse().slice(0, 3)
           board.followPath(plyr, tmpPath, null, null,);
           plyr.secondturn = true;
-
+          plyr.scores[plyr.scores.length-1].CurveBall = "Flat Tire";
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
@@ -1159,6 +1170,7 @@ frame.on("ready", () => {
             carBtn.enabled = false;
 
         plyr.secondturn = true;
+        plyr.scores[plyr.scores.length-1].CurveBall = "Free Scooter";
         } else {
           playerTurn = updateTurn(playerTurn, numOfPlayers);
           setReady(playerTurn);
@@ -1182,6 +1194,7 @@ frame.on("ready", () => {
         scooterBtn.enabled = false;
         carBtn.enabled = false;
         plyr.secondturn = true;
+        plyr.scores[plyr.scores.length-1].CurveBall = "Sunny Day";
         break;
 
       ////Great Breakfast////  
@@ -1202,7 +1215,7 @@ frame.on("ready", () => {
         scooterBtn.enabled = false;
         carBtn.enabled = false;
         plyr.secondturn = true;
-
+        plyr.scores[plyr.scores.length-1].CurveBall = "Great Breakfast";
         break;
 
     }
