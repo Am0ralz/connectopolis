@@ -63,7 +63,7 @@ class Player extends Person {
         Budget: this.budget,
         Cost: this.modes[mode].cost,
         CO2: this.cO2,
-        Calories: this.calories,
+        Calories: this.calories.toFixed(2),
       })
   
   
