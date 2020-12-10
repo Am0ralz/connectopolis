@@ -474,6 +474,7 @@ let mode = "Walk";
     "bike.png",
     "bus.png",
     "car.png",
+    "skip.png",
     "scooter.png",
     "walk.png",
     "library.png",
@@ -1234,11 +1235,11 @@ frame.on("ready", () => {
   let carIcon = asset("assets/car.png").pos(14, 15).sca(0.65);
   let scooterIcon = asset("assets/scooter.png").pos(14, 15).sca(0.65);
   let busIcon = asset("assets/bus.png").pos(14, 15).sca(0.65);
+  let skipIcon = asset("assets/skip.png").pos(14, 15).sca(0.65);
+
 
   //buttons for mode of transport
   var walkBtn = new Button({
-    // label: walklabel,
-    // width: 100,
     width: 50,
     height: 50,
     backgroundColor: "#ccc",
@@ -1250,8 +1251,6 @@ frame.on("ready", () => {
   });
 
   var bikeBtn = new Button({
-    // label: bikelabel,
-    // width: 100,
     width: 50,
     height: 50,
     backgroundColor: "white",
@@ -1264,8 +1263,6 @@ frame.on("ready", () => {
 
 
   var busBtn = new Button({
-    // label: buslabel,
-    // width: 90,
     width: 50,
     height: 50,
     backgroundColor: "white",
@@ -1277,8 +1274,6 @@ frame.on("ready", () => {
   });
 
   var scooterBtn = new Button({
-    // label: scooterlabel,
-    // width: 150,
     width: 50,
     height: 50,
     backgroundColor: "white",
@@ -1291,8 +1286,6 @@ frame.on("ready", () => {
 
 
   var carBtn = new Button({
-    // label: carlabel,
-    // width: 95,
     width: 50,
     height: 50,
     backgroundColor: "white",
@@ -1304,12 +1297,26 @@ frame.on("ready", () => {
   });
 
 
+  var skipBtn = new Button({
+    width: 50,
+    height: 50,
+    backgroundColor: "white",
+    rollBackgroundColor: "#f5f5f5",
+    corner: 10,
+    icon: skipIcon,
+    indent: 20,
+    align: "right",
+  });
+
+
   //displays buttons on right side of screen
   walkBtn.pos({ horizontal: "right", x: 20, y: 50, index: 0 });
   bikeBtn.pos({ horizontal: "right", x: 20, y: 130, index: 0 });
   busBtn.pos({ horizontal: "right", x: 20, y: 210, index: 0 });
   scooterBtn.pos({ horizontal: "right", x: 20, y: 290, index: 0 });
   carBtn.pos({ horizontal: "right", x: 20, y: 370, index: 0 });
+  skipBtn.pos({ horizontal: "right", x: 20, y: 450, index: 0 });
+
 
   //changes mode of transport on click of button
   walkBtn.on("click", function () {
@@ -1321,6 +1328,8 @@ frame.on("ready", () => {
     busBtn.backgroundColor = "white";
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "white";
+    skipBtn.backgroundColor = "white";
+
   });
   bikeBtn.on("click", function () {
     mode = "Bike";
@@ -1332,6 +1341,8 @@ frame.on("ready", () => {
     busBtn.backgroundColor = "white";
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "white";
+    skipBtn.backgroundColor = "white";
+
   });
   busBtn.on("click", function () {
     mode = "Bus";
@@ -1343,6 +1354,8 @@ frame.on("ready", () => {
     busBtn.backgroundColor = "#ccc";
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "white";
+    skipBtn.backgroundColor = "white";
+
   });
   scooterBtn.on("click", function () {
     mode = "Scooter";
@@ -1353,6 +1366,8 @@ frame.on("ready", () => {
     busBtn.backgroundColor = "white";
     scooterBtn.backgroundColor = "#ccc";
     carBtn.backgroundColor = "white";
+    skipBtn.backgroundColor = "white";
+
   });
   carBtn.on("click", function () {
     mode = "Car";
@@ -1364,6 +1379,22 @@ frame.on("ready", () => {
     busBtn.backgroundColor = "white";
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "#ccc";
+    skipBtn.backgroundColor = "white";
+
+  });
+
+
+  skipBtn.on("click", function () {
+    mode = "Skip";
+    AI.setAcceptableTiles(tilesLimits[mode]);
+
+    //changes the background color for the chosen mode transport
+    walkBtn.backgroundColor = "white";
+    bikeBtn.backgroundColor = "white";
+    busBtn.backgroundColor = "white";
+    scooterBtn.backgroundColor = "white";
+    carBtn.backgroundColor = "white";
+    skipBtn.backgroundColor = "#ccc";
   });
   UpdateScoreUI(myPlayer);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
