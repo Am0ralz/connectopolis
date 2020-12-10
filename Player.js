@@ -69,11 +69,69 @@ class Player extends Person {
   
     }
     didWin() {
+      var arrivedLabel = new Label({
+        text: "",
+        size: 18,
+        font: "Alata",
+        align: "center",
+        color: "black",
+        lineHeight: 25,
+        shiftVertical: -50,
+
+      })
+      .center(arrivedPane)
+      .pos(null, 0);
+      
+      var arrivedPane = new Pane({
+        label: arrivedLabel,
+        width: 300,
+        height: 200,
+        backdropClose: false,
+        displayClose: false,
+        corner: 15,
+      });
+
+      var arrivedPane = new Pane({
+        label: arrivedLabel,
+        width: 300,
+        height: 200,
+        backdropClose: false,
+        displayClose: false,
+        corner: 15,
+      });
+
+      var btnlabel = new Label({
+        text: "GOT IT",
+        size: 20,
+        font: "Alata",
+        color: "white",
+      });
+
+      var closebtn = new Button({
+        label: btnlabel,
+        width: 100,
+        height: 50,
+        backgroundColor: "#2C57A0",
+        rollBackgroundColor: "#244682",
+        corner: 10,
+      }).tap(function () {
+        arrivedPane.hide();
+      });
+
+      closebtn.center(arrivedPane).pos(null, 120);
+
+
       if (this.square == "20-13") {
         this.landmarks[0] = true;
+        arrivedLabel.text = `You have arrived at your 
+first location, the school.`
+        arrivedPane.show();
       }
       if (this.square == "8-1" && this.landmarks[0]) {
         this.landmarks[1] = true;
+        arrivedLabel.text = `You have arrived at your 
+second location, the park.`
+        arrivedPane.show();
       }
       if (this.square == "2-7" && this.landmarks.every(Boolean)) {
         return true;
@@ -102,3 +160,5 @@ class Player extends Person {
       return this.pathHist;
     }
   }
+
+  
