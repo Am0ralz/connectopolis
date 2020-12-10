@@ -1838,7 +1838,7 @@ font: "Alata",
 
 new Label({
 text: `$0
- 1
+ 2
  0
 21`,
 size: 12,
@@ -1847,7 +1847,7 @@ font: "Alata",
 
 new Label({
 text: `$1
- 2
+ 4
  0
 27`,
 size: 12,
@@ -1857,7 +1857,7 @@ font: "Alata",
 
 new Label({
 text: `$4
- 4 
+ 8 
  6
 1.6`,
 size: 12,
@@ -1866,7 +1866,7 @@ font: "Alata",
 
 new Label({
 text: `$3
- 3
+ 6
  0
 1.8`,
 font: "Alata",
@@ -1876,7 +1876,7 @@ size: 12,
 
 new Label({
 text: `$8
- 5
+10
 10
  3`,
 size: 12,
