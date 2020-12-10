@@ -41,7 +41,8 @@ let locPos = { "Rural": { x: 20, y: 0 }, "Suburban": { x: 21, y: 15 }, "Urban": 
 
 var scoreCardPane;
 
-let des1, des2, des3, 
+let 
+// des1, des2, des3, 
   budget1, budget2, budget3, 
   calories1, calories2, calories3, 
   cimpact1, cimpact2, cimpact3,
@@ -63,7 +64,7 @@ let des1, des2, des3,
     tmpScores = plyr.scores.slice(0);
     console.log(tmpScores);
   }
-    des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
+    // des1.text = tmpScores[0].Destination.x +","+tmpScores[0].Destination.y;
     transit1.text = tmpScores[0].TransitMode;
     curve1.text = tmpScores[0].CurveBall;
     cost1.text = tmpScores[0].Cost
@@ -72,7 +73,7 @@ let des1, des2, des3,
     budget1.text = "$" + tmpScores[0].Budget
     
   if (plyr.scores.length > 1){
-    des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
+    // des2.text = tmpScores[1].Destination.x +","+tmpScores[1].Destination.y;
     transit2.text = tmpScores[1].TransitMode
     curve2.text = tmpScores[1].CurveBall
     cost2.text = tmpScores[1].Cost
@@ -81,7 +82,7 @@ let des1, des2, des3,
     budget2.text = "$" + tmpScores[1].Budget
   }
   if (plyr.scores.length > 2){
-    des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
+    // des3.text = tmpScores[2].Destination.x +","+tmpScores[2].Destination.y;
     transit3.text = tmpScores[2].TransitMode
     curve3.text = tmpScores[2].CurveBall
     cost3.text = tmpScores[2].Cost
@@ -590,7 +591,7 @@ frame.on("ready", () => {
     //scorecard pane that will show the players score
     scoreCardPane = new Pane({
       width: 500,
-      height: 600,
+      height: 460,
       backgroundColor: "white",
       corner: 0,
     });
@@ -614,8 +615,7 @@ frame.on("ready", () => {
 
   scoreCardBtn.pos({ x: 20, y: 50, index: 0 });
 
-  ({des1, des2, des3, 
-    budget1, budget2, budget3, 
+  ({ budget1, budget2, budget3, 
     calories1, calories2, calories3, 
     cimpact1, cimpact2, cimpact3,
     cost1, cost2, cost3,
@@ -624,8 +624,6 @@ frame.on("ready", () => {
     = setupScorecardUI(scoreCardPane))
 
 
-// console.log(des1)
-  // console.log(board)
 
   var cvLabel = new Label({
     text: "Change View",
@@ -1701,7 +1699,7 @@ Add 5 spaces`;
   });
 
   var helpPane = new Pane({
-    width: 600,
+    width: 650,
     height: 600,
     corner: 15,
   });
@@ -1727,36 +1725,53 @@ scooter only`,
     font: "Alata",
   }).center(helpPane).pos(40, 140);
 
+
+  //icon for buildings
+  new Rectangle(30, 30, "#333333").center(helpPane).pos(190, 90);
+
+  new Label({
+text: `Building - no 
+mode allowed
+on this tile`,
+size: 14,
+font: "Alata",
+  }).center(helpPane).pos(160, 140);
+
   //icon for grass
-  new Rectangle(30, 30, "#acd241").center(helpPane).pos(190, 90);
+  new Rectangle(30, 30, "#acd241").center(helpPane).pos(320, 90);
 
   new Label({
     text: `Grass - walk & 
 bike only`,
     size: 14,
     font: "Alata",
-  }).center(helpPane).pos(160, 140);
+  }).center(helpPane).pos(290, 140);
 
+
+
+    //icon for highway
+    new Rectangle(30, 30, "#555555").center(helpPane).pos(440, 90);
+    asset("assets/tile5.png").sca(.7).center(helpPane).pos(440, 90);
+  
+new Label({
+text: `Highway -  
+car only`,
+size: 14,
+font: "Alata",
+}).center(helpPane).pos(420, 140);
+
+    
   //icon for bus line
-  asset("assets/3.png").sca(.25).center(helpPane).pos(330, 90);
+  asset("assets/3.png").sca(.25).center(helpPane).pos(540, 90);
 
   new Label({
-    text: `Bus Line - walk,
-bus & car only`,
+    text: `Bus Line - bus,
+walk & car only`,
     size: 14,
     font: "Alata",
-  }).center(helpPane).pos(300, 140);
+  }).center(helpPane).pos(510, 140);
 
 
-  //icon for highway
-  new Rectangle(30, 30, "#555555").center(helpPane).pos(490, 90);
-  asset("assets/tile5.png").sca(.7).center(helpPane).pos(490, 90);
-
-  new Label({
-    text: `Highway - car only`,
-    size: 14,
-    font: "Alata",
-  }).center(helpPane).pos(450, 140);
 
 
   //modes of transportation label
@@ -1768,59 +1783,68 @@ bus & car only`,
 
 
   //labels for mode of transport
-  new Label({
-text: `CO2 Impact: 0
-Cost: Free
-Spaces: 1
-Calories: 21`,
+new Label({
+text: `Cost:
+Spaces:
+C02 Impact: 
+Calories:`,
 size: 12,
 font: "Alata",
-  }).center(helpPane).pos(20, 300);
+}).center(helpPane).pos(50, 300);
 
 new Label({
-text: `CO2 Impact: 0
-Cost: $1
-Spaces: 2
-Calories 27`,
+text: `$0
+ 1
+ 0
+21`,
 size: 12,
 font: "Alata",
-  }).center(helpPane).pos(140, 300);
+}).center(helpPane).pos(160, 300);
 
 new Label({
-text: `CO2 Impact: 6
-Cost: $4
-Spaces: 4
-Calories: 1.6`,
+text: `$1
+ 2
+ 0
+27`,
 size: 12,
 font: "Alata",
-  }).center(helpPane).pos(260, 300);
+}).center(helpPane).pos(240, 300);
 
 
 new Label({
-text: `CO2 Impact: 0
-Cost: $3   
-Spaces: 3
-Calories: 1.8`,
+text: `$4
+ 4 
+ 6
+1.6`,
 size: 12,
 font: "Alata",
-}).center(helpPane).pos(380, 300);
+}).center(helpPane).pos(320, 300);
 
 new Label({
-text: `CO2 Impact: 10
-Cost: $8
-Spaces: 5
-Calories: 3`,
+text: `$3
+ 3
+ 0
+1.8`,
+font: "Alata",
+size: 12,
+}).center(helpPane).pos(400, 300);
+
+
+new Label({
+text: `$8
+ 5
+10
+ 3`,
 size: 12,
 font: "Alata",
-  }).center(helpPane).pos(500, 300);
-
+}).center(helpPane).pos(480, 300);
 
   //icons for mode of transportation
-  asset("walk.png").sca(.8).center(helpPane).pos(50, 260);
-  asset("bike.png").sca(.8).center(helpPane).pos(170, 260);
-  asset("bus.png").sca(.8).center(helpPane).pos(280, 260);
-  asset("scooter.png").sca(.8).center(helpPane).pos(400, 260);
-  asset("car.png").sca(.8).center(helpPane).pos(520, 260);
+  asset("walk.png").sca(.8).center(helpPane).pos(160, 260);
+  asset("bike.png").sca(.8).center(helpPane).pos(230, 260);
+  asset("bus.png").sca(.8).center(helpPane).pos(310, 260);
+  asset("scooter.png").sca(.8).center(helpPane).pos(390, 260);
+  asset("car.png").sca(.8).center(helpPane).pos(470, 260);
 
 
 

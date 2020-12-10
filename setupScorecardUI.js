@@ -17,49 +17,6 @@ console.log("setting up scorecard")
     .center(scoreCardPane)
     .pos(null, 0);
 
-  ///////////labels for destination
-  new Label({
-    text: "Destination",
-    size: 14,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-  })
-    .center(scoreCardPane)
-    .pos(35, 100);
-
-  //first label for destination
-  var des1 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(145, 100);
-
-  //second label for destination
-  var des2 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(255, 100);
-
-  //third label for destination
-  var des3 = new Label({
-    text: " ",
-    size: 18,
-    backing: new Rectangle(100, 40, "#f0f0f0"),
-    font: "Alata",
-    align: "center"
-  })
-    .center(scoreCardPane)
-    .pos(365, 100);
 
   ///////////////labels for transit
   new Label({
@@ -70,7 +27,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 150);
+    .pos(35, 125);
 
   //first label for transit mode
   var transit1 = new Label({
@@ -81,7 +38,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 150);
+    .pos(145, 125);
 
   //second label for transit mode
   var transit2 = new Label({
@@ -92,7 +49,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 150);
+    .pos(255, 125);
 
   //third label for transit mode
   var transit3 = new Label({
@@ -103,7 +60,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 150);
+    .pos(365, 125);
 
   ///////////////labels for curve ball
   new Label({
@@ -114,7 +71,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 200);
+    .pos(35, 175);
 
   //first label for curve ball
   var curve1 = new Label({
@@ -125,7 +82,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 200);
+    .pos(145, 175);
 
   //second label for curve ball
   var curve2 = new Label({
@@ -136,7 +93,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 200);
+    .pos(255, 175);
 
   //third label for curve ball
   var curve3 = new Label({
@@ -147,7 +104,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 200);
+    .pos(365, 175);
 
   /////labels for cost
 
@@ -159,7 +116,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 250);
+    .pos(35, 225);
 
   //first label for cost
   var cost1 = new Label({
@@ -170,7 +127,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 250);
+    .pos(145, 225);
 
   //second label for cost
   var cost2 = new Label({
@@ -181,7 +138,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 250);
+    .pos(255, 225);
 
   //third label for cost
   var cost3 = new Label({
@@ -192,7 +149,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 250);
+    .pos(365, 225);
 
   /////labels for CO2 Impact
 
@@ -204,7 +161,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 300);
+    .pos(35, 275);
 
   //first label for CO2 impact
   var cimpact1 = new Label({
@@ -215,7 +172,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 300);
+    .pos(145, 275);
 
   //second label for CO2 impact
   var cimpact2 = new Label({
@@ -226,7 +183,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 300);
+    .pos(255, 275);
 
   //third label for CO2 impact
   var cimpact3 = new Label({
@@ -237,7 +194,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 300);
+    .pos(365, 275);
 
   //////labels for calories
 
@@ -249,7 +206,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 350);
+    .pos(35, 325);
 
   //first label for calories
   var calories1 = new Label({
@@ -260,7 +217,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 350);
+    .pos(145, 325);
 
   //second label for calories
   var calories2 = new Label({
@@ -271,7 +228,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 350);
+    .pos(255, 325);
 
   //third label for calories
   var calories3 = new Label({
@@ -282,7 +239,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 350);
+    .pos(365, 325);
 
   //////labels for budget
 
@@ -294,7 +251,7 @@ console.log("setting up scorecard")
     font: "Alata",
   })
     .center(scoreCardPane)
-    .pos(35, 400);
+    .pos(35, 375);
 
   //first label for budget
   var budget1 = new Label({
@@ -305,7 +262,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(145, 400);
+    .pos(145, 375);
 
   //second label for budget
   var budget2 = new Label({
@@ -316,7 +273,7 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(255, 400);
+    .pos(255, 375);
 
 
   //third label for budget
@@ -328,27 +285,26 @@ console.log("setting up scorecard")
     align: "center"
   })
     .center(scoreCardPane)
-    .pos(365, 400);
+    .pos(365, 375);
 
   //////label indicating which is the current
 
-  new Label({
-    text: "Current",
-    size: 18,
-    color: "white",
-    backing: new Rectangle(100, 40, "#383838"),
-    font: "Alata",
-    align: "center"
+  // new Label({
+  //   text: "Current",
+  //   size: 18,
+  //   color: "white",
+  //   backing: new Rectangle(100, 40, "#383838"),
+  //   font: "Alata",
+  //   align: "center"
 
 
 
-  })
-    .center(scoreCardPane)
-    .pos(365, 450);
+  // })
+  //   .center(scoreCardPane)
+  //   .pos(365, 450);
 
 
-    return ({des1, des2, des3, 
-            budget1, budget2, budget3, 
+    return ({ budget1, budget2, budget3, 
             calories1, calories2, calories3, 
             cimpact1, cimpact2, cimpact3,
             cost1, cost2, cost3,
