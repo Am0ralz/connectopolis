@@ -7,6 +7,7 @@ class Player extends Person {
       Bus: { cost: 4, spaces: 8, cImpact: 6, calories: 1.6 },
       Scooter: { cost: 3, spaces: 6, cImpact: 0, calories: 1.8 },
       Car: { cost: 8, spaces: 10, cImpact: 10, calories: 3 },
+      Skip: {cost:-5, spaces: 0, cImpact:0, calories: 0},
     };
     constructor(startPosition, budget, id) {
       super();
@@ -52,12 +53,11 @@ class Player extends Person {
     }
   
   
-    updatePlayerInfo(path, mode) {
+    updatePlayerInfo( mode) {
       this.budget = this.budget - this.modes[mode].cost;
       this.cO2 = this.cO2 + this.modes[mode].cImpact;
       this.calories = this.calories + this.modes[mode].calories;
       this.scores.push({
-        Destination: path[path.length - 1],
         TransitMode: mode,
         CurveBall: "",
         Budget: this.budget,

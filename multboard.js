@@ -381,7 +381,7 @@ Players connected : ${socket.size + 1}`;
             listofPlayers[playerTurn].tracker(data.path);
 
             //Where the score card get updated//
-            listofPlayers[playerTurn].updatePlayerInfo(data.path, data.mode);
+            listofPlayers[playerTurn].updatePlayerInfo( data.mode);
 
             
             //socket.setProperty("playerTurn", playerTurn)
@@ -889,7 +889,7 @@ frame.on("ready", () => {
         myPlayer.tracker(path);
 
         //Where the score card get updated//
-        myPlayer.updatePlayerInfo(path, mode);
+        myPlayer.updatePlayerInfo(mode);
 
         //update the socket
         console.log("should send movement data to socket")
@@ -1397,17 +1397,21 @@ frame.on("ready", () => {
   });
 
 
-  skipBtn.on("click", function () {
+  skipBtn.on("click", ()=>{
     mode = "Skip";
-    AI.setAcceptableTiles(tilesLimits[mode]);
-
+    myPlayer.updatePlayerInfo(mode);
     //changes the background color for the chosen mode transport
-    walkBtn.backgroundColor = "white";
+    playerTurn = updateTurn(playerTurn, numOfPlayers);
+    setReady(playerTurn);
+    mode= "Walk";
+    walkBtn.backgroundColor = "#ccc";
     bikeBtn.backgroundColor = "white";
     busBtn.backgroundColor = "white";
     scooterBtn.backgroundColor = "white";
     carBtn.backgroundColor = "white";
-    skipBtn.backgroundColor = "#ccc";
+    skipBtn.backgroundColor = "white";
+
+  
   });
   UpdateScoreUI(myPlayer);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
