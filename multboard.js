@@ -1411,7 +1411,7 @@ frame.on("ready", () => {
     carBtn.backgroundColor = "white";
     skipBtn.backgroundColor = "white";
 
-  
+    UpdateScoreUI(myPlayer);
   });
   UpdateScoreUI(myPlayer);
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
